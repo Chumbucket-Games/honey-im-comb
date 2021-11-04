@@ -10,6 +10,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     //Vector2 startPosition = Vector2.zero;
     //Vector2 endPosition = Vector2.zero;
     ISelectable selectedObject;
+    public bool IsHiveMode { get; set; } = true;
 
     private void OnEnable()
     {
@@ -37,7 +38,14 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
                 if (Physics.Raycast(ray, out var hit))
                 {
-                    selectedObject.MoveToPosition(hit.point);
+                    if (IsHiveMode)
+                    {
+                        selectedObject.MoveToPosition(hit.transform.position);
+                    }
+                    else
+                    {
+                        selectedObject.MoveToPosition(hit.point);
+                    }
                 }
             }
         }
