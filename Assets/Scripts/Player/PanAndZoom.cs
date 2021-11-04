@@ -22,7 +22,7 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
     private CinemachineVirtualCamera virtualCamera;
     private Transform cameraTransform;
 
-    private Vector2 panInput = Vector2.zero;
+    private Vector2 panDirection = Vector2.zero;
 
     private void OnEnable()
     {
@@ -56,13 +56,13 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
     // Update is called once per frame
     void Update()
     {
-        if (panInput.x != 0 || panInput.y != 0)
+        if (panDirection.x != 0 || panDirection.y != 0)
         {
-            Pan(panInput.x, panInput.y);
+            Pan(panDirection.x, panDirection.y);
         }
     }
 
-    public Vector2 PanDirection(float x, float y)
+    public Vector2 CalculatePanDirection(float x, float y)
     {
         Vector2 direction = Vector2.zero;
 
@@ -89,21 +89,34 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
 
     private void Pan(float x, float y)
     {
-        Vector2 direction = PanDirection(x, y);
         cameraTransform.position = Vector3.Lerp(cameraTransform.position, 
-            cameraTransform.position + (Vector3)direction * panSpeed, Time.deltaTime);
+            cameraTransform.position + (Vector3)panDirection * panSpeed, Time.deltaTime);
     }
 
-    public void OnPan(InputAction.CallbackContext context)
+    public void OnPanMouse(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            panInput = context.ReadValue<Vector2>();
+            var input = context.ReadValue<Vector2>();
+            panDirection = CalculatePanDirection(input.x, input.y);
         }
 
         if (context.canceled)
         {
-            panInput = Vector2.zero;
+            panDirection = Vector2.zero;
+        }
+    }
+
+    public void OnPanKeyboard(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            panDirection = context.ReadValue<Vector2>();
+        }
+
+        if (context.canceled)
+        {
+            panDirection = Vector2.zero;
         }
     }
 

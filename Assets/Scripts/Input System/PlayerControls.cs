@@ -28,7 +28,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ""id"": ""019747f0-e0c6-47af-9cbe-0de1ff25020d"",
             ""actions"": [
                 {
-                    ""name"": ""Pan"",
+                    ""name"": ""Pan Mouse"",
                     ""type"": ""Value"",
                     ""id"": ""31387cf6-5189-4783-988c-45ecaf521bbe"",
                     ""expectedControlType"": ""Vector2"",
@@ -44,6 +44,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": ""Normalize(min=-1,max=1)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pan Keyboard"",
+                    ""type"": ""Value"",
+                    ""id"": ""a5bbbe9e-6789-4e48-9a28-ec2f4249e88d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -54,64 +63,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pan"",
+                    ""action"": ""Pan Mouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""57e89b22-037d-41da-9d94-2a1e22c9f858"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pan"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""a3d6d29b-3658-40d5-922e-c6d03ddd6c71"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pan"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""be4b9a29-a17c-4361-a0a0-e6501179fa32"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pan"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""e47c2f92-d430-4369-ab45-282b26466fff"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pan"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""fd1c3b23-ad5e-4217-83e7-44c286e1546c"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pan"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -123,6 +77,61 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Zoom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""57e89b22-037d-41da-9d94-2a1e22c9f858"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan Keyboard"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a3d6d29b-3658-40d5-922e-c6d03ddd6c71"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan Keyboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""be4b9a29-a17c-4361-a0a0-e6501179fa32"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan Keyboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e47c2f92-d430-4369-ab45-282b26466fff"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan Keyboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""fd1c3b23-ad5e-4217-83e7-44c286e1546c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan Keyboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -131,8 +140,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
 }");
         // Common Controls
         m_CommonControls = asset.FindActionMap("Common Controls", throwIfNotFound: true);
-        m_CommonControls_Pan = m_CommonControls.FindAction("Pan", throwIfNotFound: true);
+        m_CommonControls_PanMouse = m_CommonControls.FindAction("Pan Mouse", throwIfNotFound: true);
         m_CommonControls_Zoom = m_CommonControls.FindAction("Zoom", throwIfNotFound: true);
+        m_CommonControls_PanKeyboard = m_CommonControls.FindAction("Pan Keyboard", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -192,14 +202,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     // Common Controls
     private readonly InputActionMap m_CommonControls;
     private ICommonControlsActions m_CommonControlsActionsCallbackInterface;
-    private readonly InputAction m_CommonControls_Pan;
+    private readonly InputAction m_CommonControls_PanMouse;
     private readonly InputAction m_CommonControls_Zoom;
+    private readonly InputAction m_CommonControls_PanKeyboard;
     public struct CommonControlsActions
     {
         private @PlayerControls m_Wrapper;
         public CommonControlsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Pan => m_Wrapper.m_CommonControls_Pan;
+        public InputAction @PanMouse => m_Wrapper.m_CommonControls_PanMouse;
         public InputAction @Zoom => m_Wrapper.m_CommonControls_Zoom;
+        public InputAction @PanKeyboard => m_Wrapper.m_CommonControls_PanKeyboard;
         public InputActionMap Get() { return m_Wrapper.m_CommonControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -209,29 +221,36 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_CommonControlsActionsCallbackInterface != null)
             {
-                @Pan.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPan;
-                @Pan.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPan;
-                @Pan.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPan;
+                @PanMouse.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanMouse;
+                @PanMouse.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanMouse;
+                @PanMouse.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanMouse;
                 @Zoom.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
                 @Zoom.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
                 @Zoom.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
+                @PanKeyboard.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanKeyboard;
+                @PanKeyboard.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanKeyboard;
+                @PanKeyboard.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanKeyboard;
             }
             m_Wrapper.m_CommonControlsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Pan.started += instance.OnPan;
-                @Pan.performed += instance.OnPan;
-                @Pan.canceled += instance.OnPan;
+                @PanMouse.started += instance.OnPanMouse;
+                @PanMouse.performed += instance.OnPanMouse;
+                @PanMouse.canceled += instance.OnPanMouse;
                 @Zoom.started += instance.OnZoom;
                 @Zoom.performed += instance.OnZoom;
                 @Zoom.canceled += instance.OnZoom;
+                @PanKeyboard.started += instance.OnPanKeyboard;
+                @PanKeyboard.performed += instance.OnPanKeyboard;
+                @PanKeyboard.canceled += instance.OnPanKeyboard;
             }
         }
     }
     public CommonControlsActions @CommonControls => new CommonControlsActions(this);
     public interface ICommonControlsActions
     {
-        void OnPan(InputAction.CallbackContext context);
+        void OnPanMouse(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnPanKeyboard(InputAction.CallbackContext context);
     }
 }
