@@ -15,20 +15,20 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Zoom",
-                    "type": "Value",
-                    "id": "37e04113-c019-4080-8403-841a95ecfc6d",
-                    "expectedControlType": "Axis",
-                    "processors": "Normalize(min=-1,max=1)",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Pan Keyboard",
                     "type": "Value",
                     "id": "a5bbbe9e-6789-4e48-9a28-ec2f4249e88d",
                     "expectedControlType": "Vector2",
                     "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "37e04113-c019-4080-8403-841a95ecfc6d",
+                    "expectedControlType": "Axis",
+                    "processors": "Normalize(min=-1,max=1)",
                     "interactions": "",
                     "initialStateCheck": true
                 }

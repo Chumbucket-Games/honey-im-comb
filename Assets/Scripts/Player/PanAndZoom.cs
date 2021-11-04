@@ -16,13 +16,18 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
 
     [Space][Space]
     [Tooltip("The speed multiplier for panning")]
-    [SerializeField] private float panSpeed = 2f;
+    [SerializeField] private float panSpeed = 4f;
+
+    [SerializeField] private float zoomMinDistance = -30f;
+    [SerializeField] private float zoomMaxDistance = 30f;
+    [SerializeField] private float zoomMultiplier = 2f;
 
     private PlayerControls playerControls;
     private CinemachineVirtualCamera virtualCamera;
     private Transform cameraTransform;
 
     private Vector2 panDirection = Vector2.zero;
+    private float zoomInput = 0f;
 
     private void OnEnable()
     {
@@ -54,11 +59,16 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (panDirection.x != 0 || panDirection.y != 0)
         {
             Pan(panDirection.x, panDirection.y);
+        }
+
+        if (zoomInput != 0)
+        {
+            Zoom();
         }
     }
 
@@ -89,8 +99,18 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
 
     private void Pan(float x, float y)
     {
+        var panAmount = (Vector3)panDirection * panSpeed;
         cameraTransform.position = Vector3.Lerp(cameraTransform.position, 
-            cameraTransform.position + (Vector3)panDirection * panSpeed, Time.deltaTime);
+            cameraTransform.position + panAmount, Time.deltaTime);
+    }
+
+    private void Zoom()
+    {
+        float zoomAmount = zoomInput * zoomMultiplier;
+        var zoomedPosition = Vector3.Lerp(cameraTransform.position, 
+            cameraTransform.position + new Vector3(0, 0, zoomAmount), Time.deltaTime);
+
+        cameraTransform.position = new Vector3(zoomedPosition.x, zoomedPosition.y, Mathf.Clamp(zoomedPosition.z, zoomMinDistance, zoomMaxDistance));
     }
 
     public void OnPanMouse(InputAction.CallbackContext context)
@@ -122,6 +142,14 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
 
     public void OnZoom(InputAction.CallbackContext context)
     {
-        
+        if (context.performed)
+        {
+            zoomInput = context.ReadValue<float>();
+        }
+
+        if (context.canceled)
+        {
+            zoomInput = 0f;
+        }
     }
 }

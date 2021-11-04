@@ -37,20 +37,20 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Zoom"",
-                    ""type"": ""Value"",
-                    ""id"": ""37e04113-c019-4080-8403-841a95ecfc6d"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": ""Normalize(min=-1,max=1)"",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Pan Keyboard"",
                     ""type"": ""Value"",
                     ""id"": ""a5bbbe9e-6789-4e48-9a28-ec2f4249e88d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""37e04113-c019-4080-8403-841a95ecfc6d"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": ""Normalize(min=-1,max=1)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 }
@@ -141,8 +141,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         // Common Controls
         m_CommonControls = asset.FindActionMap("Common Controls", throwIfNotFound: true);
         m_CommonControls_PanMouse = m_CommonControls.FindAction("Pan Mouse", throwIfNotFound: true);
-        m_CommonControls_Zoom = m_CommonControls.FindAction("Zoom", throwIfNotFound: true);
         m_CommonControls_PanKeyboard = m_CommonControls.FindAction("Pan Keyboard", throwIfNotFound: true);
+        m_CommonControls_Zoom = m_CommonControls.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -203,15 +203,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_CommonControls;
     private ICommonControlsActions m_CommonControlsActionsCallbackInterface;
     private readonly InputAction m_CommonControls_PanMouse;
-    private readonly InputAction m_CommonControls_Zoom;
     private readonly InputAction m_CommonControls_PanKeyboard;
+    private readonly InputAction m_CommonControls_Zoom;
     public struct CommonControlsActions
     {
         private @PlayerControls m_Wrapper;
         public CommonControlsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @PanMouse => m_Wrapper.m_CommonControls_PanMouse;
-        public InputAction @Zoom => m_Wrapper.m_CommonControls_Zoom;
         public InputAction @PanKeyboard => m_Wrapper.m_CommonControls_PanKeyboard;
+        public InputAction @Zoom => m_Wrapper.m_CommonControls_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_CommonControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -224,12 +224,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @PanMouse.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanMouse;
                 @PanMouse.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanMouse;
                 @PanMouse.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanMouse;
-                @Zoom.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
-                @Zoom.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
-                @Zoom.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
                 @PanKeyboard.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanKeyboard;
                 @PanKeyboard.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanKeyboard;
                 @PanKeyboard.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnPanKeyboard;
+                @Zoom.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_CommonControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -237,12 +237,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @PanMouse.started += instance.OnPanMouse;
                 @PanMouse.performed += instance.OnPanMouse;
                 @PanMouse.canceled += instance.OnPanMouse;
-                @Zoom.started += instance.OnZoom;
-                @Zoom.performed += instance.OnZoom;
-                @Zoom.canceled += instance.OnZoom;
                 @PanKeyboard.started += instance.OnPanKeyboard;
                 @PanKeyboard.performed += instance.OnPanKeyboard;
                 @PanKeyboard.canceled += instance.OnPanKeyboard;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
             }
         }
     }
@@ -250,7 +250,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public interface ICommonControlsActions
     {
         void OnPanMouse(InputAction.CallbackContext context);
-        void OnZoom(InputAction.CallbackContext context);
         void OnPanKeyboard(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }

@@ -594,7 +594,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panEdgeXThreshold: 5
   panEdgeYThreshold: 5
-  panSpeed: 2
+  panSpeed: 4
+  zoomMinDistance: -30
+  zoomMaxDistance: 30
+  zoomMultiplier: 2
 --- !u!114 &1473004876
 MonoBehaviour:
   m_ObjectHideFlags: 0
