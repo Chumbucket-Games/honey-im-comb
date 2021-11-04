@@ -134,6 +134,74 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Unit Management"",
+            ""id"": ""2588d7e9-7e12-4f1d-948b-347f16206ce9"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0580b16-29f3-412b-9e3a-f848dcb03a3f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""f2d0763f-8fa3-4705-9509-876c965f6385"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cursor"",
+                    ""type"": ""Value"",
+                    ""id"": ""52073590-efc7-4738-84a1-64248d626c79"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3038f30d-5a8e-41e1-b006-a9c49d316071"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa07b537-809a-401b-a352-b5fd66a39ad1"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9015d24c-e1ae-495d-a511-b0ca83564f2f"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cursor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -143,6 +211,11 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_CommonControls_PanMouse = m_CommonControls.FindAction("Pan Mouse", throwIfNotFound: true);
         m_CommonControls_PanKeyboard = m_CommonControls.FindAction("Pan Keyboard", throwIfNotFound: true);
         m_CommonControls_Zoom = m_CommonControls.FindAction("Zoom", throwIfNotFound: true);
+        // Unit Management
+        m_UnitManagement = asset.FindActionMap("Unit Management", throwIfNotFound: true);
+        m_UnitManagement_Interact = m_UnitManagement.FindAction("Interact", throwIfNotFound: true);
+        m_UnitManagement_Select = m_UnitManagement.FindAction("Select", throwIfNotFound: true);
+        m_UnitManagement_Cursor = m_UnitManagement.FindAction("Cursor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -247,10 +320,65 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public CommonControlsActions @CommonControls => new CommonControlsActions(this);
+
+    // Unit Management
+    private readonly InputActionMap m_UnitManagement;
+    private IUnitManagementActions m_UnitManagementActionsCallbackInterface;
+    private readonly InputAction m_UnitManagement_Interact;
+    private readonly InputAction m_UnitManagement_Select;
+    private readonly InputAction m_UnitManagement_Cursor;
+    public struct UnitManagementActions
+    {
+        private @PlayerControls m_Wrapper;
+        public UnitManagementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Interact => m_Wrapper.m_UnitManagement_Interact;
+        public InputAction @Select => m_Wrapper.m_UnitManagement_Select;
+        public InputAction @Cursor => m_Wrapper.m_UnitManagement_Cursor;
+        public InputActionMap Get() { return m_Wrapper.m_UnitManagement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UnitManagementActions set) { return set.Get(); }
+        public void SetCallbacks(IUnitManagementActions instance)
+        {
+            if (m_Wrapper.m_UnitManagementActionsCallbackInterface != null)
+            {
+                @Interact.started -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnInteract;
+                @Select.started -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnSelect;
+                @Select.performed -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnSelect;
+                @Select.canceled -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnSelect;
+                @Cursor.started -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnCursor;
+                @Cursor.performed -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnCursor;
+                @Cursor.canceled -= m_Wrapper.m_UnitManagementActionsCallbackInterface.OnCursor;
+            }
+            m_Wrapper.m_UnitManagementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+                @Cursor.started += instance.OnCursor;
+                @Cursor.performed += instance.OnCursor;
+                @Cursor.canceled += instance.OnCursor;
+            }
+        }
+    }
+    public UnitManagementActions @UnitManagement => new UnitManagementActions(this);
     public interface ICommonControlsActions
     {
         void OnPanMouse(InputAction.CallbackContext context);
         void OnPanKeyboard(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+    }
+    public interface IUnitManagementActions
+    {
+        void OnInteract(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnCursor(InputAction.CallbackContext context);
     }
 }
