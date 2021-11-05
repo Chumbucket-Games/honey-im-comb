@@ -337,8 +337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6438ceed2638c40adbef921c68c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitType: Worker Bee
   moveSpeed: 5
+  type: {fileID: 11400000, guid: 014db35d75c20ed44b20a7b000ba96eb, type: 2}
 --- !u!65 &4795079757857621639
 BoxCollider:
   m_ObjectHideFlags: 0

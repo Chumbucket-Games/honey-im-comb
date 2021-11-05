@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Building : MonoBehaviour, ISelectable
 {
+    float health;
+    public BuildingType type;
     public bool IsMovable()
     {
         return false;
@@ -15,13 +17,13 @@ public class Building : MonoBehaviour, ISelectable
 
     public void OnSelect()
     {
-        Debug.Log("Building selected.");
+        Debug.Log($"{type.label} selected.");
     }
 
     // Use this for initialization
     void Start()
     {
-
+        health = type.MaxHealth;
     }
 
     // Update is called once per frame

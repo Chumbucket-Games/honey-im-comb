@@ -3,15 +3,16 @@ using System.Collections;
 
 public class Unit : MonoBehaviour, ISelectable
 {
-    public string unitType;
     public float moveSpeed;
     Vector3 target = Vector3.zero;
     bool moving = false;
+    float health;
+    public UnitType type;
 
     // Use this for initialization
     void Start()
     {
-
+        health = type.MaxHealth;
     }
 
     // Update is called once per frame
@@ -46,11 +47,11 @@ public class Unit : MonoBehaviour, ISelectable
 
     public void OnSelect()
     {
-        Debug.Log($"{unitType} selected");
+        Debug.Log($"{type.label} selected");
     }
 
     public void DidStopMoving()
     {
-        Debug.Log($"{unitType} has reached its destination.");
+        Debug.Log($"{type.label} has reached its destination.");
     }
 }
