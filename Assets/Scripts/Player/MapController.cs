@@ -125,6 +125,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
             if (Physics.Raycast(ray, out var hit))
             {
+                if (selectedObject != null)
+                {
+                    // Deselect the currently selected object.
+                    selectedObject.OnDeselect();
+                }
                 if (hit.collider.CompareTag("Unit"))
                 {
                     selectedObject = hit.transform.gameObject.GetComponent<Unit>();
@@ -140,6 +145,12 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                     selectedObject = hit.transform.gameObject.GetComponent<ResourceNode>();
                     selectedObject.OnSelect();
                 }
+            }
+            else if (selectedObject != null)
+            {
+                // Deselect the currently selected object.
+                selectedObject.OnDeselect();
+                selectedObject = null;
             }
         }
     }

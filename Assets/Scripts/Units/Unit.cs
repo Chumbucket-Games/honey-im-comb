@@ -111,6 +111,11 @@ public class Unit : MonoBehaviour, ISelectable
         // Bring up the UI for the selected unit.
     }
 
+    public void OnDeselect()
+    {
+
+    }
+
     public void DidReachDestination()
     {
         Debug.Log($"{type.label} has reached its destination.");

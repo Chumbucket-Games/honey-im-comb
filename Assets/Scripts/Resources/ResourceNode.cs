@@ -24,6 +24,11 @@ public class ResourceNode : MonoBehaviour, ISelectable
         Debug.Log($"{remainingAmount} {resource.displayName} remaining.");
     }
 
+    public void OnDeselect()
+    {
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
