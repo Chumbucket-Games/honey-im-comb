@@ -86,6 +86,8 @@ public class Unit : MonoBehaviour, ISelectable
     public void MoveToPosition(Vector3 position, RaycastHit info)
     {
         harvestMode = false;
+        returningToHive = false;
+        returningToNode = false;
         StopAllCoroutines();
         target = position;
         target.z = transform.position.z;
