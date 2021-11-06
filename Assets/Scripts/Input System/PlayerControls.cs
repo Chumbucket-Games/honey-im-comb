@@ -53,6 +53,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": ""Normalize(min=-1,max=1)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Toggle Map Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""651fefae-c68d-419b-a1e0-cb593c7cbc09"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Pan Keyboard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb45fe34-8450-4a1c-8211-7c5b495d308d"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Toggle Map Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -211,6 +231,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_CommonControls_PanMouse = m_CommonControls.FindAction("Pan Mouse", throwIfNotFound: true);
         m_CommonControls_PanKeyboard = m_CommonControls.FindAction("Pan Keyboard", throwIfNotFound: true);
         m_CommonControls_Zoom = m_CommonControls.FindAction("Zoom", throwIfNotFound: true);
+        m_CommonControls_ToggleMapMode = m_CommonControls.FindAction("Toggle Map Mode", throwIfNotFound: true);
         // Unit Management
         m_UnitManagement = asset.FindActionMap("Unit Management", throwIfNotFound: true);
         m_UnitManagement_Interact = m_UnitManagement.FindAction("Interact", throwIfNotFound: true);
@@ -278,6 +299,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_CommonControls_PanMouse;
     private readonly InputAction m_CommonControls_PanKeyboard;
     private readonly InputAction m_CommonControls_Zoom;
+    private readonly InputAction m_CommonControls_ToggleMapMode;
     public struct CommonControlsActions
     {
         private @PlayerControls m_Wrapper;
@@ -285,6 +307,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @PanMouse => m_Wrapper.m_CommonControls_PanMouse;
         public InputAction @PanKeyboard => m_Wrapper.m_CommonControls_PanKeyboard;
         public InputAction @Zoom => m_Wrapper.m_CommonControls_Zoom;
+        public InputAction @ToggleMapMode => m_Wrapper.m_CommonControls_ToggleMapMode;
         public InputActionMap Get() { return m_Wrapper.m_CommonControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -303,6 +326,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Zoom.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
                 @Zoom.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
                 @Zoom.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnZoom;
+                @ToggleMapMode.started -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnToggleMapMode;
+                @ToggleMapMode.performed -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnToggleMapMode;
+                @ToggleMapMode.canceled -= m_Wrapper.m_CommonControlsActionsCallbackInterface.OnToggleMapMode;
             }
             m_Wrapper.m_CommonControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -316,6 +342,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Zoom.started += instance.OnZoom;
                 @Zoom.performed += instance.OnZoom;
                 @Zoom.canceled += instance.OnZoom;
+                @ToggleMapMode.started += instance.OnToggleMapMode;
+                @ToggleMapMode.performed += instance.OnToggleMapMode;
+                @ToggleMapMode.canceled += instance.OnToggleMapMode;
             }
         }
     }
@@ -374,6 +403,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnPanMouse(InputAction.CallbackContext context);
         void OnPanKeyboard(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+        void OnToggleMapMode(InputAction.CallbackContext context);
     }
     public interface IUnitManagementActions
     {

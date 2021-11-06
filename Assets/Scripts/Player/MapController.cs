@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class MapController : MonoBehaviour, PlayerControls.IUnitManagementActions
 {
+    [SerializeField] CinemachineVirtualCamera hiveCamera;
+    [SerializeField] CinemachineVirtualCamera overworldCamera;
+
     PlayerControls playerControls;
     Vector2 cursorPosition = Vector2.zero;
     //Vector2 startPosition = Vector2.zero;
@@ -18,8 +22,12 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         {
             playerControls = new PlayerControls();
             playerControls.UnitManagement.SetCallbacks(this);
+
+            playerControls.CommonControls.ToggleMapMode.performed += _ => OnMapToggle();
         }
+
         playerControls.UnitManagement.Enable();
+        playerControls.CommonControls.ToggleMapMode.Enable();
     }
 
     private void OnDisable()
@@ -27,6 +35,21 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         playerControls.UnitManagement.Disable();
     }
 
+    public void OnMapToggle()
+    {
+        IsHiveMode = !IsHiveMode;
+
+        if (IsHiveMode)
+        {
+            hiveCamera.gameObject.SetActive(true);
+            overworldCamera.gameObject.SetActive(false);
+        }
+        else
+        {
+            hiveCamera.gameObject.SetActive(false);
+            overworldCamera.gameObject.SetActive(true);
+        }
+    }
 
     public void OnInteract(InputAction.CallbackContext context)
     {

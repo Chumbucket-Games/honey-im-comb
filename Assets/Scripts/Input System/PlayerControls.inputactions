@@ -31,6 +31,15 @@
                     "processors": "Normalize(min=-1,max=1)",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Toggle Map Mode",
+                    "type": "Button",
+                    "id": "651fefae-c68d-419b-a1e0-cb593c7cbc09",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -110,6 +119,17 @@
                     "action": "Pan Keyboard",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "fb45fe34-8450-4a1c-8211-7c5b495d308d",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Toggle Map Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
