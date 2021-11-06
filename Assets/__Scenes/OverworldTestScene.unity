@@ -170,7 +170,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.8304431, y: 1}
+    m_SensorSize: {x: 2.1213872, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -210,8 +210,6 @@ MonoBehaviour:
   panEdgeHorizontalThreshold: 5
   panEdgeVerticalThreshold: 10
   panSpeed: 4
-  zoomMinDistance: -30
-  zoomMaxDistance: 30
   zoomMultiplier: 2
   panAxis: 1
 --- !u!1001 &166757713
@@ -286,6 +284,16 @@ PrefabInstance:
       propertyPath: IsHiveMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2472854112851147335, guid: 486e258dfcda0a84982a567910396235,
+        type: 3}
+      propertyPath: hiveCamera
+      value: 
+      objectReference: {fileID: 82679139}
+    - target: {fileID: 2472854112851147335, guid: 486e258dfcda0a84982a567910396235,
+        type: 3}
+      propertyPath: overworldCamera
+      value: 
+      objectReference: {fileID: 82679139}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 486e258dfcda0a84982a567910396235, type: 3}
 --- !u!1001 &185805462
@@ -750,6 +758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc57b98e4095ad438540524523f687d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: 0}
+  selectedMaterial: {fileID: 0}
   type: {fileID: 11400000, guid: 09e7783559b0e0844b09a6acf74cd6af, type: 2}
 --- !u!136 &1080926159
 CapsuleCollider:
