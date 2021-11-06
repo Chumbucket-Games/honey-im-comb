@@ -20,6 +20,7 @@ public class Unit : MonoBehaviour, ISelectable
     {
         health = type.MaxHealth;
         hivePosition = GameObject.FindGameObjectWithTag("Hive") ? GameObject.FindGameObjectWithTag("Hive").transform.position : Vector3.zero;
+        hivePosition.y = transform.position.y;
     }
 
     // Update is called once per frame
@@ -54,9 +55,8 @@ public class Unit : MonoBehaviour, ISelectable
 
                 transform.position = newPosition;
 
-                if (transform.position == target)
+                if (transform.position == hivePosition)
                 {
-                    target = Vector3.zero;
                     returningToHive = false;
                     StartCoroutine(WaitToLeave(5));
                 }
@@ -70,7 +70,6 @@ public class Unit : MonoBehaviour, ISelectable
 
                 if (transform.position == target)
                 {
-                    target = Vector3.zero;
                     returningToNode = false;
                     StartCoroutine(WaitToReturn(5));
                 }
@@ -83,19 +82,32 @@ public class Unit : MonoBehaviour, ISelectable
         return true;
     }
 
-    public void MoveToPosition(Vector3 position, RaycastHit info)
+    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode)
     {
         harvestMode = false;
+        returningToHive = false;
+        returningToNode = false;
         StopAllCoroutines();
         target = position;
-        target.z = transform.position.z;
+        if (IsHiveMode)
+        {
+            // Maintain same position on the XY plane.
+            target.z = transform.position.z;
+        }
+        else
+        {
+            // Maintain same position on the XZ plane.
+            target.y = transform.position.y;
+        }
+        
         targetObject = info.transform.gameObject;
         moving = true;
     }
 
     public void OnSelect()
     {
-        Debug.Log($"{type.label} selected");
+        string resource = stack.resource ? stack.resource.displayName + " - " + stack.quantity : "None";
+        Debug.Log($"{type.label} selected. Current health: {health}. Current resources collected: {resource}");
         // Bring up the UI for the selected unit.
     }
 
@@ -119,6 +131,8 @@ public class Unit : MonoBehaviour, ISelectable
         {
             // Start harvesting the resource node.
             harvestMode = true;
+            target = targetObject.transform.position;
+            target.y = transform.position.y;
             Debug.Log($"Let the {targetObject.GetComponent<ResourceNode>().resource.displayName} harvest begin!");
             transform.forward = (targetObject.transform.position - transform.position).normalized;
             StartCoroutine(WaitToReturn(5));
@@ -130,9 +144,18 @@ public class Unit : MonoBehaviour, ISelectable
         yield return new WaitForSeconds(seconds);
         
         // Extract the collected resource based on the collection rate, then return to the hive with it.
-        stack.resource = targetObject.GetComponent<ResourceNode>().resource;
-        stack.quantity = Mathf.RoundToInt(targetObject.GetComponent<ResourceNode>().resource.baseQuantityPerSecond * seconds);
-        returningToHive = true;
+        if (targetObject.activeInHierarchy)
+        {
+            stack.resource = targetObject.GetComponent<ResourceNode>().resource;
+            stack.quantity = targetObject.GetComponent<ResourceNode>().HarvestResources(seconds);
+            returningToHive = true;
+        }
+        else
+        {
+            harvestMode = false;
+            stack.resource = null;
+            stack.quantity = 0;
+        }
     }
 
     IEnumerator WaitToLeave(float seconds)
@@ -142,6 +165,14 @@ public class Unit : MonoBehaviour, ISelectable
         // Deposit the collected resource, leave the hive and return to the resource node.
         stack.resource = null;
         stack.quantity = 0;
-        returningToHive = true;
+
+        if (targetObject.activeInHierarchy)
+        {
+            returningToNode = true;
+        }
+        else
+        {
+            harvestMode = false;
+        }
     }
 }

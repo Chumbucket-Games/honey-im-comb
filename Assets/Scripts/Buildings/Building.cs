@@ -10,7 +10,7 @@ public class Building : MonoBehaviour, ISelectable
         return false;
     }
 
-    public void MoveToPosition(Vector3 position, RaycastHit info)
+    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode)
     {
         throw new System.InvalidOperationException();
     }

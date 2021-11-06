@@ -14,9 +14,9 @@ public class ResourceNode : MonoBehaviour, ISelectable
         return false;
     }
 
-    public void MoveToPosition(Vector3 position, RaycastHit info)
+    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode)
     {
-        throw new System.NotImplementedException();
+        throw new System.InvalidOperationException();
     }
 
     public void OnSelect()
@@ -33,6 +33,16 @@ public class ResourceNode : MonoBehaviour, ISelectable
     // Update is called once per frame
     void Update()
     {
-        
+        if (remainingAmount <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public int HarvestResources(float harvestDuration)
+    {
+        int value = Mathf.RoundToInt(resource.baseQuantityPerSecond * harvestDuration);
+        remainingAmount = Mathf.Max(0, remainingAmount - value);
+        return value;
     }
 }
