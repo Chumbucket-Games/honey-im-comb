@@ -6,9 +6,9 @@ TerrainLayer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: grass_base
-  m_DiffuseTexture: {fileID: 2800000, guid: 4b7dc6baf0e6f314d9174b5913ac83f0, type: 3}
-  m_NormalMapTexture: {fileID: 2800000, guid: ee796aca77545eb4bb582fefd3915e63, type: 3}
+  m_Name: mid_corrupted
+  m_DiffuseTexture: {fileID: 2800000, guid: 6e1add773660d9c4d950bf3773047d3a, type: 3}
+  m_NormalMapTexture: {fileID: 0}
   m_MaskMapTexture: {fileID: 0}
   m_TileSize: {x: 30, y: 30}
   m_TileOffset: {x: 0, y: 0}
