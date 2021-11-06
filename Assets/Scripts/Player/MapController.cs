@@ -40,11 +40,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 {
                     if (IsHiveMode)
                     {
-                        selectedObject.MoveToPosition(hit.transform.position);
+                        selectedObject.MoveToPosition(hit.transform.position, hit);
                     }
                     else
                     {
-                        selectedObject.MoveToPosition(hit.point);
+                        selectedObject.MoveToPosition(hit.point, hit);
                     }
                 }
             }

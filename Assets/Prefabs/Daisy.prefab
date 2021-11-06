@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 1297542120735295551}
   - component: {fileID: 3997401188527653165}
   - component: {fileID: 8054069746039740594}
+  - component: {fileID: 7846361790379891819}
   m_Layer: 0
   m_Name: Stalk
   m_TagString: Untagged
@@ -249,6 +250,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7846361790379891819
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528904962951537477}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8559246691782859044, guid: be89110bb1d5b7b4c83b42a7e103acb6, type: 3}
 --- !u!1 &1715290310647946635
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +522,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5283896583623122696}
-  - component: {fileID: 2282043389820992966}
   m_Layer: 0
   m_Name: Daisy
   m_TagString: Untagged
@@ -542,20 +556,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2282043389820992966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4764803312102000050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2afc9a234b6d2de4dbecae29505a68e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resource: {fileID: 11400000, guid: 320f76d6d8333bb47a010ca5b37ce89c, type: 2}
-  totalAmount: 8000
 --- !u!1 &5964357896347810355
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,6 +982,8 @@ GameObject:
   - component: {fileID: 3159510463346107709}
   - component: {fileID: 7467936407027042115}
   - component: {fileID: 5146737939208957440}
+  - component: {fileID: 5197822145114371528}
+  - component: {fileID: 1914852029217618154}
   m_Layer: 0
   m_Name: Stamen
   m_TagString: Untagged
@@ -1054,3 +1056,31 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5197822145114371528
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803288709642290620}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4961198204966918346, guid: be89110bb1d5b7b4c83b42a7e103acb6, type: 3}
+--- !u!114 &1914852029217618154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803288709642290620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2afc9a234b6d2de4dbecae29505a68e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resource: {fileID: 11400000, guid: 320f76d6d8333bb47a010ca5b37ce89c, type: 2}
+  totalAmount: 8000

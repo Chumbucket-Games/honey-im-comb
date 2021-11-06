@@ -10,7 +10,7 @@ public class Building : MonoBehaviour, ISelectable
         return false;
     }
 
-    public void MoveToPosition(Vector3 position)
+    public void MoveToPosition(Vector3 position, RaycastHit info)
     {
         throw new System.InvalidOperationException();
     }

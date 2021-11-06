@@ -5,14 +5,21 @@ public class Unit : MonoBehaviour, ISelectable
 {
     public float moveSpeed;
     Vector3 target = Vector3.zero;
+    Vector3 hivePosition;
     bool moving = false;
     float health;
     public UnitType type;
+    GameObject targetObject;
+    bool harvestMode = false;
+    bool returningToHive = false;
+    bool returningToNode = false;
+    ResourceStack stack;
 
     // Use this for initialization
     void Start()
     {
         health = type.MaxHealth;
+        hivePosition = GameObject.FindGameObjectWithTag("Hive") ? GameObject.FindGameObjectWithTag("Hive").transform.position : Vector3.zero;
     }
 
     // Update is called once per frame
@@ -20,7 +27,13 @@ public class Unit : MonoBehaviour, ISelectable
     {
         if (moving)
         {
+            if (targetObject.GetComponent<Unit>())
+            {
+                // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position.
+                target = targetObject.transform.position;
+            }
             Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+            transform.forward = (target - transform.position).normalized;
 
             transform.position = newPosition;
 
@@ -28,7 +41,39 @@ public class Unit : MonoBehaviour, ISelectable
             {
                 target = Vector3.zero;
                 moving = false;
-                DidStopMoving();
+                DidReachDestination();
+            }
+        }
+        else if (harvestMode)
+        {
+            if (returningToHive)
+            {
+                Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
+
+                transform.forward = (hivePosition - transform.position).normalized;
+
+                transform.position = newPosition;
+
+                if (transform.position == target)
+                {
+                    target = Vector3.zero;
+                    returningToHive = false;
+                    StartCoroutine(WaitToLeave(5));
+                }
+            }
+            else if (returningToNode)
+            {
+                Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+                transform.forward = (target - transform.position).normalized;
+
+                transform.position = newPosition;
+
+                if (transform.position == target)
+                {
+                    target = Vector3.zero;
+                    returningToNode = false;
+                    StartCoroutine(WaitToReturn(5));
+                }
             }
         }
     }
@@ -38,20 +83,65 @@ public class Unit : MonoBehaviour, ISelectable
         return true;
     }
 
-    public void MoveToPosition(Vector3 position)
+    public void MoveToPosition(Vector3 position, RaycastHit info)
     {
+        harvestMode = false;
+        StopAllCoroutines();
         target = position;
         target.z = transform.position.z;
+        targetObject = info.transform.gameObject;
         moving = true;
     }
 
     public void OnSelect()
     {
         Debug.Log($"{type.label} selected");
+        // Bring up the UI for the selected unit.
     }
 
-    public void DidStopMoving()
+    public void DidReachDestination()
     {
         Debug.Log($"{type.label} has reached its destination.");
+        
+        if (targetObject.GetComponent<Building>())
+        {
+            // Interact with the building.
+            Debug.Log($"Interacting with {targetObject.GetComponent<Building>().type.label}!");
+            transform.forward = (targetObject.transform.position - transform.position).normalized;
+        }
+        else if (targetObject.GetComponent<Unit>())
+        {
+            // Interact with the unit.
+            Debug.Log($"Interacting with {targetObject.GetComponent<Unit>().type.label}!");
+            transform.forward = (targetObject.transform.position - transform.position).normalized;
+        }
+        else if (targetObject.GetComponent<ResourceNode>())
+        {
+            // Start harvesting the resource node.
+            harvestMode = true;
+            Debug.Log($"Let the {targetObject.GetComponent<ResourceNode>().resource.displayName} harvest begin!");
+            transform.forward = (targetObject.transform.position - transform.position).normalized;
+            StartCoroutine(WaitToReturn(5));
+        }
+    }
+
+    IEnumerator WaitToReturn(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        
+        // Extract the collected resource based on the collection rate, then return to the hive with it.
+        stack.resource = targetObject.GetComponent<ResourceNode>().resource;
+        stack.quantity = Mathf.RoundToInt(targetObject.GetComponent<ResourceNode>().resource.baseQuantityPerSecond * seconds);
+        returningToHive = true;
+    }
+
+    IEnumerator WaitToLeave(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        
+        // Deposit the collected resource, leave the hive and return to the resource node.
+        stack.resource = null;
+        stack.quantity = 0;
+        returningToHive = true;
     }
 }
