@@ -10,7 +10,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     //Vector2 startPosition = Vector2.zero;
     //Vector2 endPosition = Vector2.zero;
     ISelectable selectedObject;
-    public bool IsHiveMode { get; set; } = true;
+    public bool IsHiveMode = true;
 
     private void OnEnable()
     {
@@ -40,11 +40,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 {
                     if (IsHiveMode)
                     {
-                        selectedObject.MoveToPosition(hit.transform.position, hit);
+                        selectedObject.MoveToPosition(hit.transform.position, hit,true);
                     }
                     else
                     {
-                        selectedObject.MoveToPosition(hit.point, hit);
+                        selectedObject.MoveToPosition(hit.point, hit,false);
                     }
                 }
             }
@@ -110,6 +110,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 else if (hit.collider.CompareTag("Building"))
                 {
                     selectedObject = hit.transform.gameObject.GetComponent<Building>();
+                    selectedObject.OnSelect();
+                }
+                else if (hit.collider.CompareTag("ResourceNode"))
+                {
+                    selectedObject = hit.transform.gameObject.GetComponent<ResourceNode>();
                     selectedObject.OnSelect();
                 }
             }
