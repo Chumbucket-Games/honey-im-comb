@@ -8,19 +8,19 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
 {
     [Tooltip("The threshold for the mouse before the screen begins to pan on the X axis (percentage)")]
     [Range(0f, 100f)]
-    [SerializeField()] private float panEdgeXThreshold = 5f;
-    
+    [SerializeField()] private float panEdgeHorizontalThreshold = 10f;
+
     [Tooltip("The Y threshold for the mouse before the screen begins to pan on the Y axis (percentage)")]
     [Range(0f, 100f)]
-    [SerializeField] private float panEdgeYThreshold = 5f;
+    [SerializeField] private float panEdgeVerticalThreshold = 10f;
 
-    [Space][Space]
+    [Space]
+    [Space]
     [Tooltip("The speed multiplier for panning")]
     [SerializeField] private float panSpeed = 4f;
 
-    [SerializeField] private float zoomMinDistance = -30f;
-    [SerializeField] private float zoomMaxDistance = 30f;
     [SerializeField] private float zoomMultiplier = 2f;
+    [SerializeField] private PanAxis panAxis = PanAxis.XY;
 
     private PlayerControls playerControls;
     private CinemachineVirtualCamera virtualCamera;
@@ -28,6 +28,12 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
 
     private Vector2 panDirection = Vector2.zero;
     private float zoomInput = 0f;
+
+    public enum PanAxis
+    {
+        XY = 0,
+        XZ = 1
+    }
 
     private void OnEnable()
     {
@@ -55,7 +61,7 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -76,20 +82,20 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
     {
         Vector2 direction = Vector2.zero;
 
-        if (y >= Screen.height * (1 - (panEdgeYThreshold / 100f)))
+        if (y >= Screen.height * (1 - (panEdgeVerticalThreshold / 100f)))
         {
             direction.y += 1;
         }
-        else if (y <= Screen.height * (panEdgeYThreshold / 100f))
+        else if (y <= Screen.height * (panEdgeVerticalThreshold / 100f))
         {
             direction.y -= 1;
         }
 
-        if (x >= Screen.width * (1 - (panEdgeXThreshold / 100f)))
+        if (x >= Screen.width * (1 - (panEdgeHorizontalThreshold / 100f)))
         {
             direction.x += 1;
         }
-        else if (x <= Screen.width * (panEdgeXThreshold / 100f))
+        else if (x <= Screen.width * (panEdgeHorizontalThreshold / 100f))
         {
             direction.x -= 1;
         }
@@ -100,17 +106,38 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
     private void Pan(float x, float y)
     {
         var panAmount = (Vector3)panDirection * panSpeed;
-        cameraTransform.position = Vector3.Lerp(cameraTransform.position, 
-            cameraTransform.position + panAmount, Time.deltaTime);
+
+        if (panAxis == PanAxis.XY)
+        {
+            cameraTransform.position = Vector3.Lerp(cameraTransform.position,
+                cameraTransform.position + panAmount, Time.deltaTime);
+        }
+
+        if (panAxis == PanAxis.XZ)
+        {
+            cameraTransform.position = Vector3.Lerp(cameraTransform.position,
+                cameraTransform.position + new Vector3(panAmount.x, 0f, panAmount.y), Time.deltaTime);
+        }
     }
 
     private void Zoom()
     {
         float zoomAmount = zoomInput * zoomMultiplier;
-        var zoomedPosition = Vector3.Lerp(cameraTransform.position, 
-            cameraTransform.position + new Vector3(0, 0, zoomAmount), Time.deltaTime);
+        Vector3 zoomedPosition = Vector3.zero;
 
-        cameraTransform.position = new Vector3(zoomedPosition.x, zoomedPosition.y, Mathf.Clamp(zoomedPosition.z, zoomMinDistance, zoomMaxDistance));
+        if (panAxis == PanAxis.XY)
+        {
+            zoomedPosition = Vector3.Lerp(cameraTransform.position,
+                cameraTransform.position + new Vector3(0, 0, zoomAmount), Time.deltaTime);
+        }
+
+        if (panAxis == PanAxis.XZ)
+        {
+            zoomedPosition = Vector3.Lerp(cameraTransform.position,
+                cameraTransform.position + new Vector3(0, zoomAmount, 0), Time.deltaTime);
+        }
+
+        cameraTransform.position = new Vector3(zoomedPosition.x, zoomedPosition.y, zoomedPosition.z);
     }
 
     public void OnPanMouse(InputAction.CallbackContext context)
@@ -151,5 +178,10 @@ public class PanAndZoom : MonoBehaviour, PlayerControls.ICommonControlsActions
         {
             zoomInput = 0f;
         }
+    }
+
+    public void OnToggleMapMode(InputAction.CallbackContext context)
+    {
+
     }
 }

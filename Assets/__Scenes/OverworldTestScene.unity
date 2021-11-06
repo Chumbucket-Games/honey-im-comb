@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 82679140}
   - component: {fileID: 82679139}
+  - component: {fileID: 82679141}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -169,7 +170,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.1213872, y: 1}
+    m_SensorSize: {x: 2.8304431, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -185,7 +186,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82679138}
-  m_LocalRotation: {x: 0.43621707, y: -0, z: -0, w: 0.89984155}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -18.52, y: 13.4, z: -34.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -193,7 +194,26 @@ Transform:
   - {fileID: 358128379}
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 51.726, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &82679141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82679138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aa9ebe99a3f1d342963945e3a79c11b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panEdgeHorizontalThreshold: 5
+  panEdgeVerticalThreshold: 10
+  panSpeed: 4
+  zoomMinDistance: -30
+  zoomMaxDistance: 30
+  zoomMultiplier: 2
+  panAxis: 1
 --- !u!1001 &166757713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -415,7 +435,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.43621707, y: 0, z: 0, w: 0.89984155}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -18.52, y: 13.4, z: -34.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
