@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8283919280772643623}
   - component: {fileID: 3679379338487441092}
   m_Layer: 0
-  m_Name: hive_cell
+  m_Name: Hive Cell
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

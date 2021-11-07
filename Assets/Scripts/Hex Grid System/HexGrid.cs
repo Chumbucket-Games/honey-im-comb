@@ -8,6 +8,7 @@ public class HexGrid : MonoBehaviour
 	public int height = 6;
 
 	public HexCell cellPrefab;
+	public HexCell exitPrefab;
 
 	HexCell[] cells;
 	void Awake()
@@ -25,6 +26,7 @@ public class HexGrid : MonoBehaviour
 
 	void CreateCell(int x, int y, int i)
 	{
+		HexCell prefab = (x == width / 2 && y == 0) ? exitPrefab : cellPrefab;
 		Vector3 position = new Vector3
 		{
 			x = (x + y * 0.5f - y / 2) * (HexMetrics.innerRadius * 2f),
@@ -32,9 +34,21 @@ public class HexGrid : MonoBehaviour
 			y = y * (HexMetrics.outerRadius * 1.5f)
 		};
 
-		HexCell cell = cells[i] = Instantiate(cellPrefab);
+		
+		HexCell cell = cells[i] = Instantiate(prefab);
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, y);
+	}
+
+	public Vector3 HexCellToWorld(int x, int y)
+	{
+		Vector3 position = new Vector3
+		{
+			x = (x + y * 0.5f - y / 2) * (HexMetrics.innerRadius * 2f),
+			z = -5f,
+			y = y * (HexMetrics.outerRadius * 1.5f)
+		};
+		return transform.position + position;
 	}
 }

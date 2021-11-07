@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6497809665727555877}
   - component: {fileID: 6497809665727555876}
-  m_Layer: 0
+  - component: {fileID: 1740175213534764810}
+  m_Layer: 2
   m_Name: Hex Grid
-  m_TagString: Untagged
+  m_TagString: HexGrid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,3 +49,18 @@ MonoBehaviour:
   height: 12
   cellPrefab: {fileID: 3359574947941848935, guid: 6f730c686a4ea7f4da3dbc2cb619c465,
     type: 3}
+  exitPrefab: {fileID: 1729939318904997265, guid: ea125c3f49682e347ae5dd385036ece3,
+    type: 3}
+--- !u!65 &1740175213534764810
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497809665727555879}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 25, y: 20, z: 25}
+  m_Center: {x: 10, y: 10, z: -20}
