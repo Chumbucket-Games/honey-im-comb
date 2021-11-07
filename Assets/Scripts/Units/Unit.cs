@@ -19,7 +19,7 @@ public class Unit : MonoBehaviour, ISelectable
     // Use this for initialization
     void Start()
     {
-        health = type.MaxHealth;
+        health = type.maxHealth;
         hivePosition = GameObject.FindGameObjectWithTag("Hive") ? GameObject.FindGameObjectWithTag("Hive").transform.position : Vector3.zero;
         hiveGrid = GameObject.FindGameObjectWithTag("HexGrid") ? GameObject.FindGameObjectWithTag("HexGrid").GetComponent<HexGrid>() : null;
     }
