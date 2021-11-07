@@ -38,7 +38,6 @@ public class Enemy : MonoBehaviour
 
     public void Move(Vector3 targetPosition, Quaternion targetRotation)
     {
-        Debug.Log("Spawned, moving enemy");
         isMoving = true;
 
         this.targetPosition = targetPosition;

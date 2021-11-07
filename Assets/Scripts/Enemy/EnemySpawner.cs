@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] AnimationCurve spawnRate;
-    //[SerializeField] float currentSpawnRate = 5.0f;
     [SerializeField] Enemy objectToSpawn;
     [SerializeField] BuildingType buildingType;
     [SerializeField] Transform rallyPoint;
@@ -22,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= nextSpawnTime)
+        if (spawningEnabled && Time.time >= nextSpawnTime)
         {
             Spawn();
             float currentSpawnRate = spawnRate.Evaluate(Time.time / 60f);
