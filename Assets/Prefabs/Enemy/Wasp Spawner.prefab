@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 654745253297423189}
   - component: {fileID: 5489859523178904315}
+  - component: {fileID: 7763961073835492370}
   m_Layer: 0
   m_Name: Wasp Spawner
   m_TagString: Untagged
@@ -46,11 +47,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96be58a2bda2ef14fba2698ef9c1882c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSpawnRate: 5
+  spawnRate:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: 0
+      outSlope: 0.11421422
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 30
+      value: 60
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   objectToSpawn: {fileID: 8648457178137194994, guid: c61a0cea464a7f049b782f0bad2cbd8a,
     type: 3}
   buildingType: {fileID: 11400000, guid: de9f0d86a384aeb43ad487c05988e0d5, type: 2}
   rallyPoint: {fileID: 8991171060031308570}
+--- !u!114 &7763961073835492370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654745253297423188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70894518fad1fd543affc627973cd28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapeColor: {r: 0.9056604, g: 0.252047, b: 0.252047, a: 0.8}
+  shape: 1
+  size: 3
 --- !u!1 &5541365116902164595
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +139,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5541365116902164595}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -157,6 +196,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8991171060031308570}
+  - component: {fileID: 1064161587581167223}
+  - component: {fileID: 3538207642250682902}
   m_Layer: 0
   m_Name: Rally Point
   m_TagString: Untagged
@@ -179,3 +220,34 @@ Transform:
   m_Father: {fileID: 654745253297423189}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1064161587581167223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6432886953236687565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0deaed6e60b70341a955e9b8d1b6c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rows: 5
+  rowPadding: 1
+  columns: 5
+  columnPadding: 1
+--- !u!114 &3538207642250682902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6432886953236687565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70894518fad1fd543affc627973cd28f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapeColor: {r: 0.13381095, g: 0.30849504, b: 0.9150943, a: 0.43137255}
+  shape: 0
+  size: 1
