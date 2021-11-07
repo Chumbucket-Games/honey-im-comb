@@ -6,5 +6,5 @@ public abstract class ColonyObject : ScriptableObject
 {
     public string label;
     public Image image;
-    public float MaxHealth;
+    public float maxHealth;
 }

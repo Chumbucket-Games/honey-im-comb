@@ -35,7 +35,7 @@ public class Building : MonoBehaviour, ISelectable
     // Use this for initialization
     void Start()
     {
-        health = type.MaxHealth;
+        health = type.maxHealth;
         meshRenderer = GetComponent<MeshRenderer>();
     }
 
