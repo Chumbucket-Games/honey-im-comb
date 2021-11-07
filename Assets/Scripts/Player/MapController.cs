@@ -135,7 +135,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                     selectedObject = hit.transform.gameObject.GetComponent<Unit>();
                     selectedObject.OnSelect();
                 }
-                else if (hit.collider.CompareTag("Building"))
+                else if (hit.collider.CompareTag("Building") || hit.collider.CompareTag("Hive"))
                 {
                     selectedObject = hit.transform.gameObject.GetComponent<Building>();
                     selectedObject.OnSelect();

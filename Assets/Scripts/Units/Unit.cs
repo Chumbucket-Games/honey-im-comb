@@ -10,6 +10,7 @@ public class Unit : MonoBehaviour, ISelectable
     float health;
     public UnitType type;
     GameObject targetObject;
+    HexGrid hiveGrid;
     bool harvestMode = false;
     bool returningToHive = false;
     bool returningToNode = false;
@@ -20,7 +21,7 @@ public class Unit : MonoBehaviour, ISelectable
     {
         health = type.MaxHealth;
         hivePosition = GameObject.FindGameObjectWithTag("Hive") ? GameObject.FindGameObjectWithTag("Hive").transform.position : Vector3.zero;
-        hivePosition.y = transform.position.y;
+        hiveGrid = GameObject.FindGameObjectWithTag("HexGrid") ? GameObject.FindGameObjectWithTag("HexGrid").GetComponent<HexGrid>() : null;
     }
 
     // Update is called once per frame
@@ -113,7 +114,7 @@ public class Unit : MonoBehaviour, ISelectable
 
     public void OnDeselect()
     {
-
+        // Dismiss UI for selected unit and remove selection ring.
     }
 
     public void DidReachDestination()
@@ -125,6 +126,19 @@ public class Unit : MonoBehaviour, ISelectable
             // Interact with the building.
             Debug.Log($"Interacting with {targetObject.GetComponent<Building>().type.label}!");
             transform.forward = (targetObject.transform.position - transform.position).normalized;
+
+            if (targetObject.GetComponent<Building>().type.label == "Hive")
+            {
+                // Move the bee to the exit cell of the hive grid.
+                transform.position = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
+                transform.forward = hiveGrid.transform.forward;
+            }
+            else if (targetObject.GetComponent<Building>().type.label == "Hive Exit")
+            {
+                // Move the bee to the overworld.
+                transform.position = new Vector3(hivePosition.x + 7, hivePosition.y, hivePosition.z + 7);
+                transform.forward = Vector3.forward;
+            }
         }
         else if (targetObject.GetComponent<Unit>())
         {
