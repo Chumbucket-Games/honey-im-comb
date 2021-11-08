@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class SquareGrid : MonoBehaviour
 {
-
     [SerializeField] private uint rows = 5;
+    [Range(0f, 10f)]
     [SerializeField] private float rowPadding = 1f;
 
     [SerializeField] private uint columns = 5;
+    [Range(0f, 10f)]
     [SerializeField] private float columnPadding = 1f;
 
     private Cell[,] grid;
@@ -32,9 +33,12 @@ public class SquareGrid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        grid = null;
-        grid = new Cell[rows, columns];
-        InitGridCells();
+        if (!Application.isPlaying)
+        {
+            grid = new Cell[rows, columns];
+            InitGridCells();
+        }
+
         DrawCellsGizmos();
     }
 
@@ -44,6 +48,7 @@ public class SquareGrid : MonoBehaviour
         {
             float posZ = transform.position.z - (rows * rowPadding / 2f) + rowPadding / 2f;
             float rowPos = posZ + (row * rowPadding);
+            
             for (int col = 0; col < columns; col++)
             {
                 float posX = transform.position.x - (columns * columnPadding / 2f) + columnPadding / 2f;
@@ -65,10 +70,10 @@ public class SquareGrid : MonoBehaviour
 
                 if (!currentCell.IsOccupied)
                 {
+                    nextAvailableCellIndex = new Vector2Int(row, col);
                     return grid[row, col];
                 }
             }
-
         }
 
         IsGridFull = true;

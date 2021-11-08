@@ -21,7 +21,7 @@ public class Cell
     public void DrawCellGizmos(float rowPadding, float colPadding)
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(Position, new Vector3(rowPadding, 0f, colPadding));
+        Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
     }
 
     public void OccupyCell()
