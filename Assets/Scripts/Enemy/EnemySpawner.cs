@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] AnimationCurve spawnRate;
     [SerializeField] Enemy objectToSpawn;
     [SerializeField] BuildingType buildingType;
-    [SerializeField] Transform rallyPoint;
+    [SerializeField] SquareGrid rallyPoint;
 
     private bool spawningEnabled = false;
     private float nextSpawnTime = 0.0f;
@@ -32,7 +32,17 @@ public class EnemySpawner : MonoBehaviour
     private void Spawn()
     {
         var spawnedInstance = Instantiate(objectToSpawn, transform.position, Quaternion.identity);
-        spawnedInstance.Move(rallyPoint.position, rallyPoint.rotation);
+
+        if (!rallyPoint.IsGridFull)
+        {
+            var rallyGridCell = rallyPoint.GetNextAvailableCell();
+            rallyGridCell.OccupyCell();
+            spawnedInstance.Move(rallyGridCell.Position, rallyPoint.transform.rotation);
+        }
+        else
+        {
+            // create a new grid or send the wave?
+        }
     }
 
     public void EnableSpawning()
@@ -44,6 +54,4 @@ public class EnemySpawner : MonoBehaviour
     {
         spawningEnabled = false;
     }
-
-
 }

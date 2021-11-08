@@ -13,11 +13,15 @@ public class SquareGrid : MonoBehaviour
 
     private Cell[,] grid;
 
+    private Vector2Int nextAvailableCellIndex = Vector2Int.zero;
+    public bool IsGridFull { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
         grid = new Cell[rows, columns];
         InitGridCells();
+        IsGridFull = false;
     }
 
     // Update is called once per frame
@@ -31,7 +35,7 @@ public class SquareGrid : MonoBehaviour
         grid = null;
         grid = new Cell[rows, columns];
         InitGridCells();
-        DrawCells();
+        DrawCellsGizmos();
     }
 
     private void InitGridCells()
@@ -51,13 +55,34 @@ public class SquareGrid : MonoBehaviour
         }
     }
 
-    private void DrawCells()
+    public Cell GetNextAvailableCell()
+    {
+        for (int row = nextAvailableCellIndex.x; row < rows; row++)
+        {
+            for (int col = nextAvailableCellIndex.y; col < columns; col++)
+            {
+                var currentCell = grid[row, col];
+
+                if (!currentCell.IsOccupied)
+                {
+                    return grid[row, col];
+                }
+            }
+
+        }
+
+        IsGridFull = true;
+
+        return null;
+    }
+
+    private void DrawCellsGizmos()
     {
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < columns; col++)
             {
-                grid[row, col].DrawCell(rowPadding, columnPadding);
+                grid[row, col].DrawCellGizmos(rowPadding, columnPadding);
             }
         }
     }
