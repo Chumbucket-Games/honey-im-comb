@@ -74,7 +74,7 @@ MonoBehaviour:
   objectToSpawn: {fileID: 8648457178137194994, guid: c61a0cea464a7f049b782f0bad2cbd8a,
     type: 3}
   buildingType: {fileID: 11400000, guid: de9f0d86a384aeb43ad487c05988e0d5, type: 2}
-  rallyPoint: {fileID: 8991171060031308570}
+  rallyPoint: {fileID: 1064161587581167223}
 --- !u!114 &7763961073835492370
 MonoBehaviour:
   m_ObjectHideFlags: 0
