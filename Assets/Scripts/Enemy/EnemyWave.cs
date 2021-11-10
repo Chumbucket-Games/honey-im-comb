@@ -5,10 +5,10 @@ using System.Collections.Generic;
 public class EnemyWave
 {
     public List<Enemy> enemies;
-    public int waveSize;
+    public uint waveSize;
     public bool Attacking { get; private set; } = false;
     // Use this for initialization
-    public EnemyWave(int size)
+    public EnemyWave(uint size)
     {
         waveSize = size;
         enemies = new List<Enemy>();
@@ -30,6 +30,7 @@ public class EnemyWave
         {
             e.TargetHive();
         }
+
         Attacking = true;
     }
 }

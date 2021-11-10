@@ -33,7 +33,7 @@ public class EnemySpawner : MonoBehaviour
         {
             // Build a new enemy wave. I set to null to signal garbage collection on the previous wave before initialising the next one.
             currentWave = null;
-            currentWave = new EnemyWave(5);
+            currentWave = new EnemyWave(rallyPoint.TotalCells);
         }
     }
 
@@ -61,7 +61,7 @@ public class EnemySpawner : MonoBehaviour
     public void EnableSpawning()
     {
         spawningEnabled = true;
-        currentWave = new EnemyWave(5);
+        currentWave = new EnemyWave(rallyPoint.TotalCells);
     }
 
     public void DisableSpawning()

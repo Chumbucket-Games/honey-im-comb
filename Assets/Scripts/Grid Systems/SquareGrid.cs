@@ -12,10 +12,19 @@ public class SquareGrid : MonoBehaviour
     [Range(0f, 10f)]
     [SerializeField] private float columnPadding = 1f;
 
+    [Space]
+    [Space]
+    [Header("Debug Options")]
+    [SerializeField] private bool displayGrid = false;
+    [SerializeField] private Color gridColor = Color.red;
+
     private Cell[,] grid;
+    private Cell selectedCell = null;
 
     private Vector2Int nextAvailableCellIndex = Vector2Int.zero;
+    
     public bool IsGridFull { get; private set; }
+    public uint TotalCells { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +32,9 @@ public class SquareGrid : MonoBehaviour
         grid = new Cell[rows, columns];
         InitGridCells();
         IsGridFull = false;
+        TotalCells = rows * columns;
+
+        selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
     }
 
     // Update is called once per frame
@@ -33,12 +45,15 @@ public class SquareGrid : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!displayGrid) return;
+
         if (!Application.isPlaying)
         {
             grid = new Cell[rows, columns];
             InitGridCells();
         }
 
+        selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
         DrawCellsGizmos();
     }
 
@@ -58,6 +73,66 @@ public class SquareGrid : MonoBehaviour
                 grid[row, col] = new Cell(row, col, position);
             }
         }
+    }
+
+
+    // TODO: Need to think about how we want to implement this
+    public Cell GetClosestAvailableCellToPosition(Vector3 position)
+    {
+        if (!Application.isPlaying)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z));
+            Gizmos.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f));
+        }
+
+        var rowValue = ((gameObject.transform.position.z / 2f) - position.z) / rowPadding;
+        var colValue = ((gameObject.transform.position.x / 2f) - position.x) / columnPadding;
+
+        var row = Mathf.FloorToInt(rowValue);
+        var col = Mathf.FloorToInt(colValue);
+
+        var startCell = grid[row, col];
+
+        if (!startCell.IsOccupied)
+        {
+            return grid[row, col];
+        }
+
+        // continue the search
+        SearchSurroundingCellsForAvailable(startCell);
+
+        return null;
+    }
+
+    public Cell SearchSurroundingCellsForAvailable(Cell startCell)
+    {
+        // search leftmost cell
+        if (startCell.ColIndex - 1 >= 0)
+        {
+            var cell = grid[startCell.RowIndex, startCell.ColIndex - 1];
+            if (!cell.IsOccupied) return cell;
+        }
+
+        if (startCell.ColIndex + 1 <= rows)
+        {
+            var cell = grid[startCell.RowIndex, startCell.ColIndex + 1];
+            if (!cell.IsOccupied) return cell;
+        }
+
+        if (startCell.RowIndex - 1 <= rows)
+        {
+            var cell = grid[startCell.RowIndex - 1, startCell.ColIndex];
+            if (!cell.IsOccupied) return cell;
+        }
+
+        if (startCell.ColIndex + 1 <= rows)
+        {
+            var cell = grid[startCell.RowIndex + 1, startCell.ColIndex];
+            if (!cell.IsOccupied) return cell;
+        }
+
+        return null;
     }
 
     public Cell GetNextAvailableCell()
@@ -87,7 +162,14 @@ public class SquareGrid : MonoBehaviour
         {
             for (int col = 0; col < columns; col++)
             {
-                grid[row, col].DrawCellGizmos(rowPadding, columnPadding);
+                if (selectedCell.RowIndex == row && selectedCell.ColIndex == col)
+                {
+                    grid[row, col].DrawCellGizmos(rowPadding - .5f, columnPadding - .5f, Color.magenta);
+                }
+                else
+                {
+                    grid[row, col].DrawCellGizmos(rowPadding, columnPadding, gridColor);
+                }
             }
         }
     }
