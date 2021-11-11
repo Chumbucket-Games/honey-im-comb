@@ -77,9 +77,9 @@ public class SquareGrid : MonoBehaviour
     {
         Debug.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z), Color.magenta);
         Debug.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f), Color.magenta);
-
-        var rowValue = (position.z) / rowPadding;
-        var colValue = (position.x) / columnPadding;
+        
+        var rowValue = (position.z - (gameObject.transform.position.z - rowPadding * rows / 2f)) / rowPadding;
+        var colValue = (position.x - (gameObject.transform.position.x - columnPadding * columns / 2f)) / columnPadding;
 
         var row = Mathf.FloorToInt(rowValue);
         var col = Mathf.FloorToInt(colValue);
