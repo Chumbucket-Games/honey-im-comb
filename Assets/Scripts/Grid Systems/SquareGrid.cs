@@ -31,7 +31,6 @@ public class SquareGrid : MonoBehaviour
     {
         grid = new Cell[rows, columns];
         InitGridCells();
-        selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
 
         IsGridFull = false;
         TotalCells = rows * columns;
@@ -51,7 +50,6 @@ public class SquareGrid : MonoBehaviour
         {
             grid = new Cell[rows, columns];
             InitGridCells();
-            selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
         }
 
         DrawCellsGizmos();
@@ -75,19 +73,13 @@ public class SquareGrid : MonoBehaviour
         }
     }
 
-
-    // TODO: Need to think about how we want to implement this
-    public Cell GetClosestAvailableCellToPosition(Vector3 position)
+    public Cell GetClosestAvailableCellToPosition(Vector3 position, int maxRowSearchDistance, int maxColumnSearchDistance)
     {
-        if (!Application.isPlaying)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z));
-            Gizmos.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f));
-        }
+        Debug.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z), Color.magenta);
+        Debug.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f), Color.magenta);
 
-        var rowValue = ((gameObject.transform.position.z / 2f) - position.z) / rowPadding;
-        var colValue = ((gameObject.transform.position.x / 2f) - position.x) / columnPadding;
+        var rowValue = (position.z) / rowPadding;
+        var colValue = (position.x) / columnPadding;
 
         var row = Mathf.FloorToInt(rowValue);
         var col = Mathf.FloorToInt(colValue);
@@ -99,63 +91,56 @@ public class SquareGrid : MonoBehaviour
 
         if (!startCell.IsOccupied)
         {
+            selectedCell = grid[row, col];
             return grid[row, col];
         }
 
         // continue the search
-        SearchSurroundingCellsForAvailable(startCell);
+        var unoccupiedCell = SearchSurroundingCellsForAvailable(startCell, maxRowSearchDistance, maxColumnSearchDistance);
+        selectedCell = unoccupiedCell;
 
-        return null;
+        Debug.Log(unoccupiedCell);
+
+        return unoccupiedCell;
     }
 
-    // TODO: need to consider a better way to scan surrounding cells, maybe we should just look out along the column first then row
-    public Cell SearchSurroundingCellsForAvailable(Cell startCell)
+    // NOTE: Could be further optimized by storing the current row and col offset on the wave
+    private Cell SearchSurroundingCellsForAvailable(Cell startCell, int maxRowSearchDistance, int maxColumnSearchDistance)
     {
-        // search leftmost cell
-        if (startCell.ColIndex - 1 >= 0)
+        for (int rowOffset = 0; rowOffset < maxRowSearchDistance; rowOffset++)
         {
-            var cell = grid[startCell.RowIndex, startCell.ColIndex - 1];
-            if (!cell.IsOccupied) return cell;
-        }
-
-        if (startCell.ColIndex + 1 <= columns)
-        {
-            var cell = grid[startCell.RowIndex, startCell.ColIndex + 1];
-            if (!cell.IsOccupied) return cell;
-        }
-
-        if (startCell.RowIndex - 1 >= 0)
-        {
-            var cell = grid[startCell.RowIndex - 1, startCell.ColIndex];
-            if (!cell.IsOccupied) return cell;
-        }
-
-        if (startCell.ColIndex + 1 <= rows)
-        {
-            var cell = grid[startCell.RowIndex + 1, startCell.ColIndex];
-            if (!cell.IsOccupied) return cell;
-        }
-
-        return null;
-    }
-
-    public Cell GetNextAvailableCell()
-    {
-        for (int row = nextAvailableCellIndex.x; row < rows; row++)
-        {
-            for (int col = nextAvailableCellIndex.y; col < columns; col++)
+            // search columns first
+            for (int colOffset = 1; colOffset < maxColumnSearchDistance; colOffset++)
             {
-                var currentCell = grid[row, col];
-
-                if (!currentCell.IsOccupied)
+                // left first
+                if (startCell.ColIndex - colOffset >= 0)
                 {
-                    nextAvailableCellIndex = new Vector2Int(row, col);
-                    return grid[row, col];
+                    var cell = grid[startCell.RowIndex, startCell.ColIndex - colOffset];
+                    if (!cell.IsOccupied) return cell;
+                }
+
+                // then right
+                if (startCell.ColIndex + colOffset < columns)
+                {
+                    var cell = grid[startCell.RowIndex, startCell.ColIndex + colOffset];
+                    if (!cell.IsOccupied) return cell;
                 }
             }
-        }
 
-        IsGridFull = true;
+            // then down
+            if (startCell.RowIndex - rowOffset >= 0)
+            {
+                var cell = grid[startCell.RowIndex - rowOffset, startCell.ColIndex];
+                if (!cell.IsOccupied) return cell;
+            }
+
+            // then up
+            if (startCell.RowIndex + rowOffset < rows)
+            {
+                var cell = grid[startCell.RowIndex + rowOffset, startCell.ColIndex];
+                if (!cell.IsOccupied) return cell;
+            }
+        }
 
         return null;
     }

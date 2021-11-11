@@ -4,16 +4,18 @@ using System.Collections.Generic;
 
 public class EnemyWave
 {
-    [SerializeField] private List<Enemy> enemies;
+    private List<Enemy> enemies;
     
     public bool isAttacking { get; private set; } = false;
 
-    private uint waveSize = 0;
+    public Vector2Int WaveDimensions { get; private set; } = Vector2Int.zero;
+    private int waveSize = 0;
 
     // Use this for initialization
-    public EnemyWave(uint waveSize)
+    public EnemyWave(Vector2Int waveDimensions)
     {
-        this.waveSize = waveSize;
+        this.WaveDimensions = waveDimensions;
+        this.waveSize = waveDimensions.x * waveDimensions.y;
         enemies = new List<Enemy>();
     }
 

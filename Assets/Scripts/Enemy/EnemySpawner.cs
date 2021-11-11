@@ -5,9 +5,12 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] AnimationCurve spawnRate;
+    [SerializeField] AnimationCurve waveRowSize;
+    [SerializeField] AnimationCurve waveColumnSize;
     [SerializeField] Enemy objectToSpawn;
     [SerializeField] BuildingType buildingType;
-    [SerializeField] SquareGrid rallyPoint;
+    [SerializeField] GameObject rallyPoint;
+    [SerializeField] SquareGrid gameGrid;
 
     private bool spawningEnabled = false;
     private float nextSpawnTime = 0.0f;
@@ -24,13 +27,14 @@ public class EnemySpawner : MonoBehaviour
     {
         if (spawningEnabled && Time.time >= nextSpawnTime)
         {
-            Spawn();
             float currentSpawnRate = spawnRate.Evaluate(Time.time / 60f);
             nextSpawnTime = Time.time + (60f / currentSpawnRate);
+            Spawn();
         }
         if (currentWave.isAttacking)
         {
-            currentWave = new EnemyWave(rallyPoint.TotalCells);
+            var waveDimensions = GetWaveDimensions();
+            currentWave = new EnemyWave(waveDimensions);
         }
     }
 
@@ -39,30 +43,41 @@ public class EnemySpawner : MonoBehaviour
         var spawnedInstance = Instantiate(objectToSpawn, transform.position, Quaternion.identity);
         spawnedInstance.AssignToWave(currentWave);
 
-        if (!rallyPoint.IsGridFull)
+        if (!gameGrid.IsGridFull)
         {
-            var rallyGridCell = rallyPoint.GetNextAvailableCell();
-            rallyGridCell.MarkCellAsOccupied();
+            var rallyGridCell = gameGrid.GetClosestAvailableCellToPosition(rallyPoint.transform.position, 
+                Mathf.CeilToInt(currentWave.WaveDimensions.x / 2f), Mathf.CeilToInt(currentWave.WaveDimensions.y / 2f));
 
-            // This rotation will turn the enemy to face the direction it is moving rather than having it face the same way as the rally point grid.
-            Vector3 faceDirection = -(spawnedInstance.transform.position - rallyGridCell.Position).normalized;
-            faceDirection.y = 0;
-            spawnedInstance.Move(rallyGridCell.Position, Quaternion.FromToRotation(spawnedInstance.transform.forward, faceDirection));
-        }
-        else
-        {
-            // create a new grid or send the wave?
+            if (rallyGridCell != null)
+            {
+                rallyGridCell.MarkCellAsOccupied();
+
+                // This rotation will turn the enemy to face the direction it is moving rather than having it face the same way as the rally point grid.
+                Vector3 faceDirection = (rallyGridCell.Position - spawnedInstance.transform.position).normalized;
+                faceDirection.y = 0;
+                spawnedInstance.Move(rallyGridCell.Position, Quaternion.FromToRotation(spawnedInstance.transform.forward, faceDirection));
+            }
         }
     }
 
     public void EnableSpawning()
     {
         spawningEnabled = true;
-        currentWave = new EnemyWave(rallyPoint.TotalCells);
+
+        var waveDimensions = GetWaveDimensions();
+        currentWave = new EnemyWave(waveDimensions);
     }
 
     public void DisableSpawning()
     {
         spawningEnabled = false;
+    }
+
+    private Vector2Int GetWaveDimensions()
+    {
+        var rowSize = Mathf.FloorToInt(waveRowSize.Evaluate(Time.time / 60f));
+        var colSize = Mathf.FloorToInt(waveColumnSize.Evaluate(Time.time / 60f));
+
+        return new Vector2Int(rowSize, colSize);
     }
 }
