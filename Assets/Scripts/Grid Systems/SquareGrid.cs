@@ -22,7 +22,7 @@ public class SquareGrid : MonoBehaviour
     private Cell selectedCell = null;
 
     private Vector2Int nextAvailableCellIndex = Vector2Int.zero;
-    
+
     public bool IsGridFull { get; private set; }
     public uint TotalCells { get; private set; }
 
@@ -31,10 +31,10 @@ public class SquareGrid : MonoBehaviour
     {
         grid = new Cell[rows, columns];
         InitGridCells();
+        selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
+
         IsGridFull = false;
         TotalCells = rows * columns;
-
-        selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
     }
 
     // Update is called once per frame
@@ -51,9 +51,9 @@ public class SquareGrid : MonoBehaviour
         {
             grid = new Cell[rows, columns];
             InitGridCells();
+            selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
         }
 
-        selectedCell = GetClosestAvailableCellToPosition(new Vector3(31.3f, 0, 30.9f));
         DrawCellsGizmos();
     }
 
@@ -63,7 +63,7 @@ public class SquareGrid : MonoBehaviour
         {
             float posZ = transform.position.z - (rows * rowPadding / 2f) + rowPadding / 2f;
             float rowPos = posZ + (row * rowPadding);
-            
+
             for (int col = 0; col < columns; col++)
             {
                 float posX = transform.position.x - (columns * columnPadding / 2f) + columnPadding / 2f;
@@ -92,6 +92,9 @@ public class SquareGrid : MonoBehaviour
         var row = Mathf.FloorToInt(rowValue);
         var col = Mathf.FloorToInt(colValue);
 
+        row = Mathf.Clamp(row, 0, (int)rows);
+        col = Mathf.Clamp(col, 0, (int)columns);
+
         var startCell = grid[row, col];
 
         if (!startCell.IsOccupied)
@@ -105,6 +108,7 @@ public class SquareGrid : MonoBehaviour
         return null;
     }
 
+    // TODO: need to consider a better way to scan surrounding cells, maybe we should just look out along the column first then row
     public Cell SearchSurroundingCellsForAvailable(Cell startCell)
     {
         // search leftmost cell
@@ -114,13 +118,13 @@ public class SquareGrid : MonoBehaviour
             if (!cell.IsOccupied) return cell;
         }
 
-        if (startCell.ColIndex + 1 <= rows)
+        if (startCell.ColIndex + 1 <= columns)
         {
             var cell = grid[startCell.RowIndex, startCell.ColIndex + 1];
             if (!cell.IsOccupied) return cell;
         }
 
-        if (startCell.RowIndex - 1 <= rows)
+        if (startCell.RowIndex - 1 >= 0)
         {
             var cell = grid[startCell.RowIndex - 1, startCell.ColIndex];
             if (!cell.IsOccupied) return cell;
@@ -162,7 +166,7 @@ public class SquareGrid : MonoBehaviour
         {
             for (int col = 0; col < columns; col++)
             {
-                if (selectedCell.RowIndex == row && selectedCell.ColIndex == col)
+                if (selectedCell != null && selectedCell.RowIndex == row && selectedCell.ColIndex == col)
                 {
                     grid[row, col].DrawCellGizmos(rowPadding - .5f, columnPadding - .5f, Color.magenta);
                 }

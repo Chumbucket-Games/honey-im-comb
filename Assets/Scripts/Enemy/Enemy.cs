@@ -5,23 +5,21 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private UnitType unitType;
+    [SerializeField] float attackScanRadius; // This is used to determine if there are any units or buildings within range to start attacking (if not already targeting a unit or building).
+    
+    public bool IsDead { get; private set; } = false;
 
     private Vector3 targetPosition = Vector3.zero;
     private Quaternion targetRotation = Quaternion.identity;
 
-    GameObject targetObject;
-    Rigidbody rb;
+    private GameObject targetObject;
+    private Rigidbody rb;
+    private EnemyWave wave;
 
     private bool isMoving = false;
-    float health;
-
-    EnemyWave wave;
-    bool registeredToWave = false;
-    bool Attacking = false;
-
-    [SerializeField] float attackScanRadius; // This is used to determine if there are any units or buildings within range to start attacking (if not already targeting a unit or building).
-
-    public bool IsDead { get; private set; } = false;
+    private float health;
+    private bool registeredToWave = false;
+    private bool isAttacking = false;
 
     Coroutine attackRoutine;
 
@@ -65,9 +63,9 @@ public class Enemy : MonoBehaviour
                     }
 
                     // If a target object has been set, start attacking the object.
-                    if (targetObject != null && !Attacking)
+                    if (targetObject != null && !isAttacking)
                     {
-                        Attacking = true;
+                        isAttacking = true;
                         attackRoutine = StartCoroutine(Attack());
                     }
                 }

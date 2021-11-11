@@ -4,13 +4,16 @@ using System.Collections.Generic;
 
 public class EnemyWave
 {
-    public List<Enemy> enemies;
-    public uint waveSize;
-    public bool Attacking { get; private set; } = false;
+    [SerializeField] private List<Enemy> enemies;
+    
+    public bool isAttacking { get; private set; } = false;
+
+    private uint waveSize = 0;
+
     // Use this for initialization
-    public EnemyWave(uint size)
+    public EnemyWave(uint waveSize)
     {
-        waveSize = size;
+        this.waveSize = waveSize;
         enemies = new List<Enemy>();
     }
 
@@ -31,6 +34,6 @@ public class EnemyWave
             e.TargetHive();
         }
 
-        Attacking = true;
+        isAttacking = true;
     }
 }

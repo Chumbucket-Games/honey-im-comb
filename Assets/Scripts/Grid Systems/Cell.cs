@@ -24,12 +24,12 @@ public class Cell
         Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
     }
 
-    public void OccupyCell()
+    public void MarkCellAsOccupied()
     {
         IsOccupied = true;
     }
 
-    public void ClearCell()
+    public void MarkCellAsUnoccupied()
     {
         IsOccupied = false;
     }

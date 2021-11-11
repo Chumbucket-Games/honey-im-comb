@@ -1841,6 +1841,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1064161587581167223, guid: aaa52aca64737084b96744cc272c0eb2,
         type: 3}
+      propertyPath: displayGrid
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1064161587581167223, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
       propertyPath: columnPadding
       value: 3
       objectReference: {fileID: 0}

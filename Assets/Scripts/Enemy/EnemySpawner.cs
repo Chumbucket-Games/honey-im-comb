@@ -11,8 +11,7 @@ public class EnemySpawner : MonoBehaviour
 
     private bool spawningEnabled = false;
     private float nextSpawnTime = 0.0f;
-
-    EnemyWave currentWave;
+    private EnemyWave currentWave;
 
     // Start is called before the first frame update
     void Start()
@@ -29,10 +28,8 @@ public class EnemySpawner : MonoBehaviour
             float currentSpawnRate = spawnRate.Evaluate(Time.time / 60f);
             nextSpawnTime = Time.time + (60f / currentSpawnRate);
         }
-        if (currentWave.Attacking)
+        if (currentWave.isAttacking)
         {
-            // Build a new enemy wave. I set to null to signal garbage collection on the previous wave before initialising the next one.
-            currentWave = null;
             currentWave = new EnemyWave(rallyPoint.TotalCells);
         }
     }
@@ -45,7 +42,7 @@ public class EnemySpawner : MonoBehaviour
         if (!rallyPoint.IsGridFull)
         {
             var rallyGridCell = rallyPoint.GetNextAvailableCell();
-            rallyGridCell.OccupyCell();
+            rallyGridCell.MarkCellAsOccupied();
 
             // This rotation will turn the enemy to face the direction it is moving rather than having it face the same way as the rally point grid.
             Vector3 faceDirection = -(spawnedInstance.transform.position - rallyGridCell.Position).normalized;
