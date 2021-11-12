@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Worker Bee
   image: {fileID: 0}
-  MaxHealth: 100
+  maxHealth: 20
+  moveSpeed: 5
+  turnSpeed: 180
+  attackRate: 1
+  baseDamage: 5

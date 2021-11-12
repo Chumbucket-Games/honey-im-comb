@@ -16,4 +16,4 @@ MonoBehaviour:
   image: {fileID: 0}
   maxHealth: 50
   moveSpeed: 10
-  turnSpeed: 5
+  turnSpeed: 180

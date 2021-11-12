@@ -4,23 +4,33 @@ using UnityEngine;
 
 public class Cell
 {
-    private int rowIndex;
-    private int colIndex;
-    private Vector3 position;
-    private bool isOccupied;
+    public int RowIndex { get; private set; }
+    public int ColIndex { get; private set; }
+    public Vector3 Position { get; private set; }
+    public bool IsOccupied { get; private set; }
 
     public Cell(int rowIndex, int colIndex, Vector3 position)
     {
-        this.rowIndex = rowIndex;
-        this.colIndex = colIndex;
-        this.position = position;
+        this.RowIndex = rowIndex;
+        this.ColIndex = colIndex;
+        this.Position = position;
 
-        isOccupied = false;
+        IsOccupied = false;
     }
 
-    public void DrawCell(float rowPadding, float colPadding)
+    public void DrawCellGizmos(float rowPadding, float colPadding, Color color)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(position, new Vector3(rowPadding, 0f, colPadding));
+        Gizmos.color = color;
+        Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
+    }
+
+    public void MarkCellAsOccupied()
+    {
+        IsOccupied = true;
+    }
+
+    public void MarkCellAsUnoccupied()
+    {
+        IsOccupied = false;
     }
 }

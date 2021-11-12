@@ -5,65 +5,50 @@ public class Unit : MonoBehaviour, ISelectable
 {
     public float moveSpeed;
     Vector3 target = Vector3.zero;
-    Vector3 hivePosition;
+    static Vector3 hivePosition;
     bool moving = false;
     float health;
     public UnitType type;
     GameObject targetObject;
-    HexGrid hiveGrid;
+    static HexGrid hiveGrid;
     bool harvestMode = false;
     bool returningToHive = false;
     bool returningToNode = false;
     ResourceStack stack;
+    Rigidbody rb;
+    public bool IsDead { get; private set; } = false;
+
+    Coroutine attackRoutine;
+    Coroutine harvestRoutine;
 
     // Use this for initialization
     void Start()
     {
         health = type.maxHealth;
-        hivePosition = GameObject.FindGameObjectWithTag("Hive") ? GameObject.FindGameObjectWithTag("Hive").transform.position : Vector3.zero;
-        hiveGrid = GameObject.FindGameObjectWithTag("HexGrid") ? GameObject.FindGameObjectWithTag("HexGrid").GetComponent<HexGrid>() : null;
+        if (hivePosition == null)
+        {
+            hivePosition = GameObject.FindGameObjectWithTag("Hive") ? GameObject.FindGameObjectWithTag("Hive").transform.position : Vector3.zero;
+        }
+        
+        if (hiveGrid == null)
+        {
+            hiveGrid = GameObject.FindGameObjectWithTag("HexGrid") ? GameObject.FindGameObjectWithTag("HexGrid").GetComponent<HexGrid>() : null;
+        }
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (moving)
+        if (!IsDead)
         {
-            if (targetObject.GetComponent<Unit>())
+            if (moving)
             {
-                // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position.
-                target = targetObject.transform.position;
-            }
-            Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-            transform.forward = (target - transform.position).normalized;
-
-            transform.position = newPosition;
-
-            if (transform.position == target)
-            {
-                target = Vector3.zero;
-                moving = false;
-                DidReachDestination();
-            }
-        }
-        else if (harvestMode)
-        {
-            if (returningToHive)
-            {
-                Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
-
-                transform.forward = (hivePosition - transform.position).normalized;
-
-                transform.position = newPosition;
-
-                if (transform.position == hivePosition)
+                if (targetObject.GetComponent<Unit>())
                 {
-                    returningToHive = false;
-                    StartCoroutine(WaitToLeave(5));
+                    // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position.
+                    target = targetObject.transform.position;
                 }
-            }
-            else if (returningToNode)
-            {
                 Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
                 transform.forward = (target - transform.position).normalized;
 
@@ -71,8 +56,39 @@ public class Unit : MonoBehaviour, ISelectable
 
                 if (transform.position == target)
                 {
-                    returningToNode = false;
-                    StartCoroutine(WaitToReturn(5));
+                    target = Vector3.zero;
+                    moving = false;
+                    DidReachDestination();
+                }
+            }
+            else if (harvestMode)
+            {
+                if (returningToHive)
+                {
+                    Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
+
+                    transform.forward = (hivePosition - transform.position).normalized;
+
+                    transform.position = newPosition;
+
+                    if (transform.position == hivePosition)
+                    {
+                        returningToHive = false;
+                        harvestRoutine = StartCoroutine(WaitToLeave(5));
+                    }
+                }
+                else if (returningToNode)
+                {
+                    Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+                    transform.forward = (target - transform.position).normalized;
+
+                    transform.position = newPosition;
+
+                    if (transform.position == target)
+                    {
+                        returningToNode = false;
+                        harvestRoutine = StartCoroutine(WaitToReturn(5));
+                    }
                 }
             }
         }
@@ -136,7 +152,7 @@ public class Unit : MonoBehaviour, ISelectable
             else if (targetObject.GetComponent<Building>().type.label == "Hive Exit")
             {
                 // Move the bee to the overworld.
-                transform.position = new Vector3(hivePosition.x + 7, hivePosition.y, hivePosition.z + 7);
+                transform.position = new Vector3(hivePosition.x + 10, hivePosition.y + 3, hivePosition.z + 10);
                 transform.forward = Vector3.forward;
             }
         }
@@ -154,7 +170,7 @@ public class Unit : MonoBehaviour, ISelectable
             target.y = transform.position.y;
             Debug.Log($"Let the {targetObject.GetComponent<ResourceNode>().resource.displayName} harvest begin!");
             transform.forward = (targetObject.transform.position - transform.position).normalized;
-            StartCoroutine(WaitToReturn(5));
+            harvestRoutine = StartCoroutine(WaitToReturn(5));
         }
     }
 
@@ -193,5 +209,66 @@ public class Unit : MonoBehaviour, ISelectable
         {
             harvestMode = false;
         }
+    }
+
+    IEnumerator Attack()
+    {
+        yield return new WaitForSeconds(type.attackRate);
+        Debug.Log("Attacking enemy!");
+        if (targetObject.GetComponent<Unit>())
+        {
+            targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage);
+            if (!targetObject.GetComponent<Enemy>().IsDead)
+            {
+                attackRoutine = StartCoroutine(Attack());
+            }
+        }
+        else if (targetObject.GetComponent<EnemySpawner>())
+        {
+            /*targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
+            if (!targetObject.GetComponent<EnemySpawner>().IsDead)
+            {
+                StartCoroutine(attackRoutine);
+            }*/
+        }
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        health = Mathf.Max(0, health - dmg);
+
+        if (health <= 0)
+        {
+            OnDie();
+        }
+    }
+
+    void OnDie()
+    {
+        if (harvestRoutine != null)
+        {
+            StopCoroutine(harvestRoutine);
+        }
+
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+        }
+        
+        if (rb != null)
+        {
+            rb.useGravity = true;
+            rb.isKinematic = false;
+        }
+
+        IsDead = true;
+        
+        StartCoroutine(DelayDestroy(5));
+    }
+
+    IEnumerator DelayDestroy(int seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        Destroy(gameObject);
     }
 }
