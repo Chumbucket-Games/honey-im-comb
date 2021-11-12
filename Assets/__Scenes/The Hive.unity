@@ -2123,6 +2123,47 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player UI
       objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453149, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a687770392daedc42abf13c6ef2fa8d2,
+        type: 3}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427694a146cb90a42b37c1aa3804884f, type: 3}
 --- !u!1001 &6497809664730341990
