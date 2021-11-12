@@ -222,6 +222,194 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Hive Management"",
+            ""id"": ""c5600613-ee62-4abe-9879-e240dd092dc4"",
+            ""actions"": [
+                {
+                    ""name"": ""Build Wall"",
+                    ""type"": ""Button"",
+                    ""id"": ""2074eea3-6bbb-4c6a-8278-ba9fce13fc15"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build Storeroom"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4862257-cd0e-4a19-aada-cad0ef608502"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build Barracks"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2acc15a-4a70-495b-b761-a3ca42882f79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build Laboratory"",
+                    ""type"": ""Button"",
+                    ""id"": ""15e970dc-f592-4d9d-92ac-d11b49f3222e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build Sentry"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ed4f00c-ed61-4509-8fed-85f89eae7074"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Build Throne"",
+                    ""type"": ""Button"",
+                    ""id"": ""92d60eec-a666-479f-8bba-8efe6f8c72dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Place Building"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff0e0b26-efad-44bf-918c-a29bf8622a44"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel Build"",
+                    ""type"": ""Button"",
+                    ""id"": ""d692edf6-b752-4eae-b724-962e42b7c6fa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cursor"",
+                    ""type"": ""Value"",
+                    ""id"": ""40b71a5a-bc3e-439d-ae1d-9eefa338eb87"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f14cd3ce-1120-441e-9a30-360a53146422"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Wall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ffb6e95-d7bf-470e-a701-e20ca6f47d94"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Storeroom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2271ba05-f183-4b2f-a766-e5aa64c7605c"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Barracks"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""439b1ee2-a30e-4933-8d31-f1457c6b7de5"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Laboratory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c79b5955-d7da-4439-aadd-6895e4bc9023"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Sentry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5281152-99af-4d39-be5b-b4f1ffec40ff"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Throne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31d424bf-4dba-4e5d-a0aa-81c8c6135be2"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place Building"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d44a4dcf-6b67-4774-adf3-e1d18e9f6445"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel Build"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""abf1ef0c-ae55-480d-82ae-f77704047f04"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cursor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -237,6 +425,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UnitManagement_Interact = m_UnitManagement.FindAction("Interact", throwIfNotFound: true);
         m_UnitManagement_Select = m_UnitManagement.FindAction("Select", throwIfNotFound: true);
         m_UnitManagement_Cursor = m_UnitManagement.FindAction("Cursor", throwIfNotFound: true);
+        // Hive Management
+        m_HiveManagement = asset.FindActionMap("Hive Management", throwIfNotFound: true);
+        m_HiveManagement_BuildWall = m_HiveManagement.FindAction("Build Wall", throwIfNotFound: true);
+        m_HiveManagement_BuildStoreroom = m_HiveManagement.FindAction("Build Storeroom", throwIfNotFound: true);
+        m_HiveManagement_BuildBarracks = m_HiveManagement.FindAction("Build Barracks", throwIfNotFound: true);
+        m_HiveManagement_BuildLaboratory = m_HiveManagement.FindAction("Build Laboratory", throwIfNotFound: true);
+        m_HiveManagement_BuildSentry = m_HiveManagement.FindAction("Build Sentry", throwIfNotFound: true);
+        m_HiveManagement_BuildThrone = m_HiveManagement.FindAction("Build Throne", throwIfNotFound: true);
+        m_HiveManagement_PlaceBuilding = m_HiveManagement.FindAction("Place Building", throwIfNotFound: true);
+        m_HiveManagement_CancelBuild = m_HiveManagement.FindAction("Cancel Build", throwIfNotFound: true);
+        m_HiveManagement_Cursor = m_HiveManagement.FindAction("Cursor", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -398,6 +597,103 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public UnitManagementActions @UnitManagement => new UnitManagementActions(this);
+
+    // Hive Management
+    private readonly InputActionMap m_HiveManagement;
+    private IHiveManagementActions m_HiveManagementActionsCallbackInterface;
+    private readonly InputAction m_HiveManagement_BuildWall;
+    private readonly InputAction m_HiveManagement_BuildStoreroom;
+    private readonly InputAction m_HiveManagement_BuildBarracks;
+    private readonly InputAction m_HiveManagement_BuildLaboratory;
+    private readonly InputAction m_HiveManagement_BuildSentry;
+    private readonly InputAction m_HiveManagement_BuildThrone;
+    private readonly InputAction m_HiveManagement_PlaceBuilding;
+    private readonly InputAction m_HiveManagement_CancelBuild;
+    private readonly InputAction m_HiveManagement_Cursor;
+    public struct HiveManagementActions
+    {
+        private @PlayerControls m_Wrapper;
+        public HiveManagementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @BuildWall => m_Wrapper.m_HiveManagement_BuildWall;
+        public InputAction @BuildStoreroom => m_Wrapper.m_HiveManagement_BuildStoreroom;
+        public InputAction @BuildBarracks => m_Wrapper.m_HiveManagement_BuildBarracks;
+        public InputAction @BuildLaboratory => m_Wrapper.m_HiveManagement_BuildLaboratory;
+        public InputAction @BuildSentry => m_Wrapper.m_HiveManagement_BuildSentry;
+        public InputAction @BuildThrone => m_Wrapper.m_HiveManagement_BuildThrone;
+        public InputAction @PlaceBuilding => m_Wrapper.m_HiveManagement_PlaceBuilding;
+        public InputAction @CancelBuild => m_Wrapper.m_HiveManagement_CancelBuild;
+        public InputAction @Cursor => m_Wrapper.m_HiveManagement_Cursor;
+        public InputActionMap Get() { return m_Wrapper.m_HiveManagement; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(HiveManagementActions set) { return set.Get(); }
+        public void SetCallbacks(IHiveManagementActions instance)
+        {
+            if (m_Wrapper.m_HiveManagementActionsCallbackInterface != null)
+            {
+                @BuildWall.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildWall;
+                @BuildWall.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildWall;
+                @BuildWall.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildWall;
+                @BuildStoreroom.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildStoreroom;
+                @BuildStoreroom.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildStoreroom;
+                @BuildStoreroom.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildStoreroom;
+                @BuildBarracks.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildBarracks;
+                @BuildBarracks.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildBarracks;
+                @BuildBarracks.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildBarracks;
+                @BuildLaboratory.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildLaboratory;
+                @BuildLaboratory.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildLaboratory;
+                @BuildLaboratory.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildLaboratory;
+                @BuildSentry.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
+                @BuildSentry.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
+                @BuildSentry.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
+                @BuildThrone.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildThrone;
+                @BuildThrone.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildThrone;
+                @BuildThrone.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildThrone;
+                @PlaceBuilding.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
+                @PlaceBuilding.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
+                @PlaceBuilding.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
+                @CancelBuild.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCancelBuild;
+                @CancelBuild.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCancelBuild;
+                @CancelBuild.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCancelBuild;
+                @Cursor.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCursor;
+                @Cursor.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCursor;
+                @Cursor.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCursor;
+            }
+            m_Wrapper.m_HiveManagementActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @BuildWall.started += instance.OnBuildWall;
+                @BuildWall.performed += instance.OnBuildWall;
+                @BuildWall.canceled += instance.OnBuildWall;
+                @BuildStoreroom.started += instance.OnBuildStoreroom;
+                @BuildStoreroom.performed += instance.OnBuildStoreroom;
+                @BuildStoreroom.canceled += instance.OnBuildStoreroom;
+                @BuildBarracks.started += instance.OnBuildBarracks;
+                @BuildBarracks.performed += instance.OnBuildBarracks;
+                @BuildBarracks.canceled += instance.OnBuildBarracks;
+                @BuildLaboratory.started += instance.OnBuildLaboratory;
+                @BuildLaboratory.performed += instance.OnBuildLaboratory;
+                @BuildLaboratory.canceled += instance.OnBuildLaboratory;
+                @BuildSentry.started += instance.OnBuildSentry;
+                @BuildSentry.performed += instance.OnBuildSentry;
+                @BuildSentry.canceled += instance.OnBuildSentry;
+                @BuildThrone.started += instance.OnBuildThrone;
+                @BuildThrone.performed += instance.OnBuildThrone;
+                @BuildThrone.canceled += instance.OnBuildThrone;
+                @PlaceBuilding.started += instance.OnPlaceBuilding;
+                @PlaceBuilding.performed += instance.OnPlaceBuilding;
+                @PlaceBuilding.canceled += instance.OnPlaceBuilding;
+                @CancelBuild.started += instance.OnCancelBuild;
+                @CancelBuild.performed += instance.OnCancelBuild;
+                @CancelBuild.canceled += instance.OnCancelBuild;
+                @Cursor.started += instance.OnCursor;
+                @Cursor.performed += instance.OnCursor;
+                @Cursor.canceled += instance.OnCursor;
+            }
+        }
+    }
+    public HiveManagementActions @HiveManagement => new HiveManagementActions(this);
     public interface ICommonControlsActions
     {
         void OnPanMouse(InputAction.CallbackContext context);
@@ -409,6 +705,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         void OnInteract(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnCursor(InputAction.CallbackContext context);
+    }
+    public interface IHiveManagementActions
+    {
+        void OnBuildWall(InputAction.CallbackContext context);
+        void OnBuildStoreroom(InputAction.CallbackContext context);
+        void OnBuildBarracks(InputAction.CallbackContext context);
+        void OnBuildLaboratory(InputAction.CallbackContext context);
+        void OnBuildSentry(InputAction.CallbackContext context);
+        void OnBuildThrone(InputAction.CallbackContext context);
+        void OnPlaceBuilding(InputAction.CallbackContext context);
+        void OnCancelBuild(InputAction.CallbackContext context);
         void OnCursor(InputAction.CallbackContext context);
     }
 }

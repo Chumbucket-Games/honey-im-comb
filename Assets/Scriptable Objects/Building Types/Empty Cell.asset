@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Empty Hive Cell
   image: {fileID: 0}
-  MaxHealth: 0
+  maxHealth: 0
+  gridLayout: 1
+  pebbleCost: 0
+  honeyCost: 0
+  cell: {fileID: 3359574947941848935, guid: 6f730c686a4ea7f4da3dbc2cb619c465, type: 3}

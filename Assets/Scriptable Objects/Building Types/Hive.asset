@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Hive
   image: {fileID: 0}
-  MaxHealth: 10000
+  maxHealth: 0
+  gridLayout: 1
+  pebbleCost: 0
+  honeyCost: 0
+  cells: []

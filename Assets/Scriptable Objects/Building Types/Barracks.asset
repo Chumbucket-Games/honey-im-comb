@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Barracks
   image: {fileID: 0}
-  MaxHealth: 0
+  maxHealth: 0
+  gridLayout: 4
+  pebbleCost: 0
+  honeyCost: 0
+  cell: {fileID: 7499625715777685506, guid: d5513a6c0e5df284aa5929cc329360e5, type: 3}

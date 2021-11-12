@@ -1226,7 +1226,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.822736, y: 1}
+    m_SensorSize: {x: 2.1213872, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1927,6 +1927,18 @@ PrefabInstance:
       objectReference: {fileID: 1748165641}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 486e258dfcda0a84982a567910396235, type: 3}
+--- !u!114 &2472854113575684511 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2472854112851147335, guid: 486e258dfcda0a84982a567910396235,
+    type: 3}
+  m_PrefabInstance: {fileID: 2472854113575684510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c768b7ef6b5b19649a39b3e8d7601d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2938464828954038366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2132,6 +2144,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1928117257}
     m_Modifications:
+    - target: {fileID: 6497809665727555876, guid: 8a7ea436c2f535148bbfea9c685730d9,
+        type: 3}
+      propertyPath: mapController
+      value: 
+      objectReference: {fileID: 2472854113575684511}
     - target: {fileID: 6497809665727555877, guid: 8a7ea436c2f535148bbfea9c685730d9,
         type: 3}
       propertyPath: m_RootOrder

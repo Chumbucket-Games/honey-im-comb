@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Throne Room
   image: {fileID: 0}
-  MaxHealth: 0
+  maxHealth: 0
+  gridLayout: 5
+  pebbleCost: 0
+  honeyCost: 0
+  cell: {fileID: 1962268614664016880, guid: 8c7b3a1409464ed44981705c2126ab84, type: 3}

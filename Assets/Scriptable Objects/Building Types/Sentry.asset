@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Sentry
   image: {fileID: 0}
-  MaxHealth: 0
+  maxHealth: 0
+  gridLayout: 1
+  pebbleCost: 0
+  honeyCost: 0
+  cell: {fileID: 2412638946105443214, guid: af11aadc68015214f94f73172459bf07, type: 3}

@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Wall Cell
   image: {fileID: 0}
-  MaxHealth: 0
+  maxHealth: 0
+  gridLayout: 1
+  pebbleCost: 0
+  honeyCost: 0
+  cell: {fileID: 7648725862340183294, guid: 4399cf17e4676a545ab8e180bf928f68, type: 3}

@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Storeroom
   image: {fileID: 0}
-  MaxHealth: 0
+  maxHealth: 0
+  gridLayout: 1
+  pebbleCost: 0
+  honeyCost: 0
+  cell: {fileID: 8607410876945458792, guid: 91f2fffce1ba6724dae48c2d89978a31, type: 3}

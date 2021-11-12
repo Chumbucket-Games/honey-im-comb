@@ -15,6 +15,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     //Vector2 endPosition = Vector2.zero;
     ISelectable selectedObject;
     public bool IsHiveMode = true;
+    bool IsBuildingMode = false;
 
     private void OnEnable()
     {
@@ -23,7 +24,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
             playerControls = new PlayerControls();
             playerControls.UnitManagement.SetCallbacks(this);
 
-            playerControls.CommonControls.ToggleMapMode.performed += _ => OnMapToggle();
+            playerControls.CommonControls.ToggleMapMode.performed += OnMapToggle;
         }
 
         playerControls.UnitManagement.Enable();
@@ -35,25 +36,28 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         playerControls.UnitManagement.Disable();
     }
 
-    public void OnMapToggle()
+    public void OnMapToggle(InputAction.CallbackContext context)
     {
-        IsHiveMode = !IsHiveMode;
+        if (context.performed && !IsBuildingMode)
+        {
+            IsHiveMode = !IsHiveMode;
 
-        if (IsHiveMode)
-        {
-            hiveCamera.gameObject.SetActive(true);
-            overworldCamera.gameObject.SetActive(false);
-        }
-        else
-        {
-            hiveCamera.gameObject.SetActive(false);
-            overworldCamera.gameObject.SetActive(true);
+            if (IsHiveMode)
+            {
+                hiveCamera.gameObject.SetActive(true);
+                overworldCamera.gameObject.SetActive(false);
+            }
+            else
+            {
+                hiveCamera.gameObject.SetActive(false);
+                overworldCamera.gameObject.SetActive(true);
+            }
         }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedObject != null)
+        if (context.performed && selectedObject != null && !IsBuildingMode)
         {
             // Move the unit to the target location.
             if (selectedObject.IsMovable())
@@ -71,6 +75,20 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                     }
                 }
             }
+        }
+    }
+
+    public void SetBuildMode(bool isBuild)
+    {
+        IsBuildingMode = isBuild;
+
+        if (IsBuildingMode)
+        {
+            EnableInput();
+        }
+        else
+        {
+            DisableInput();
         }
     }
 
@@ -119,7 +137,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 }
             }
         }*/
-        if (context.performed)
+        if (context.performed && !IsBuildingMode)
         {
             Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
 
@@ -153,5 +171,17 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 selectedObject = null;
             }
         }
+    }
+
+    public void DisableInput()
+    {
+        playerControls.UnitManagement.Disable();
+        playerControls.CommonControls.ToggleMapMode.Disable();
+    }
+
+    public void EnableInput()
+    {
+        playerControls.UnitManagement.Enable();
+        playerControls.CommonControls.ToggleMapMode.Enable();
     }
 }

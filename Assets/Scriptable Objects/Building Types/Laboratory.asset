@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Laboratory
   image: {fileID: 0}
-  MaxHealth: 0
+  maxHealth: 0
+  gridLayout: 3
+  pebbleCost: 0
+  honeyCost: 0
+  cell: {fileID: 7546146144917143012, guid: 94eeb146cbfaa7e4ab4f7b156a7b7860, type: 3}
