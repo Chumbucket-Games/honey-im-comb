@@ -9,11 +9,9 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     [SerializeField] CinemachineVirtualCamera hiveCamera;
     [SerializeField] CinemachineVirtualCamera overworldCamera;
 
-    PlayerControls playerControls;
-    Vector2 cursorPosition = Vector2.zero;
-    //Vector2 startPosition = Vector2.zero;
-    //Vector2 endPosition = Vector2.zero;
-    ISelectable selectedObject;
+    private PlayerControls playerControls;
+    private Vector2 cursorPosition = Vector2.zero;
+    private List<ISelectable> selectedObjects = new List<ISelectable>();
     public bool IsHiveMode = true;
 
     private void OnEnable()
@@ -53,21 +51,24 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedObject != null)
+        if (context.performed && selectedObjects.Count > 0)
         {
-            // Move the unit to the target location.
-            if (selectedObject.IsMovable())
+            foreach (var selectedObject in selectedObjects)
             {
-                Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-                if (Physics.Raycast(ray, out var hit))
+                // Move the unit to the target location.
+                if (selectedObject.IsMovable())
                 {
-                    if (IsHiveMode)
+                    Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
+                    if (Physics.Raycast(ray, out var hit))
                     {
-                        selectedObject.MoveToPosition(hit.transform.position, hit,true);
-                    }
-                    else
-                    {
-                        selectedObject.MoveToPosition(hit.point, hit,false);
+                        if (IsHiveMode)
+                        {
+                            selectedObject.MoveToPosition(hit.transform.position, hit, true);
+                        }
+                        else
+                        {
+                            selectedObject.MoveToPosition(hit.point, hit, false);
+                        }
                     }
                 }
             }
@@ -79,79 +80,67 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         cursorPosition = context.ReadValue<Vector2>();
     }
 
-    public void OnSelect(InputAction.CallbackContext context)
+    public void OnBoxSelect(Vector2 dimensions, Vector2 position)
     {
-        /*if (context.started)
+        selectedObjects.Clear();
+
+        Vector3 halfExtents = dimensions / 2f;
+        var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.nearClipPlane));
+
+        // Select the units within the bounding box
+        RaycastHit[] hits = Physics.BoxCastAll(worldPos, halfExtents, Camera.main.transform.forward);
+        foreach (var hit in hits)
         {
-            startPosition = cursorPosition;
-        }
-
-        if (context.performed)
-        {
-            endPosition = cursorPosition;
-            Vector3 minBoxPosition = Camera.main.ScreenToWorldPoint(startPosition);
-            Vector3 maxBoxPosition = Camera.main.ScreenToWorldPoint(endPosition);
-
-            Vector3 center = maxBoxPosition - minBoxPosition;
-            Vector3 halfExtents = maxBoxPosition - center;
-
-            // Select the units within the bounding box.
-            RaycastHit[] hits = Physics.BoxCastAll(center, halfExtents, Vector3.forward);
-            foreach (var hit in hits)
+            if (hit.collider.CompareTag("Unit"))
             {
-                if (hit.collider.CompareTag("Unit"))
-                {
-
-                }
-            }
-        }
-
-        if (context.canceled)
-        {
-            // Select the unit at the cursor position.
-            Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-
-            if (Physics.Raycast(ray, out var hit))
-            {
-                if (hit.collider.CompareTag("Unit"))
-                {
-
-                }
-            }
-        }*/
-        if (context.performed)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-
-            if (Physics.Raycast(ray, out var hit))
-            {
-                if (selectedObject != null)
-                {
-                    // Deselect the currently selected object.
-                    selectedObject.OnDeselect();
-                }
-                if (hit.collider.CompareTag("Unit"))
-                {
-                    selectedObject = hit.transform.gameObject.GetComponent<Unit>();
-                    selectedObject.OnSelect();
-                }
-                else if (hit.collider.CompareTag("Building") || hit.collider.CompareTag("Hive"))
-                {
-                    selectedObject = hit.transform.gameObject.GetComponent<Building>();
-                    selectedObject.OnSelect();
-                }
-                else if (hit.collider.CompareTag("ResourceNode"))
-                {
-                    selectedObject = hit.transform.gameObject.GetComponent<ResourceNode>();
-                    selectedObject.OnSelect();
-                }
-            }
-            else if (selectedObject != null)
-            {
-                // Deselect the currently selected object.
-                selectedObject.OnDeselect();
-                selectedObject = null;
+                selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
+                
+                Debug.Log($"Unit {hit.transform.gameObject.name} selected");
             }
         }
     }
+
+
+    public void OnSelect(InputAction.CallbackContext context)
+    {
+
+    }
+
+    //public void OnSelect(InputAction.CallbackContext context)
+    //{
+    //    if (context.performed)
+    //    {
+    //        Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
+
+    //        if (Physics.Raycast(ray, out var hit))
+    //        {
+    //            if (selectedObject != null)
+    //            {
+    //                // Deselect the currently selected object.
+    //                selectedObject.OnDeselect();
+    //            }
+    //            if (hit.collider.CompareTag("Unit"))
+    //            {
+    //                selectedObject = hit.transform.gameObject.GetComponent<Unit>();
+    //                selectedObject.OnSelect();
+    //            }
+    //            else if (hit.collider.CompareTag("Building") || hit.collider.CompareTag("Hive"))
+    //            {
+    //                selectedObject = hit.transform.gameObject.GetComponent<Building>();
+    //                selectedObject.OnSelect();
+    //            }
+    //            else if (hit.collider.CompareTag("ResourceNode"))
+    //            {
+    //                selectedObject = hit.transform.gameObject.GetComponent<ResourceNode>();
+    //                selectedObject.OnSelect();
+    //            }
+    //        }
+    //        else if (selectedObject != null)
+    //        {
+    //            // Deselect the currently selected object.
+    //            selectedObject.OnDeselect();
+    //            selectedObject = null;
+    //        }
+    //    }
+    //}
 }

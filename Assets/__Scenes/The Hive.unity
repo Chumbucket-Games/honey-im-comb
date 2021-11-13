@@ -782,6 +782,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1a012c57093c4d419e26b2951bffbf5, type: 3}
+--- !u!114 &739142367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2472854112851147335, guid: 486e258dfcda0a84982a567910396235,
+    type: 3}
+  m_PrefabInstance: {fileID: 2472854113575684510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c768b7ef6b5b19649a39b3e8d7601d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2013,6 +2025,41 @@ PrefabInstance:
       propertyPath: mouseDragSelection
       value: 
       objectReference: {fileID: 1620067198}
+    - target: {fileID: 4358430038620363008, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: onMouseDragEnd.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038620363008, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: onMouseDragEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038620363008, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: onMouseDragEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 739142367}
+    - target: {fileID: 4358430038620363008, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: onMouseDragEnd.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038620363008, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: onMouseDragEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnBoxSelect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038620363008, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: onMouseDragEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MapController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038620363008, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: onMouseDragEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4358430038620363009, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2142,12 +2189,12 @@ PrefabInstance:
     - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0.56078434
       objectReference: {fileID: 0}
     - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
@@ -2157,7 +2204,7 @@ PrefabInstance:
     - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0.006026864
       objectReference: {fileID: 0}
     - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
