@@ -21,8 +21,6 @@ public class SquareGrid : MonoBehaviour
     private Cell[,] grid;
     private Cell selectedCell = null;
 
-    private Vector2Int nextAvailableCellIndex = Vector2Int.zero;
-
     public bool IsGridFull { get; private set; }
     public uint TotalCells { get; private set; }
 
