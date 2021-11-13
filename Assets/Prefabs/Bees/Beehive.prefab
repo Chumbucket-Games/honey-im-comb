@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3001391515156086360}
   - component: {fileID: 1027914624935070354}
   - component: {fileID: 1838162742264829460}
+  - component: {fileID: 4419213138435518504}
   m_Layer: 0
   m_Name: Beehive
-  m_TagString: Untagged
+  m_TagString: Hive
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3264205285286561041, guid: 85fbaa0bde9c8504fb2adb6916e59d69, type: 3}
+  - {fileID: 2100000, guid: 9080c94f1be00cf4d8e7f2aa7a46d74b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,3 +100,17 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: 9080c94f1be00cf4d8e7f2aa7a46d74b, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 4a7914f2f3119f44eb8a98ef4ca89cc5, type: 2}
   type: {fileID: 11400000, guid: 09e7783559b0e0844b09a6acf74cd6af, type: 2}
+--- !u!64 &4419213138435518504
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532101934406740807}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5289073641183115058, guid: 85fbaa0bde9c8504fb2adb6916e59d69, type: 3}
