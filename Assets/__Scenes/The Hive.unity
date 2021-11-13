@@ -227,7 +227,7 @@ PrefabInstance:
     - target: {fileID: 5283896583623122696, guid: 96057ac55131b4a488f7478e576b14b3,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5283896583623122696, guid: 96057ac55131b4a488f7478e576b14b3,
         type: 3}
@@ -648,7 +648,7 @@ PrefabInstance:
     - target: {fileID: 7724174751389981501, guid: b3df612e3e689784194861636d103135,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7724174751389981501, guid: b3df612e3e689784194861636d103135,
         type: 3}
@@ -1256,7 +1256,7 @@ Terrain:
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 9d0b4127799913c4691eed557852788e, type: 2}
   m_TreeDistance: 5000
-  m_TreeBillboardDistance: 50
+  m_TreeBillboardDistance: 100
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
   m_DetailObjectDistance: 80
