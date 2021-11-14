@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour, ISelectable
     public UnitType type;
     GameObject targetObject;
     static HexGrid hiveGrid;
+    static SquareGrid overworldGrid;
     bool harvestMode = false;
     bool returningToHive = false;
     bool returningToNode = false;
@@ -34,6 +35,11 @@ public class Unit : MonoBehaviour, ISelectable
         {
             hiveGrid = GameObject.FindGameObjectWithTag("HexGrid") ? GameObject.FindGameObjectWithTag("HexGrid").GetComponent<HexGrid>() : null;
         }
+
+        if (overworldGrid == null)
+        {
+            overworldGrid = GameObject.Find("Game Grid").GetComponent<SquareGrid>();
+        }
         rb = GetComponent<Rigidbody>();
     }
 
@@ -44,7 +50,7 @@ public class Unit : MonoBehaviour, ISelectable
         {
             if (moving)
             {
-                if (targetObject.GetComponent<Unit>())
+                if (targetObject != null && targetObject.GetComponent<Unit>())
                 {
                     // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position.
                     target = targetObject.transform.position;
@@ -114,10 +120,34 @@ public class Unit : MonoBehaviour, ISelectable
         else
         {
             // Maintain same position on the XZ plane.
-            target.y = transform.position.y;
+            target.y = 3;
         }
         
         targetObject = info.transform.gameObject;
+        moving = true;
+    }
+
+    public void MoveToPosition(Vector3 position, bool IsHiveMode)
+    {
+        harvestMode = false;
+        returningToHive = false;
+        returningToNode = false;
+        targetObject = null;
+        StopAllCoroutines();
+        var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position, 1, 5);
+        targetCell.MarkCellAsOccupied();
+        target = targetCell.Position;
+        if (IsHiveMode)
+        {
+            // Maintain same position on the XY plane.
+            target.z = transform.position.z;
+        }
+        else
+        {
+            // Maintain same position on the XZ plane.
+            target.y = 3;
+        }
+
         moving = true;
     }
 
@@ -137,40 +167,44 @@ public class Unit : MonoBehaviour, ISelectable
     {
         Debug.Log($"{type.label} has reached its destination.");
         
-        if (targetObject.GetComponent<Building>())
+        if (targetObject != null)
         {
-            // Interact with the building.
-            Debug.Log($"Interacting with {targetObject.GetComponent<Building>().type.label}!");
-            transform.forward = (targetObject.transform.position - transform.position).normalized;
+            if (targetObject.GetComponent<Building>())
+            {
+                // Interact with the building.
+                Debug.Log($"Interacting with {targetObject.GetComponent<Building>().type.label}!");
+                transform.forward = (targetObject.transform.position - transform.position).normalized;
 
-            if (targetObject.GetComponent<Building>().type.label == "Hive")
-            {
-                // Move the bee to the exit cell of the hive grid.
-                transform.position = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
-                transform.forward = hiveGrid.transform.forward;
+                if (targetObject.GetComponent<Building>().type.label == "Hive")
+                {
+                    // Move the bee to the exit cell of the hive grid.
+                    transform.position = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
+                    transform.forward = hiveGrid.transform.forward;
+                }
+                else if (targetObject.GetComponent<Building>().type.label == "Hive Exit")
+                {
+                    // Move the bee to the overworld.
+                    transform.position = new Vector3(hivePosition.x + 10, hivePosition.y + 3, hivePosition.z + 10);
+                    transform.forward = Vector3.forward;
+                    MoveToPosition(GameObject.FindGameObjectWithTag("Hive").transform.GetChild(0).transform.position, false);
+                }
             }
-            else if (targetObject.GetComponent<Building>().type.label == "Hive Exit")
+            else if (targetObject.GetComponent<Unit>())
             {
-                // Move the bee to the overworld.
-                transform.position = new Vector3(hivePosition.x + 10, hivePosition.y + 3, hivePosition.z + 10);
-                transform.forward = Vector3.forward;
+                // Interact with the unit.
+                Debug.Log($"Interacting with {targetObject.GetComponent<Unit>().type.label}!");
+                transform.forward = (targetObject.transform.position - transform.position).normalized;
             }
-        }
-        else if (targetObject.GetComponent<Unit>())
-        {
-            // Interact with the unit.
-            Debug.Log($"Interacting with {targetObject.GetComponent<Unit>().type.label}!");
-            transform.forward = (targetObject.transform.position - transform.position).normalized;
-        }
-        else if (targetObject.GetComponent<ResourceNode>())
-        {
-            // Start harvesting the resource node.
-            harvestMode = true;
-            target = targetObject.transform.position;
-            target.y = transform.position.y;
-            Debug.Log($"Let the {targetObject.GetComponent<ResourceNode>().resource.displayName} harvest begin!");
-            transform.forward = (targetObject.transform.position - transform.position).normalized;
-            harvestRoutine = StartCoroutine(WaitToReturn(5));
+            else if (targetObject.GetComponent<ResourceNode>())
+            {
+                // Start harvesting the resource node.
+                harvestMode = true;
+                target = targetObject.transform.position;
+                target.y = transform.position.y;
+                Debug.Log($"Let the {targetObject.GetComponent<ResourceNode>().resource.displayName} harvest begin!");
+                transform.forward = (targetObject.transform.position - transform.position).normalized;
+                harvestRoutine = StartCoroutine(WaitToReturn(5));
+            }
         }
     }
 

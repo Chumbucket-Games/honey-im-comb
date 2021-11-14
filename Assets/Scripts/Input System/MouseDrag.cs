@@ -65,7 +65,7 @@ public class MouseDrag : MonoBehaviour
         isMouseDown = false;
 
         var endPosition = Mouse.current.position.ReadValue();
-        var dimensions = GetSelectBoxDimensions(startPosition, endPosition);
+        var dimensions = GetSelectBoxWorldDimensions(startPosition, endPosition);
         var position = GetSelectBoxPosition(startPosition, endPosition);
         
         onMouseDragEnd?.Invoke(dimensions, position);
@@ -75,6 +75,18 @@ public class MouseDrag : MonoBehaviour
     private Vector2 GetSelectBoxDimensions(Vector2 startPosition, Vector2 currentEndPosition)
     {
         Vector2 dimensions = currentEndPosition - startPosition;
+        dimensions = new Vector2(Mathf.Abs(dimensions.x), Mathf.Abs(dimensions.y));
+
+        return dimensions;
+    }
+
+    private Vector2 GetSelectBoxWorldDimensions(Vector2 startPosition, Vector2 currentEndPosition)
+    {
+        float zPosition = (Camera.main.transform.forward == Vector3.forward ? Camera.main.transform.position.z : Camera.main.transform.position.y) - 3;
+        Vector2 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
+        Vector2 startWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(startPosition.x, startPosition.y, zPosition));
+
+        Vector2 dimensions = currentEndWorldPosition - startWorldPosition;
         dimensions = new Vector2(Mathf.Abs(dimensions.x), Mathf.Abs(dimensions.y));
 
         return dimensions;

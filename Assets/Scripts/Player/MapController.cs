@@ -103,12 +103,21 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         if (!IsBuildingMode)
         {
             selectedObjects.Clear();
+            Vector3 worldPos;
 
-            Vector3 halfExtents = dimensions / 2f;
-            var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.nearClipPlane));
+            Vector2 halfExtents = dimensions / 2f;
+            if (IsHiveMode)
+            {
+                worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.z - 3));
+            }
+            else
+            {
+                worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.y - 3));
+            }
 
             // Select the units within the bounding box
             RaycastHit[] hits = Physics.BoxCastAll(worldPos, halfExtents, Camera.main.transform.forward);
+            
             foreach (var hit in hits)
             {
                 if (hit.collider.CompareTag("Unit"))
