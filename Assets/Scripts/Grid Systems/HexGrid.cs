@@ -134,7 +134,7 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 			// Cell falls outside of the grid bounds.
 			return false;
 		}
-		if (cells[cellIndex] == null)
+		if (cells[cellIndex] == null || (cells[cellIndex].GetComponent<Building>() && cells[cellIndex].GetComponent<Building>().type != emptyCellPrefab.GetComponent<Building>().type))
 		{
 			// Building has been placed in this cell.
 			return false;
