@@ -1034,7 +1034,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3333334, y: 1}
+    m_SensorSize: {x: 2.1213872, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2092,7 +2092,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mapController
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 739142367}
     - target: {fileID: 6497809665727555877, guid: 8a7ea436c2f535148bbfea9c685730d9,
         type: 3}
       propertyPath: m_RootOrder
