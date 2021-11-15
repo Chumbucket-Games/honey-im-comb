@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/__Scenes/Main Menu.unity
+    guid: 87023a8a98c5c214c9314f984f07248d
+  - enabled: 1
     path: Assets/__Scenes/The Hive.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
