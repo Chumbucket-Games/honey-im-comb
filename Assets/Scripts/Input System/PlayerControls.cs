@@ -273,15 +273,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Build Throne"",
-                    ""type"": ""Button"",
-                    ""id"": ""92d60eec-a666-479f-8bba-8efe6f8c72dc"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Place Building"",
                     ""type"": ""Button"",
                     ""id"": ""ff0e0b26-efad-44bf-918c-a29bf8622a44"",
@@ -367,17 +358,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c5281152-99af-4d39-be5b-b4f1ffec40ff"",
-                    ""path"": ""<Keyboard>/6"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Build Throne"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""31d424bf-4dba-4e5d-a0aa-81c8c6135be2"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
@@ -432,7 +412,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_HiveManagement_BuildBarracks = m_HiveManagement.FindAction("Build Barracks", throwIfNotFound: true);
         m_HiveManagement_BuildLaboratory = m_HiveManagement.FindAction("Build Laboratory", throwIfNotFound: true);
         m_HiveManagement_BuildSentry = m_HiveManagement.FindAction("Build Sentry", throwIfNotFound: true);
-        m_HiveManagement_BuildThrone = m_HiveManagement.FindAction("Build Throne", throwIfNotFound: true);
         m_HiveManagement_PlaceBuilding = m_HiveManagement.FindAction("Place Building", throwIfNotFound: true);
         m_HiveManagement_CancelBuild = m_HiveManagement.FindAction("Cancel Build", throwIfNotFound: true);
         m_HiveManagement_Cursor = m_HiveManagement.FindAction("Cursor", throwIfNotFound: true);
@@ -606,7 +585,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_HiveManagement_BuildBarracks;
     private readonly InputAction m_HiveManagement_BuildLaboratory;
     private readonly InputAction m_HiveManagement_BuildSentry;
-    private readonly InputAction m_HiveManagement_BuildThrone;
     private readonly InputAction m_HiveManagement_PlaceBuilding;
     private readonly InputAction m_HiveManagement_CancelBuild;
     private readonly InputAction m_HiveManagement_Cursor;
@@ -619,7 +597,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @BuildBarracks => m_Wrapper.m_HiveManagement_BuildBarracks;
         public InputAction @BuildLaboratory => m_Wrapper.m_HiveManagement_BuildLaboratory;
         public InputAction @BuildSentry => m_Wrapper.m_HiveManagement_BuildSentry;
-        public InputAction @BuildThrone => m_Wrapper.m_HiveManagement_BuildThrone;
         public InputAction @PlaceBuilding => m_Wrapper.m_HiveManagement_PlaceBuilding;
         public InputAction @CancelBuild => m_Wrapper.m_HiveManagement_CancelBuild;
         public InputAction @Cursor => m_Wrapper.m_HiveManagement_Cursor;
@@ -647,9 +624,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @BuildSentry.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
                 @BuildSentry.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
                 @BuildSentry.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
-                @BuildThrone.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildThrone;
-                @BuildThrone.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildThrone;
-                @BuildThrone.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildThrone;
                 @PlaceBuilding.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
                 @PlaceBuilding.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
                 @PlaceBuilding.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
@@ -678,9 +652,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @BuildSentry.started += instance.OnBuildSentry;
                 @BuildSentry.performed += instance.OnBuildSentry;
                 @BuildSentry.canceled += instance.OnBuildSentry;
-                @BuildThrone.started += instance.OnBuildThrone;
-                @BuildThrone.performed += instance.OnBuildThrone;
-                @BuildThrone.canceled += instance.OnBuildThrone;
                 @PlaceBuilding.started += instance.OnPlaceBuilding;
                 @PlaceBuilding.performed += instance.OnPlaceBuilding;
                 @PlaceBuilding.canceled += instance.OnPlaceBuilding;
@@ -714,7 +685,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnBuildBarracks(InputAction.CallbackContext context);
         void OnBuildLaboratory(InputAction.CallbackContext context);
         void OnBuildSentry(InputAction.CallbackContext context);
-        void OnBuildThrone(InputAction.CallbackContext context);
         void OnPlaceBuilding(InputAction.CallbackContext context);
         void OnCancelBuild(InputAction.CallbackContext context);
         void OnCursor(InputAction.CallbackContext context);

@@ -17,7 +17,10 @@ public class BuildingType : ColonyObject
     public int pebbleCost;
     public int honeyCost;
     public HexCell cell;
-
+    public Unit[] unitTypes;
+    public bool winWhenDestroyed = false;
+    public bool loseWhenDestroyed = false;
+    
     public bool PlaceBuilding(HexGrid grid, int cellIndex)
     {
         //Vector2Int[] cellPositions;
@@ -107,5 +110,25 @@ public class BuildingType : ColonyObject
                 break;
         }
         return grid.ReplaceCells(cellPositions, gridLayout, cell);
+    }
+
+    public void SwitchUnit(Unit oldUnit, Unit newUnit)
+    {
+        Instantiate(newUnit, oldUnit.transform.position, oldUnit.transform.rotation);
+        Destroy(oldUnit);
+    }
+
+    public void OnDestroyed(Building instance)
+    {
+        if (winWhenDestroyed)
+        {
+            // Win the game.
+            MapController.WinGame();
+        }
+        else if (loseWhenDestroyed)
+        {
+            // Lose the game.
+            MapController.LoseGame();
+        }
     }
 }

@@ -251,15 +251,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Build Throne",
-                    "type": "Button",
-                    "id": "92d60eec-a666-479f-8bba-8efe6f8c72dc",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Place Building",
                     "type": "Button",
                     "id": "ff0e0b26-efad-44bf-918c-a29bf8622a44",
@@ -340,17 +331,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Build Sentry",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c5281152-99af-4d39-be5b-b4f1ffec40ff",
-                    "path": "<Keyboard>/6",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Build Throne",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

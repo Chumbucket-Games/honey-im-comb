@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   label: Wasp Hive
   image: {fileID: 0}
-  maxHealth: 0
+  maxHealth: 500
   gridLayout: 1
   pebbleCost: 0
   honeyCost: 0
   cell: {fileID: 0}
+  unitTypes: []
+  winWhenDestroyed: 0
+  loseWhenDestroyed: 0

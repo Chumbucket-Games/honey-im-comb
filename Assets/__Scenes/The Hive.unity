@@ -845,6 +845,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 623666542}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1369264005 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5489859523178904315, guid: aaa52aca64737084b96744cc272c0eb2,
+    type: 3}
+  m_PrefabInstance: {fileID: 654745253457943008}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96be58a2bda2ef14fba2698ef9c1882c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1399021481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1034,7 +1046,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3333334, y: 1}
+    m_SensorSize: {x: 2.1271677, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1810,6 +1822,16 @@ PrefabInstance:
       propertyPath: overworldCamera
       value: 
       objectReference: {fileID: 1748165641}
+    - target: {fileID: 2472854112851147335, guid: 486e258dfcda0a84982a567910396235,
+        type: 3}
+      propertyPath: spawners.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472854112851147335, guid: 486e258dfcda0a84982a567910396235,
+        type: 3}
+      propertyPath: spawners.Array.data[0]
+      value: 
+      objectReference: {fileID: 1369264005}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 486e258dfcda0a84982a567910396235, type: 3}
 --- !u!1001 &2938464828954038366

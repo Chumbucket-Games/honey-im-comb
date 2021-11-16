@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class MapController : MonoBehaviour, PlayerControls.IUnitManagementActions
 {
@@ -14,6 +15,26 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     private List<ISelectable> selectedObjects = new List<ISelectable>();
     public bool IsHiveMode = true;
     bool IsBuildingMode = false;
+    [SerializeField] EnemySpawner[] spawners;
+
+    private void Update()
+    {
+        int destroyedSpawners = 0;
+        foreach (var spawner in spawners)
+        {
+            if (spawner.IsDead)
+            {
+                spawner.gameObject.SetActive(false);
+                destroyedSpawners++;
+            }
+        }
+
+        if (destroyedSpawners == spawners.Length)
+        {
+            // Win the game.
+            WinGame();
+        }
+    }
 
     private void OnEnable()
     {
@@ -27,6 +48,18 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
         playerControls.UnitManagement.Enable();
         playerControls.CommonControls.ToggleMapMode.Enable();
+    }
+
+    public static void LoseGame()
+    {
+        Debug.Log("You lost. This world will fall to Decay.");
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    public static void WinGame()
+    {
+        Debug.Log("You won! The Decay is in retreat!");
+        SceneManager.LoadScene("Main Menu");
     }
 
     private void OnDisable()

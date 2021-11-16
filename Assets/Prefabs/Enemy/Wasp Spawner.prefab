@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 654745253297423189}
   - component: {fileID: 5489859523178904315}
   - component: {fileID: 7763961073835492370}
+  - component: {fileID: 6198728440357809352}
   m_Layer: 0
   m_Name: Wasp Spawner
   m_TagString: Untagged
@@ -139,6 +140,20 @@ MonoBehaviour:
   shapeColor: {r: 0.9056604, g: 0.252047, b: 0.252047, a: 0.8}
   shape: 1
   size: 3
+--- !u!136 &6198728440357809352
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654745253297423188}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 5
+  m_Height: 13
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.5, z: 0}
 --- !u!1 &6432886953236687565
 GameObject:
   m_ObjectHideFlags: 0

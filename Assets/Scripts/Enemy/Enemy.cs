@@ -124,7 +124,7 @@ public class Enemy : MonoBehaviour
         if (targetObject.GetComponent<Unit>())
         {
             Debug.Log("Attacking bee!");
-            targetObject.GetComponent<Unit>().TakeDamage(unitType.baseDamage);
+            targetObject.GetComponent<Unit>().TakeDamage(gameObject, unitType.baseDamage);
             if (!targetObject.GetComponent<Unit>().IsDead)
             {
                 attackRoutine = StartCoroutine(Attack());
@@ -137,14 +137,14 @@ public class Enemy : MonoBehaviour
                 TargetHive();
             }
         }
-        else if (targetObject.CompareTag("Building"))
+        else if (targetObject.CompareTag("Hive"))
         {
-            /*targetObject.GetComponent<Building>().TakeDamage(unitType.baseDamage);
+            Debug.Log("Attacking the hive!");
+            targetObject.GetComponent<Building>().TakeDamage(unitType.baseDamage);
             if (!targetObject.GetComponent<Building>().IsDead)
             {
-                attackRoutine = Attack();
-                StartCoroutine(attackRoutine);
-            }*/
+                attackRoutine = StartCoroutine(Attack());
+            }
         }
     }
 

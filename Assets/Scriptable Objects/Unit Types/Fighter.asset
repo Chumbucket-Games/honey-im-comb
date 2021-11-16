@@ -9,16 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f72b51f8535b2b429e4cf059d32a863, type: 3}
-  m_Name: Hive
+  m_Script: {fileID: 11500000, guid: 9b8e7427332baac4cb873f2842bbd3c0, type: 3}
+  m_Name: Fighter
   m_EditorClassIdentifier: 
-  label: Hive
+  label: Fighter
   image: {fileID: 0}
-  maxHealth: 1000
-  gridLayout: 1
-  pebbleCost: 0
-  honeyCost: 0
-  cell: {fileID: 0}
-  unitTypes: []
-  winWhenDestroyed: 0
-  loseWhenDestroyed: 1
+  maxHealth: 80
+  moveSpeed: 5
+  turnSpeed: 180
+  attackRate: 1
+  baseDamage: 5

@@ -15,11 +15,14 @@ public class EnemySpawner : MonoBehaviour
     private bool spawningEnabled = false;
     private float nextSpawnTime = 0.0f;
     private EnemyWave currentWave;
+    float health;
+    public bool IsDead { get; private set; } = false;
 
     // Start is called before the first frame update
     void Start()
     {
         EnableSpawning();
+        health = buildingType.maxHealth;
     }
 
     // Update is called once per frame
@@ -79,5 +82,23 @@ public class EnemySpawner : MonoBehaviour
         var colSize = Mathf.FloorToInt(waveColumnSize.Evaluate(Time.time / 60f));
 
         return new Vector2Int(rowSize, colSize);
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        health = Mathf.Max(0, health - dmg);
+
+        if (health <= 0)
+        {
+            OnDestroyed();
+        }
+        // Destroying the game object is handled by the map controller to prevent any broken references.
+    }
+
+    public void OnDestroyed()
+    {
+        // Update the game state manager to indicate that a spawner has been destroyed. Win the game when all spawners are destroyed.
+        IsDead = true;
+        DisableSpawning();
     }
 }

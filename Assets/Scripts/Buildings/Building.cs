@@ -9,6 +9,7 @@ public class Building : MonoBehaviour, ISelectable
     private MeshRenderer meshRenderer;
 
     float health;
+    public bool IsDead { get; private set; } = false;
     public BuildingType type;
     public bool IsMovable()
     {
@@ -43,5 +44,22 @@ public class Building : MonoBehaviour, ISelectable
     void Update()
     {
 
+    }
+
+    public void OnDestroyed()
+    {
+        type.OnDestroyed(this);
+        IsDead = true;
+        Destroy(gameObject);
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        health = Mathf.Max(0, health - dmg);
+
+        if (health <= 0)
+        {
+            OnDestroyed();
+        }
     }
 }

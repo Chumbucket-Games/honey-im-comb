@@ -43,6 +43,22 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 				}
 			}
 		}
+		int throneIndex;
+		// Place the throne in the center of the hive.
+		if ((width * height) % 2 == 0)
+		{
+			// If the grid size is even, we need this offset to ensure it is placed in the middle and not the edges.
+			throneIndex = (width * height / 2) + (width / 2);
+		}
+		else
+		{
+			// If the grid size is odd, this will work as-is.
+			throneIndex = width * height / 2;
+		}
+		if (!throne.PlaceBuilding(this, throneIndex))
+		{
+			throw new System.Exception("Unable to place throne in center of hive.");
+		}
 	}
 
 	#region Cell manipulation
@@ -63,7 +79,7 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 			y = y * (HexMetrics.outerRadius * 1.5f)
 		};
 		HexCell cell = cells[i] = Instantiate(newCell);
-		cell.index = i;
+		cell.Index = i;
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, y);
@@ -116,7 +132,7 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 		if (newCell != null)
 		{
 			HexCell cell = cells[index] = Instantiate(newCell);
-			cell.index = index;
+			cell.Index = index;
 			cell.transform.SetParent(transform, false);
 			cell.transform.localPosition = position;
 			cell.coordinates = coord;
@@ -265,14 +281,6 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 		}
 	}
 
-	public void OnBuildThrone(InputAction.CallbackContext context)
-	{
-		if (context.performed)
-		{
-			SelectBuilding(throne);
-		}
-	}
-
 	public void OnCursor(InputAction.CallbackContext context)
 	{
 		cursorPosition = context.ReadValue<Vector2>();
@@ -287,7 +295,7 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 			{
 				if (hit.collider.CompareTag("Building") && hit.transform.gameObject.GetComponent<Building>().type == emptyCellPrefab.GetComponent<Building>().type)
 				{
-					if (selectedBuilding.PlaceBuilding(this, hit.transform.gameObject.GetComponent<HexCell>().index))
+					if (selectedBuilding.PlaceBuilding(this, hit.transform.gameObject.GetComponent<HexCell>().Index))
 					{
 						Debug.Log($"{selectedBuilding.label} has been built.");
 						// Spend resources on the building. In a future commit, the allocated cells will require a worker bee present to construct the building over time.

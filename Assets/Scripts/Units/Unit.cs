@@ -18,6 +18,7 @@ public class Unit : MonoBehaviour, ISelectable
     ResourceStack stack;
     Rigidbody rb;
     public bool IsDead { get; private set; } = false;
+    bool IsAttacking = false;
 
     Coroutine attackRoutine;
     Coroutine harvestRoutine;
@@ -205,6 +206,11 @@ public class Unit : MonoBehaviour, ISelectable
                 transform.forward = (targetObject.transform.position - transform.position).normalized;
                 harvestRoutine = StartCoroutine(WaitToReturn(5));
             }
+            else if (targetObject.GetComponent<EnemySpawner>() || targetObject.GetComponent<Enemy>())
+            {
+                IsAttacking = true;
+                StartCoroutine(Attack());
+            }
         }
     }
 
@@ -248,9 +254,10 @@ public class Unit : MonoBehaviour, ISelectable
     IEnumerator Attack()
     {
         yield return new WaitForSeconds(type.attackRate);
-        Debug.Log("Attacking enemy!");
+        
         if (targetObject.GetComponent<Unit>())
         {
+            Debug.Log("Attacking enemy!");
             targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage);
             if (!targetObject.GetComponent<Enemy>().IsDead)
             {
@@ -259,21 +266,29 @@ public class Unit : MonoBehaviour, ISelectable
         }
         else if (targetObject.GetComponent<EnemySpawner>())
         {
-            /*targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
+            Debug.Log("Attacking spawner!");
+            targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
             if (!targetObject.GetComponent<EnemySpawner>().IsDead)
             {
-                StartCoroutine(attackRoutine);
-            }*/
+                attackRoutine = StartCoroutine(Attack());
+            }
         }
     }
 
-    public void TakeDamage(float dmg)
+    public void TakeDamage(GameObject source, float dmg)
     {
         health = Mathf.Max(0, health - dmg);
 
         if (health <= 0)
         {
             OnDie();
+        }
+
+        // If the bee is not currently attacking anything, attack the enemy that attacked it.
+        if (!IsAttacking)
+        {
+            targetObject = source;
+            IsAttacking = true;
         }
     }
 
