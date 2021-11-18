@@ -241,13 +241,14 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
     {
         string resource = stack.resource ? stack.resource.displayName + " - " + stack.quantity : "None";
         Debug.Log($"{type.label} selected. Current health: {health}. Current resources collected: {resource}");
-        unitSelected = true;
         // Bring up the UI for the selected unit.
+        SelectUnit();
     }
 
     public void OnDeselect()
     {
         // Dismiss UI for selected unit and remove selection ring.
+        DeselectUnit();
     }
 
     public void DidReachDestination()

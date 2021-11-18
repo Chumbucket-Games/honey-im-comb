@@ -118,6 +118,10 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
     public void OnBoxSelect(Vector2 dimensions, Vector2 position)
     {
+        foreach (var selectedObject in selectedObjects)
+        {
+            selectedObject.OnDeselect();
+        }
         selectedObjects.Clear();
         Vector3 worldPos;
 
