@@ -116,14 +116,16 @@ public class BuildingType : ColonyObject
 
     public static void SwitchUnit(Unit oldUnit)
     {
-        if (oldUnit.type.buildingType != oldUnit.AssociatedBuilding)
+        if (oldUnit.type.buildingType != oldUnit.AssociatedBuilding.type)
         {
+            Debug.Log("Switching to new role!");
             Unit newUnit = Instantiate(oldUnit.AssociatedBuilding.type.associatedUnitPrefab, oldUnit.transform.position, oldUnit.transform.rotation);
             oldUnit.AssociatedBuilding.AttachUnit(newUnit);
             newUnit.AttachBuilding(oldUnit.AssociatedBuilding);
         }
         else
         {
+            Debug.Log("Reverting to worker role");
             Instantiate(oldUnit.AssociatedBuilding.type.workerPrefab, oldUnit.transform.position, oldUnit.transform.rotation);
             oldUnit.AssociatedBuilding.DetachUnit(oldUnit);
             oldUnit.DetachCurrentBuilding();

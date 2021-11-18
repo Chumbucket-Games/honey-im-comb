@@ -291,7 +291,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 Debug.Log($"Interacting with {targetObject.GetComponent<Unit>().type.label}!");
                 transform.forward = (targetObject.transform.position - transform.position).normalized;
             }
-            else if (targetObject.GetComponent<ResourceNode>())
+            else if (targetObject.GetComponent<ResourceNode>() && type.isBuilder)
             {
                 // Start harvesting the resource node.
                 harvestMode = true;
@@ -561,6 +561,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         harvestMode = false;
         returningToHive = false;
         returningToNode = false;
+        movingToBuilding = false;
         moving = false;
         StopAllCoroutines();
         SwitchingRole = true;
@@ -580,8 +581,6 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         {
             // Revert to worker bee.
             ExchangeUnit(-1);
-
-            Destroy(gameObject);
         }
     }
 

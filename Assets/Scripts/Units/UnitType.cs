@@ -8,7 +8,7 @@ public class UnitType : ColonyObject
     [SerializeField] public float turnSpeed;
     [SerializeField] public float attackRate = 1;
     [SerializeField] public int baseDamage = 5;
-    [SerializeField] bool isBuilder = false;
+    [SerializeField] public bool isBuilder = false;
     [SerializeField] public BuildingType buildingType;
 
     public void PerformAction(int actionID, Unit instance)
