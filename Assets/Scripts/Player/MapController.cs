@@ -13,8 +13,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     private PlayerControls playerControls;
     private Vector2 cursorPosition = Vector2.zero;
     private List<ISelectable> selectedObjects = new List<ISelectable>();
-    public bool IsHiveMode = true;
-    bool IsBuildingMode = false;
+    public bool IsHiveMode { get; private set; } = true;
     [SerializeField] EnemySpawner[] spawners;
 
     private void Update()
@@ -69,7 +68,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
     public void OnMapToggle(InputAction.CallbackContext context)
     {
-        if (context.performed && !IsBuildingMode)
+        if (context.performed)
         {
             IsHiveMode = !IsHiveMode;
 
@@ -88,7 +87,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed && selectedObjects.Count > 0 && !IsBuildingMode)
+        if (context.performed && selectedObjects.Count > 0)
         {
             foreach (var selectedObject in selectedObjects)
             {
@@ -112,20 +111,6 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         }
     }
 
-    public void SetBuildMode(bool isBuild)
-    {
-        IsBuildingMode = isBuild;
-
-        if (IsBuildingMode)
-        {
-            EnableInput();
-        }
-        else
-        {
-            DisableInput();
-        }
-    }
-
     public void OnCursor(InputAction.CallbackContext context)
     {
         cursorPosition = context.ReadValue<Vector2>();
@@ -133,32 +118,33 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
     public void OnBoxSelect(Vector2 dimensions, Vector2 position)
     {
-        if (!IsBuildingMode)
+        selectedObjects.Clear();
+        Vector3 worldPos;
+
+        Vector2 halfExtents = dimensions / 2f;
+        if (IsHiveMode)
         {
-            selectedObjects.Clear();
-            Vector3 worldPos;
+            worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Mathf.Abs(Camera.main.transform.position.z) - 3));
+        }
+        else
+        {
+            worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.y - 3));
+        }
 
-            Vector2 halfExtents = dimensions / 2f;
-            if (IsHiveMode)
-            {
-                worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.z - 3));
-            }
-            else
-            {
-                worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.y - 3));
-            }
-
-            // Select the units within the bounding box
-            RaycastHit[] hits = Physics.BoxCastAll(worldPos, halfExtents, Camera.main.transform.forward);
+        // Select the units within the bounding box
+        RaycastHit[] hits = Physics.BoxCastAll(worldPos, halfExtents, Camera.main.transform.forward);
             
-            foreach (var hit in hits)
+        foreach (var hit in hits)
+        {
+            if (hit.collider.CompareTag("Unit"))
             {
-                if (hit.collider.CompareTag("Unit"))
-                {
-                    selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
+                selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
 
-                    Debug.Log($"Unit {hit.transform.gameObject.name} selected");
-                }
+                Debug.Log($"Unit {hit.transform.gameObject.name} selected");
+            }
+            else if (hit.collider.CompareTag("Building"))
+            {
+                selectedObjects.Add(hit.transform.gameObject.GetComponent<Building>());
             }
         }
     }
