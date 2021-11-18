@@ -228,7 +228,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ""id"": ""c5600613-ee62-4abe-9879-e240dd092dc4"",
             ""actions"": [
                 {
-                    ""name"": ""Build Wall"",
+                    ""name"": ""Action1"",
                     ""type"": ""Button"",
                     ""id"": ""2074eea3-6bbb-4c6a-8278-ba9fce13fc15"",
                     ""expectedControlType"": ""Button"",
@@ -237,7 +237,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Build Storeroom"",
+                    ""name"": ""Action2"",
                     ""type"": ""Button"",
                     ""id"": ""d4862257-cd0e-4a19-aada-cad0ef608502"",
                     ""expectedControlType"": ""Button"",
@@ -246,7 +246,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Build Barracks"",
+                    ""name"": ""Action3"",
                     ""type"": ""Button"",
                     ""id"": ""e2acc15a-4a70-495b-b761-a3ca42882f79"",
                     ""expectedControlType"": ""Button"",
@@ -255,7 +255,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Build Laboratory"",
+                    ""name"": ""Action4"",
                     ""type"": ""Button"",
                     ""id"": ""15e970dc-f592-4d9d-92ac-d11b49f3222e"",
                     ""expectedControlType"": ""Button"",
@@ -264,7 +264,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Build Sentry"",
+                    ""name"": ""Action5"",
                     ""type"": ""Button"",
                     ""id"": ""2ed4f00c-ed61-4509-8fed-85f89eae7074"",
                     ""expectedControlType"": ""Button"",
@@ -298,6 +298,42 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Action6"",
+                    ""type"": ""Button"",
+                    ""id"": ""7f321693-8821-4aca-9238-0d0643d39f4b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action7"",
+                    ""type"": ""Button"",
+                    ""id"": ""9fbb0ff5-baff-452c-9d18-76d3111eac6e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action8"",
+                    ""type"": ""Button"",
+                    ""id"": ""cfcd736c-9967-4c7e-ad71-78d2e3e78041"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Action9"",
+                    ""type"": ""Button"",
+                    ""id"": ""dfc6f726-4716-4cca-8903-7107b8b78bcf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -308,7 +344,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Build Wall"",
+                    ""action"": ""Action1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -319,7 +355,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Build Storeroom"",
+                    ""action"": ""Action2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -330,7 +366,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Build Barracks"",
+                    ""action"": ""Action3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -341,7 +377,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Build Laboratory"",
+                    ""action"": ""Action4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -352,7 +388,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Build Sentry"",
+                    ""action"": ""Action5"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -388,6 +424,50 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Cursor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11ea3363-e010-4f55-9f18-c178e556a987"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""00fe548f-7965-44eb-b75c-97c6d3f014fb"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action7"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed2e5e95-0de8-4a57-aad2-073f005ced96"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action8"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ead8c60-6074-4008-8148-8b0de81e598f"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action9"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -407,14 +487,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UnitManagement_Cursor = m_UnitManagement.FindAction("Cursor", throwIfNotFound: true);
         // Hive Management
         m_HiveManagement = asset.FindActionMap("Hive Management", throwIfNotFound: true);
-        m_HiveManagement_BuildWall = m_HiveManagement.FindAction("Build Wall", throwIfNotFound: true);
-        m_HiveManagement_BuildStoreroom = m_HiveManagement.FindAction("Build Storeroom", throwIfNotFound: true);
-        m_HiveManagement_BuildBarracks = m_HiveManagement.FindAction("Build Barracks", throwIfNotFound: true);
-        m_HiveManagement_BuildLaboratory = m_HiveManagement.FindAction("Build Laboratory", throwIfNotFound: true);
-        m_HiveManagement_BuildSentry = m_HiveManagement.FindAction("Build Sentry", throwIfNotFound: true);
+        m_HiveManagement_Action1 = m_HiveManagement.FindAction("Action1", throwIfNotFound: true);
+        m_HiveManagement_Action2 = m_HiveManagement.FindAction("Action2", throwIfNotFound: true);
+        m_HiveManagement_Action3 = m_HiveManagement.FindAction("Action3", throwIfNotFound: true);
+        m_HiveManagement_Action4 = m_HiveManagement.FindAction("Action4", throwIfNotFound: true);
+        m_HiveManagement_Action5 = m_HiveManagement.FindAction("Action5", throwIfNotFound: true);
         m_HiveManagement_PlaceBuilding = m_HiveManagement.FindAction("Place Building", throwIfNotFound: true);
         m_HiveManagement_CancelBuild = m_HiveManagement.FindAction("Cancel Build", throwIfNotFound: true);
         m_HiveManagement_Cursor = m_HiveManagement.FindAction("Cursor", throwIfNotFound: true);
+        m_HiveManagement_Action6 = m_HiveManagement.FindAction("Action6", throwIfNotFound: true);
+        m_HiveManagement_Action7 = m_HiveManagement.FindAction("Action7", throwIfNotFound: true);
+        m_HiveManagement_Action8 = m_HiveManagement.FindAction("Action8", throwIfNotFound: true);
+        m_HiveManagement_Action9 = m_HiveManagement.FindAction("Action9", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -580,26 +664,34 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     // Hive Management
     private readonly InputActionMap m_HiveManagement;
     private IHiveManagementActions m_HiveManagementActionsCallbackInterface;
-    private readonly InputAction m_HiveManagement_BuildWall;
-    private readonly InputAction m_HiveManagement_BuildStoreroom;
-    private readonly InputAction m_HiveManagement_BuildBarracks;
-    private readonly InputAction m_HiveManagement_BuildLaboratory;
-    private readonly InputAction m_HiveManagement_BuildSentry;
+    private readonly InputAction m_HiveManagement_Action1;
+    private readonly InputAction m_HiveManagement_Action2;
+    private readonly InputAction m_HiveManagement_Action3;
+    private readonly InputAction m_HiveManagement_Action4;
+    private readonly InputAction m_HiveManagement_Action5;
     private readonly InputAction m_HiveManagement_PlaceBuilding;
     private readonly InputAction m_HiveManagement_CancelBuild;
     private readonly InputAction m_HiveManagement_Cursor;
+    private readonly InputAction m_HiveManagement_Action6;
+    private readonly InputAction m_HiveManagement_Action7;
+    private readonly InputAction m_HiveManagement_Action8;
+    private readonly InputAction m_HiveManagement_Action9;
     public struct HiveManagementActions
     {
         private @PlayerControls m_Wrapper;
         public HiveManagementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @BuildWall => m_Wrapper.m_HiveManagement_BuildWall;
-        public InputAction @BuildStoreroom => m_Wrapper.m_HiveManagement_BuildStoreroom;
-        public InputAction @BuildBarracks => m_Wrapper.m_HiveManagement_BuildBarracks;
-        public InputAction @BuildLaboratory => m_Wrapper.m_HiveManagement_BuildLaboratory;
-        public InputAction @BuildSentry => m_Wrapper.m_HiveManagement_BuildSentry;
+        public InputAction @Action1 => m_Wrapper.m_HiveManagement_Action1;
+        public InputAction @Action2 => m_Wrapper.m_HiveManagement_Action2;
+        public InputAction @Action3 => m_Wrapper.m_HiveManagement_Action3;
+        public InputAction @Action4 => m_Wrapper.m_HiveManagement_Action4;
+        public InputAction @Action5 => m_Wrapper.m_HiveManagement_Action5;
         public InputAction @PlaceBuilding => m_Wrapper.m_HiveManagement_PlaceBuilding;
         public InputAction @CancelBuild => m_Wrapper.m_HiveManagement_CancelBuild;
         public InputAction @Cursor => m_Wrapper.m_HiveManagement_Cursor;
+        public InputAction @Action6 => m_Wrapper.m_HiveManagement_Action6;
+        public InputAction @Action7 => m_Wrapper.m_HiveManagement_Action7;
+        public InputAction @Action8 => m_Wrapper.m_HiveManagement_Action8;
+        public InputAction @Action9 => m_Wrapper.m_HiveManagement_Action9;
         public InputActionMap Get() { return m_Wrapper.m_HiveManagement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -609,21 +701,21 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_HiveManagementActionsCallbackInterface != null)
             {
-                @BuildWall.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildWall;
-                @BuildWall.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildWall;
-                @BuildWall.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildWall;
-                @BuildStoreroom.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildStoreroom;
-                @BuildStoreroom.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildStoreroom;
-                @BuildStoreroom.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildStoreroom;
-                @BuildBarracks.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildBarracks;
-                @BuildBarracks.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildBarracks;
-                @BuildBarracks.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildBarracks;
-                @BuildLaboratory.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildLaboratory;
-                @BuildLaboratory.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildLaboratory;
-                @BuildLaboratory.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildLaboratory;
-                @BuildSentry.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
-                @BuildSentry.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
-                @BuildSentry.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnBuildSentry;
+                @Action1.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction1;
+                @Action1.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction1;
+                @Action1.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction1;
+                @Action2.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction2;
+                @Action2.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction2;
+                @Action2.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction2;
+                @Action3.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction3;
+                @Action3.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction3;
+                @Action3.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction3;
+                @Action4.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction4;
+                @Action4.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction4;
+                @Action4.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction4;
+                @Action5.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction5;
+                @Action5.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction5;
+                @Action5.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction5;
                 @PlaceBuilding.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
                 @PlaceBuilding.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
                 @PlaceBuilding.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnPlaceBuilding;
@@ -633,25 +725,37 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Cursor.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCursor;
                 @Cursor.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCursor;
                 @Cursor.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnCursor;
+                @Action6.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction6;
+                @Action6.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction6;
+                @Action6.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction6;
+                @Action7.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction7;
+                @Action7.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction7;
+                @Action7.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction7;
+                @Action8.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction8;
+                @Action8.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction8;
+                @Action8.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction8;
+                @Action9.started -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction9;
+                @Action9.performed -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction9;
+                @Action9.canceled -= m_Wrapper.m_HiveManagementActionsCallbackInterface.OnAction9;
             }
             m_Wrapper.m_HiveManagementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @BuildWall.started += instance.OnBuildWall;
-                @BuildWall.performed += instance.OnBuildWall;
-                @BuildWall.canceled += instance.OnBuildWall;
-                @BuildStoreroom.started += instance.OnBuildStoreroom;
-                @BuildStoreroom.performed += instance.OnBuildStoreroom;
-                @BuildStoreroom.canceled += instance.OnBuildStoreroom;
-                @BuildBarracks.started += instance.OnBuildBarracks;
-                @BuildBarracks.performed += instance.OnBuildBarracks;
-                @BuildBarracks.canceled += instance.OnBuildBarracks;
-                @BuildLaboratory.started += instance.OnBuildLaboratory;
-                @BuildLaboratory.performed += instance.OnBuildLaboratory;
-                @BuildLaboratory.canceled += instance.OnBuildLaboratory;
-                @BuildSentry.started += instance.OnBuildSentry;
-                @BuildSentry.performed += instance.OnBuildSentry;
-                @BuildSentry.canceled += instance.OnBuildSentry;
+                @Action1.started += instance.OnAction1;
+                @Action1.performed += instance.OnAction1;
+                @Action1.canceled += instance.OnAction1;
+                @Action2.started += instance.OnAction2;
+                @Action2.performed += instance.OnAction2;
+                @Action2.canceled += instance.OnAction2;
+                @Action3.started += instance.OnAction3;
+                @Action3.performed += instance.OnAction3;
+                @Action3.canceled += instance.OnAction3;
+                @Action4.started += instance.OnAction4;
+                @Action4.performed += instance.OnAction4;
+                @Action4.canceled += instance.OnAction4;
+                @Action5.started += instance.OnAction5;
+                @Action5.performed += instance.OnAction5;
+                @Action5.canceled += instance.OnAction5;
                 @PlaceBuilding.started += instance.OnPlaceBuilding;
                 @PlaceBuilding.performed += instance.OnPlaceBuilding;
                 @PlaceBuilding.canceled += instance.OnPlaceBuilding;
@@ -661,6 +765,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Cursor.started += instance.OnCursor;
                 @Cursor.performed += instance.OnCursor;
                 @Cursor.canceled += instance.OnCursor;
+                @Action6.started += instance.OnAction6;
+                @Action6.performed += instance.OnAction6;
+                @Action6.canceled += instance.OnAction6;
+                @Action7.started += instance.OnAction7;
+                @Action7.performed += instance.OnAction7;
+                @Action7.canceled += instance.OnAction7;
+                @Action8.started += instance.OnAction8;
+                @Action8.performed += instance.OnAction8;
+                @Action8.canceled += instance.OnAction8;
+                @Action9.started += instance.OnAction9;
+                @Action9.performed += instance.OnAction9;
+                @Action9.canceled += instance.OnAction9;
             }
         }
     }
@@ -680,13 +796,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     }
     public interface IHiveManagementActions
     {
-        void OnBuildWall(InputAction.CallbackContext context);
-        void OnBuildStoreroom(InputAction.CallbackContext context);
-        void OnBuildBarracks(InputAction.CallbackContext context);
-        void OnBuildLaboratory(InputAction.CallbackContext context);
-        void OnBuildSentry(InputAction.CallbackContext context);
+        void OnAction1(InputAction.CallbackContext context);
+        void OnAction2(InputAction.CallbackContext context);
+        void OnAction3(InputAction.CallbackContext context);
+        void OnAction4(InputAction.CallbackContext context);
+        void OnAction5(InputAction.CallbackContext context);
         void OnPlaceBuilding(InputAction.CallbackContext context);
         void OnCancelBuild(InputAction.CallbackContext context);
         void OnCursor(InputAction.CallbackContext context);
+        void OnAction6(InputAction.CallbackContext context);
+        void OnAction7(InputAction.CallbackContext context);
+        void OnAction8(InputAction.CallbackContext context);
+        void OnAction9(InputAction.CallbackContext context);
     }
 }

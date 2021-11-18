@@ -138,6 +138,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         {
             if (hit.collider.CompareTag("Unit"))
             {
+                hit.transform.gameObject.GetComponent<Unit>().SelectUnit();
                 selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
 
                 Debug.Log($"Unit {hit.transform.gameObject.name} selected");

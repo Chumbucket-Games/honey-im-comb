@@ -16,8 +16,10 @@ public class BuildingType : ColonyObject
     public LayoutType gridLayout;
     public int pebbleCost;
     public int honeyCost;
-    public HexCell cell;
-    public Unit[] unitTypes;
+    public Unit associatedUnitPrefab = null; // The unit associated with this building.
+    public Unit workerPrefab;
+    public int totalUnits = 1; // Default to 1 per building, but this can be increased on a per-building basis.
+    public HexCell cell; // The cell prefab that represents this building.
     public bool winWhenDestroyed = false;
     public bool loseWhenDestroyed = false;
     
@@ -112,13 +114,25 @@ public class BuildingType : ColonyObject
         return grid.ReplaceCells(cellPositions, gridLayout, cell);
     }
 
-    public void SwitchUnit(Unit oldUnit, Unit newUnit)
+    public static void SwitchUnit(Unit oldUnit)
     {
-        Instantiate(newUnit, oldUnit.transform.position, oldUnit.transform.rotation);
+        if (oldUnit.type.buildingType != oldUnit.AssociatedBuilding)
+        {
+            Unit newUnit = Instantiate(oldUnit.AssociatedBuilding.type.associatedUnitPrefab, oldUnit.transform.position, oldUnit.transform.rotation);
+            oldUnit.AssociatedBuilding.AttachUnit(newUnit);
+            newUnit.AttachBuilding(oldUnit.AssociatedBuilding);
+        }
+        else
+        {
+            Instantiate(oldUnit.AssociatedBuilding.type.workerPrefab, oldUnit.transform.position, oldUnit.transform.rotation);
+            oldUnit.AssociatedBuilding.DetachUnit(oldUnit);
+            oldUnit.DetachCurrentBuilding();
+        }
+        
         Destroy(oldUnit);
     }
 
-    public void OnDestroyed(Building instance)
+    public void OnDestroyed(/*Building instance*/)
     {
         if (winWhenDestroyed)
         {

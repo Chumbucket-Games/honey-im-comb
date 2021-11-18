@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
+public class HexGrid : MonoBehaviour
 {
 	public int width = 6;
 	public int height = 6;
@@ -16,14 +16,11 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 	public BuildingType throne;
 	public BuildingType lab;
 	public BuildingType wall;
-
-	BuildingType selectedBuilding;
+	static List<Building> placedBuildings;
+	public static int MaxUnits { get; private set; } = 6;
+	public static int CurrentUnits { get; private set; } = 6;
 
 	HexCell[] cells;
-	[SerializeField] MapController mapController;
-	bool IsBuildMode = false;
-	Vector2 cursorPosition;
-	PlayerControls playerControls;
 
 	void Awake()
 	{
@@ -44,6 +41,7 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 			}
 		}
 		int throneIndex;
+		
 		// Place the throne in the center of the hive.
 		if ((width * height) % 2 == 0)
 		{
@@ -55,10 +53,19 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 			// If the grid size is odd, this will work as-is.
 			throneIndex = width * height / 2;
 		}
+		
+		if (placedBuildings == null)
+		{
+			placedBuildings = new List<Building>();
+		}
+		
 		if (!throne.PlaceBuilding(this, throneIndex))
 		{
 			throw new System.Exception("Unable to place throne in center of hive.");
 		}
+
+		// Set the starting unit maximum based on the number of empty cells.
+		MaxUnits = height * width - 7;
 	}
 
 	#region Cell manipulation
@@ -109,7 +116,11 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 		{
 			if (i == 0)
 			{
-				ReplaceCell(cellsToReplace[i], newCell);
+				HexCell placedCell = ReplaceCell(cellsToReplace[i], newCell);
+				if (placedCell != null)
+				{
+					placedBuildings.Add(placedCell.GetComponent<Building>());
+				}
 			}
 			else
 			{
@@ -124,7 +135,7 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 	/// </summary>
 	/// <param name="index">The index of the cell to replace.</param>
 	/// <param name="newCell">The new cell</param>
-	void ReplaceCell(int index, HexCell newCell)
+	HexCell ReplaceCell(int index, HexCell newCell)
 	{
 		Vector3 position = cells[index].transform.localPosition;
 		HexCoordinates coord = cells[index].coordinates;
@@ -136,7 +147,10 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 			cell.transform.SetParent(transform, false);
 			cell.transform.localPosition = position;
 			cell.coordinates = coord;
+			MaxUnits--;
+			return cell;
 		}
+		return null;
 	}
 
 	#endregion
@@ -224,114 +238,8 @@ public class HexGrid : MonoBehaviour, PlayerControls.IHiveManagementActions
 		return transform.position + position;
 	}
 
-	#region Input Handlers
-
-	private void OnEnable()
+	public static Building FindFirstUnallocatedBuildingOfType(BuildingType type)
 	{
-		if (playerControls == null)
-		{
-			playerControls = new PlayerControls();
-			playerControls.HiveManagement.SetCallbacks(this);
-		}
-		playerControls.HiveManagement.Enable();
+		return placedBuildings.Find((building) => building.type == type && building.AssignedUnits.Count < building.type.totalUnits);
 	}
-
-	private void OnDisable()
-	{
-		playerControls.HiveManagement.Disable();
-	}
-
-	public void OnBuildWall(InputAction.CallbackContext context)
-	{
-		if (context.performed)
-		{
-			SelectBuilding(wall);
-		}
-	}
-
-	public void OnBuildStoreroom(InputAction.CallbackContext context)
-	{
-		if (context.performed)
-		{
-			SelectBuilding(storeroom);
-		}
-	}
-
-	public void OnBuildBarracks(InputAction.CallbackContext context)
-	{
-		if (context.performed)
-		{
-			SelectBuilding(barracks);
-		}
-	}
-
-	public void OnBuildLaboratory(InputAction.CallbackContext context)
-	{
-		if (context.performed)
-		{
-			SelectBuilding(lab);
-		}
-	}
-
-	public void OnBuildSentry(InputAction.CallbackContext context)
-	{
-		if (context.performed)
-		{
-			SelectBuilding(sentry);
-		}
-	}
-
-	public void OnCursor(InputAction.CallbackContext context)
-	{
-		cursorPosition = context.ReadValue<Vector2>();
-	}
-
-	public void OnPlaceBuilding(InputAction.CallbackContext context)
-	{
-		if (context.performed && selectedBuilding != null && IsBuildMode && mapController.IsHiveMode)
-		{
-			Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-			if (Physics.Raycast(ray, out var hit))
-			{
-				if (hit.collider.CompareTag("Building") && hit.transform.gameObject.GetComponent<Building>().type == emptyCellPrefab.GetComponent<Building>().type)
-				{
-					if (selectedBuilding.PlaceBuilding(this, hit.transform.gameObject.GetComponent<HexCell>().Index))
-					{
-						Debug.Log($"{selectedBuilding.label} has been built.");
-						// Spend resources on the building. In a future commit, the allocated cells will require a worker bee present to construct the building over time.
-
-						// Switch off build mode.
-						IsBuildMode = false;
-						mapController.SetBuildMode(false);
-						selectedBuilding = null;
-					}
-					else
-					{
-						Debug.Log("Cannot place building here.");
-					}
-				}
-			}
-		}
-	}
-
-	void SelectBuilding(BuildingType type)
-	{
-		IsBuildMode = true;
-		mapController.SetBuildMode(true);
-		selectedBuilding = type;
-		Debug.Log($"Build mode active. {type.label} selected.");
-	}
-
-	public void OnCancelBuild(InputAction.CallbackContext context)
-	{
-		if (context.performed && IsBuildMode)
-		{
-			IsBuildMode = false;
-			mapController.SetBuildMode(false);
-			selectedBuilding = null;
-			Debug.Log("Build mode cancelled.");
-		}
-	}
-
-    #endregion
 }

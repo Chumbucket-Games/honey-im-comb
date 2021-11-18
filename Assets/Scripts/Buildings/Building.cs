@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Building : MonoBehaviour, ISelectable
 {
@@ -11,6 +12,7 @@ public class Building : MonoBehaviour, ISelectable
     float health;
     public bool IsDead { get; private set; } = false;
     public BuildingType type;
+    public List<Unit> AssignedUnits { get; private set; }
     public bool IsMovable()
     {
         return false;
@@ -38,17 +40,12 @@ public class Building : MonoBehaviour, ISelectable
     {
         health = type.maxHealth;
         meshRenderer = GetComponent<MeshRenderer>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        AssignedUnits = new List<Unit>();
     }
 
     public void OnDestroyed()
     {
-        type.OnDestroyed(this);
+        type.OnDestroyed(/*this*/);
         IsDead = true;
         Destroy(gameObject);
     }
@@ -61,5 +58,15 @@ public class Building : MonoBehaviour, ISelectable
         {
             OnDestroyed();
         }
+    }
+
+    public void AttachUnit(Unit unit)
+    {
+        AssignedUnits.Add(unit);
+    }
+
+    public void DetachUnit(Unit unit)
+    {
+        AssignedUnits.Remove(unit);
     }
 }

@@ -18,4 +18,10 @@ MonoBehaviour:
   gridLayout: 1
   pebbleCost: 0
   honeyCost: 0
+  associatedUnitPrefab: {fileID: 0}
+  workerPrefab: {fileID: 2587172669540973284, guid: b1a012c57093c4d419e26b2951bffbf5,
+    type: 3}
+  totalUnits: 0
   cell: {fileID: 8607410876945458792, guid: 91f2fffce1ba6724dae48c2d89978a31, type: 3}
+  winWhenDestroyed: 0
+  loseWhenDestroyed: 0

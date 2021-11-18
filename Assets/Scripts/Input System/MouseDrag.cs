@@ -32,12 +32,6 @@ public class MouseDrag : MonoBehaviour
         playerControls.UnitManagement.Select.Disable();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -82,7 +76,7 @@ public class MouseDrag : MonoBehaviour
 
     private Vector2 GetSelectBoxWorldDimensions(Vector2 startPosition, Vector2 currentEndPosition)
     {
-        float zPosition = (Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 3 : Camera.main.transform.position.y - 3);
+        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 3.2f : Camera.main.transform.position.y - 3;
         Vector2 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
         Vector2 startWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(startPosition.x, startPosition.y, zPosition));
 

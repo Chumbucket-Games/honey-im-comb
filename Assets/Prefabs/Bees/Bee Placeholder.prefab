@@ -340,6 +340,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   type: {fileID: 11400000, guid: 014db35d75c20ed44b20a7b000ba96eb, type: 2}
+  buildings:
+  - {fileID: 11400000, guid: 0a5e5c3cfede26144bd2531fad2a8172, type: 2}
+  - {fileID: 11400000, guid: 2cf553eaf103f7148b2acba55dc501b2, type: 2}
+  - {fileID: 11400000, guid: b90e2caa2f8a7b54aaae09bfa422d46a, type: 2}
+  - {fileID: 11400000, guid: de5798dcd12d6e2419d3572be0627d31, type: 2}
+  - {fileID: 11400000, guid: 4d9180772e82f4744b2f4d978f63e2cb, type: 2}
+  emptyCell: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
+  workerPrefab: {fileID: 2587172669540973284}
 --- !u!65 &4795079757857621639
 BoxCollider:
   m_ObjectHideFlags: 0

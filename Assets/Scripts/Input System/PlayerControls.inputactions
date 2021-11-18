@@ -206,7 +206,7 @@
             "id": "c5600613-ee62-4abe-9879-e240dd092dc4",
             "actions": [
                 {
-                    "name": "Build Wall",
+                    "name": "Action1",
                     "type": "Button",
                     "id": "2074eea3-6bbb-4c6a-8278-ba9fce13fc15",
                     "expectedControlType": "Button",
@@ -215,7 +215,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Build Storeroom",
+                    "name": "Action2",
                     "type": "Button",
                     "id": "d4862257-cd0e-4a19-aada-cad0ef608502",
                     "expectedControlType": "Button",
@@ -224,7 +224,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Build Barracks",
+                    "name": "Action3",
                     "type": "Button",
                     "id": "e2acc15a-4a70-495b-b761-a3ca42882f79",
                     "expectedControlType": "Button",
@@ -233,7 +233,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Build Laboratory",
+                    "name": "Action4",
                     "type": "Button",
                     "id": "15e970dc-f592-4d9d-92ac-d11b49f3222e",
                     "expectedControlType": "Button",
@@ -242,7 +242,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Build Sentry",
+                    "name": "Action5",
                     "type": "Button",
                     "id": "2ed4f00c-ed61-4509-8fed-85f89eae7074",
                     "expectedControlType": "Button",
@@ -276,6 +276,42 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Action6",
+                    "type": "Button",
+                    "id": "7f321693-8821-4aca-9238-0d0643d39f4b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Action7",
+                    "type": "Button",
+                    "id": "9fbb0ff5-baff-452c-9d18-76d3111eac6e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Action8",
+                    "type": "Button",
+                    "id": "cfcd736c-9967-4c7e-ad71-78d2e3e78041",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Action9",
+                    "type": "Button",
+                    "id": "dfc6f726-4716-4cca-8903-7107b8b78bcf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -286,7 +322,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Build Wall",
+                    "action": "Action1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -297,7 +333,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Build Storeroom",
+                    "action": "Action2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -308,7 +344,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Build Barracks",
+                    "action": "Action3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -319,7 +355,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Build Laboratory",
+                    "action": "Action4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -330,7 +366,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Build Sentry",
+                    "action": "Action5",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -364,6 +400,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Cursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11ea3363-e010-4f55-9f18-c178e556a987",
+                    "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action6",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "00fe548f-7965-44eb-b75c-97c6d3f014fb",
+                    "path": "<Keyboard>/7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action7",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed2e5e95-0de8-4a57-aad2-073f005ced96",
+                    "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action8",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ead8c60-6074-4008-8148-8b0de81e598f",
+                    "path": "<Keyboard>/9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Action9",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
