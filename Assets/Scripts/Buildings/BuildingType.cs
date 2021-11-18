@@ -129,7 +129,7 @@ public class BuildingType : ColonyObject
             oldUnit.DetachCurrentBuilding();
         }
         
-        Destroy(oldUnit);
+        Destroy(oldUnit.gameObject);
     }
 
     public void OnDestroyed(/*Building instance*/)

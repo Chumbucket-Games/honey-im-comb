@@ -15,7 +15,9 @@ MonoBehaviour:
   label: Fighter
   image: {fileID: 0}
   maxHealth: 80
-  moveSpeed: 5
+  moveSpeed: 10
   turnSpeed: 180
-  attackRate: 1
+  attackRate: 2
   baseDamage: 5
+  isBuilder: 0
+  buildingType: {fileID: 11400000, guid: b90e2caa2f8a7b54aaae09bfa422d46a, type: 2}

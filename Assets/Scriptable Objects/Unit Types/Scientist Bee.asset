@@ -15,7 +15,9 @@ MonoBehaviour:
   label: Scientist
   image: {fileID: 0}
   maxHealth: 30
-  moveSpeed: 5
+  moveSpeed: 2
   turnSpeed: 180
   attackRate: 1
   baseDamage: 5
+  isBuilder: 0
+  buildingType: {fileID: 11400000, guid: de5798dcd12d6e2419d3572be0627d31, type: 2}
