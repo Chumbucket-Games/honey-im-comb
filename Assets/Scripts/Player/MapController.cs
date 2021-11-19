@@ -116,7 +116,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         cursorPosition = context.ReadValue<Vector2>();
     }
 
-    public void OnBoxSelect(Vector2 dimensions, Vector2 position)
+    public void OnBoxSelect(Vector2 dimensions, Vector3 position)
     {
         foreach (var selectedObject in selectedObjects)
         {
@@ -126,17 +126,9 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         Vector3 worldPos;
 
         Vector2 halfExtents = dimensions / 2f;
-        if (IsHiveMode)
-        {
-            worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Mathf.Abs(Camera.main.transform.position.z) - 3));
-        }
-        else
-        {
-            worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.y));
-        }
 
         // Select the units within the bounding box
-        RaycastHit[] hits = Physics.BoxCastAll(worldPos, halfExtents, Camera.main.transform.forward);
+        RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward);
             
         foreach (var hit in hits)
         {

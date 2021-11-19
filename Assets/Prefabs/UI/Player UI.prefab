@@ -50,7 +50,7 @@ Canvas:
   m_GameObject: {fileID: 4358430038620363069}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -114,10 +114,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36efc2fc48036fa4bb33498672b0f7e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseDragSelection: {fileID: 0}
+  mouseDragSelection: {fileID: 4358430038858453151}
   onMouseDragEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: MapController, Assembly-CSharp
+        m_MethodName: OnBoxSelect
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4358430038858453149
 GameObject:
   m_ObjectHideFlags: 0

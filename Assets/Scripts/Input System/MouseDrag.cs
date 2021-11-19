@@ -9,10 +9,10 @@ public class MouseDrag : MonoBehaviour
 {
     [SerializeField] private PlayerControls playerControls;
     [SerializeField] private Image mouseDragSelection;
-    [SerializeField] private UnityEvent<Vector2, Vector2> onMouseDragEnd;
+    [SerializeField] private UnityEvent<Vector2, Vector3> onMouseDragEnd;
 
     private bool isMouseDown = false;
-    private Vector2 startPosition = Vector2.zero;
+    private Vector3 startPosition = Vector3.zero;
 
 
     private void OnEnable()
@@ -38,10 +38,11 @@ public class MouseDrag : MonoBehaviour
         if (isMouseDown)
         {
             var currentEndPosition = Mouse.current.position.ReadValue();
-            var dimensions = GetSelectBoxDimensions(startPosition, currentEndPosition);
-            var position = GetSelectBoxPosition(startPosition, currentEndPosition);
+            var dimensions = GetSelectBoxWorldDimensions(startPosition, currentEndPosition);
+            Vector3 position = GetSelectBoxWorldPosition(startPosition, currentEndPosition);
 
             mouseDragSelection.rectTransform.position = position;
+            mouseDragSelection.rectTransform.up = Camera.main.transform.up;
             mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, dimensions.x);
             mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, dimensions.y);
         }
@@ -50,7 +51,10 @@ public class MouseDrag : MonoBehaviour
     void OnSelect(InputAction.CallbackContext context)
     {
         isMouseDown = true;
-        startPosition = Mouse.current.position.ReadValue();
+        Vector3 startInput = Mouse.current.position.ReadValue();
+        startInput.z = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 3.2f : Camera.main.transform.position.y - 3;
+ 
+        startPosition = Camera.main.ScreenToWorldPoint(startInput);
         mouseDragSelection.gameObject.SetActive(true);
     }
     
@@ -60,52 +64,71 @@ public class MouseDrag : MonoBehaviour
 
         var endPosition = Mouse.current.position.ReadValue();
         var dimensions = GetSelectBoxWorldDimensions(startPosition, endPosition);
-        var position = GetSelectBoxPosition(startPosition, endPosition);
+        var position = GetSelectBoxWorldPosition(startPosition, endPosition);
         
         onMouseDragEnd?.Invoke(dimensions, position);
         mouseDragSelection.gameObject.SetActive(false);
     }
 
-    private Vector2 GetSelectBoxDimensions(Vector2 startPosition, Vector2 currentEndPosition)
+    private Vector2 GetSelectBoxWorldDimensions(Vector3 startPosition, Vector2 currentEndPosition)
     {
-        Vector2 dimensions = currentEndPosition - startPosition;
-        dimensions = new Vector2(Mathf.Abs(dimensions.x), Mathf.Abs(dimensions.y));
+        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 3.2f : Camera.main.transform.position.y - 3;
+        Vector3 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
+
+        Vector3 dimensions = currentEndWorldPosition - startPosition;
+        dimensions = new Vector2(Mathf.Abs(dimensions.x), Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(dimensions.y) : Mathf.Abs(dimensions.z));
 
         return dimensions;
     }
 
-    private Vector2 GetSelectBoxWorldDimensions(Vector2 startPosition, Vector2 currentEndPosition)
+    private Vector3 GetSelectBoxWorldPosition(Vector3 startPosition, Vector2 currentEndPosition)
     {
-        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 3.2f : Camera.main.transform.position.y;
-        Vector2 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
-        Vector2 startWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(startPosition.x, startPosition.y, zPosition));
-
-        Vector2 dimensions = currentEndWorldPosition - startWorldPosition;
-        dimensions = new Vector2(Mathf.Abs(dimensions.x), Mathf.Abs(dimensions.y));
-
-        return dimensions;
-    }
-
-    private Vector2 GetSelectBoxPosition(Vector2 startPosition, Vector2 currentEndPosition)
-    {
-        Vector2 position = new Vector2();
-        if (startPosition.x < currentEndPosition.x)
+        Vector3 position = new Vector3();
+        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 3.2f : Camera.main.transform.position.y - 3;
+        Vector3 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
+        if (Camera.main.transform.forward == Vector3.forward)
         {
-            position.x = currentEndPosition.x - ((currentEndPosition.x - startPosition.x) / 2f);
+            if (startPosition.x < currentEndWorldPosition.x)
+            {
+                position.x = currentEndWorldPosition.x - ((currentEndWorldPosition.x - startPosition.x) / 2f);
+            }
+            else
+            {
+                position.x = startPosition.x - ((startPosition.x - currentEndWorldPosition.x) / 2f);
+            }
+
+            if (startPosition.y > currentEndWorldPosition.y)
+            {
+                position.y = currentEndWorldPosition.y - ((currentEndWorldPosition.y - startPosition.y) / 2f);
+            }
+            else
+            {
+                position.y = startPosition.y - ((startPosition.y - currentEndWorldPosition.y) / 2f);
+            }
+            position.z = -3;
         }
         else
         {
-            position.x = startPosition.x - ((startPosition.x - currentEndPosition.x) / 2f);
-        }
+            if (startPosition.x < currentEndWorldPosition.x)
+            {
+                position.x = currentEndWorldPosition.x - ((currentEndWorldPosition.x - startPosition.x) / 2f);
+            }
+            else
+            {
+                position.x = startPosition.x - ((startPosition.x - currentEndWorldPosition.x) / 2f);
+            }
 
-        if (startPosition.y > currentEndPosition.y)
-        {
-            position.y = currentEndPosition.y - ((currentEndPosition.y - startPosition.y) / 2f);
+            if (startPosition.z > currentEndWorldPosition.z)
+            {
+                position.z = currentEndWorldPosition.z - ((currentEndWorldPosition.z - startPosition.z) / 2f);
+            }
+            else
+            {
+                position.z = startPosition.z - ((startPosition.z - currentEndWorldPosition.z) / 2f);
+            }
+            position.y = 3;
         }
-        else
-        {
-            position.y = startPosition.y - ((startPosition.y - currentEndPosition.y) / 2f);
-        }
+        
 
         return position;
     }
