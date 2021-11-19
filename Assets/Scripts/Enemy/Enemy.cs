@@ -44,11 +44,12 @@ public class Enemy : MonoBehaviour
             CheckNearbyTargets();
             if (isMoving)
             {
-                if (targetPosition != transform.position)
+                if (Mathf.Floor(targetPosition.x) != Mathf.Floor(transform.position.x) && Mathf.Floor(targetPosition.z) != Mathf.Floor(transform.position.z))
                 {
                     transform.position = Vector3.MoveTowards(transform.position, targetPosition, unitType.moveSpeed * Time.deltaTime);
+                    CorrectYPosition();
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, unitType.turnSpeed * Time.deltaTime);
-
+                    
                     Debug.DrawLine(transform.position, targetPosition, Color.blue);
                 }
                 else
@@ -69,6 +70,20 @@ public class Enemy : MonoBehaviour
                         attackRoutine = StartCoroutine(Attack());
                     }
                 }
+            }
+        }
+    }
+
+    void CorrectYPosition()
+    {
+        Vector3 rayStart = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
+        var hits = Physics.RaycastAll(rayStart, Vector3.down, 15); // Using RaycastAll as the ray should ignore everything except the terrain collider.
+        foreach (var hit in hits)
+        {
+            if (hit.transform.gameObject.GetComponent<TerrainCollider>())
+            {
+                transform.position = new Vector3(transform.position.x, hit.point.y + 3, transform.position.z);
+                break;
             }
         }
     }

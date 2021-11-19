@@ -103,7 +103,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                         }
                         else
                         {
-                            selectedObject.MoveToPosition(hit.point, hit, false);
+                            selectedObject.MoveToPosition(hit.point + new Vector3(0, 3, 0), hit, false);
                         }
                     }
                 }
@@ -132,7 +132,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         }
         else
         {
-            worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.y - 3));
+            worldPos = Camera.main.ScreenToWorldPoint(new Vector3(position.x, position.y, Camera.main.transform.position.y));
         }
 
         // Select the units within the bounding box

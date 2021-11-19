@@ -91,15 +91,31 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     target = targetObject.transform.position;
                 }
                 Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-                transform.forward = (target - transform.position).normalized;
-
-                transform.position = newPosition;
-
-                if (transform.position == target)
+                
+                if (!InHiveMode)
                 {
-                    target = Vector3.zero;
-                    moving = false;
-                    DidReachDestination();
+                    Vector3 forward = (target - transform.position).normalized;
+                    forward.y = 0;
+                    transform.forward = forward;
+                    transform.position = newPosition;
+                    CorrectYPosition();
+                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(target.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(target.z))
+                    {
+                        target = Vector3.zero;
+                        moving = false;
+                        DidReachDestination();
+                    }
+                }
+                else
+                {
+                    transform.forward = (target - transform.position).normalized;
+                    transform.position = newPosition;
+                    if (transform.position == target)
+                    {
+                        target = Vector3.zero;
+                        moving = false;
+                        DidReachDestination();
+                    }
                 }
             }
             else if (harvestMode)
@@ -108,11 +124,14 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 {
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
 
-                    transform.forward = (hivePosition - transform.position).normalized;
+                    Vector3 forward = (hivePosition - transform.position).normalized;
+                    forward.y = 0;
+                    transform.forward = forward;
 
                     transform.position = newPosition;
+                    CorrectYPosition();
 
-                    if (transform.position == hivePosition)
+                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(hivePosition.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(hivePosition.z))
                     {
                         returningToHive = false;
                         harvestRoutine = StartCoroutine(WaitToLeave(5));
@@ -121,11 +140,14 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 else if (returningToNode)
                 {
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-                    transform.forward = (target - transform.position).normalized;
+                    Vector3 forward = (targetObject.transform.position - transform.position).normalized;
+                    forward.y = 0;
+                    transform.forward = forward;
 
                     transform.position = newPosition;
+                    CorrectYPosition();
 
-                    if (transform.position == target)
+                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(target.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(target.z))
                     {
                         returningToNode = false;
                         harvestRoutine = StartCoroutine(WaitToReturn(5));
@@ -138,11 +160,14 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 {
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
 
-                    transform.forward = (hivePosition - transform.position).normalized;
+                    Vector3 forward = (hivePosition - transform.position).normalized;
+                    forward.y = 0;
+                    transform.forward = forward;
 
                     transform.position = newPosition;
+                    CorrectYPosition();
 
-                    if (transform.position == hivePosition)
+                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(hivePosition.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(hivePosition.z))
                     {
                         Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
                         exitPosition.z = -3.2f;
@@ -175,6 +200,30 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         }
     }
 
+    /// <summary>
+    /// Maintains the unit's height above the ground, even when the ground height varies.
+    /// </summary>
+    void CorrectYPosition()
+    {
+        Vector3 rayStart = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
+        var hits = Physics.RaycastAll(rayStart, Vector3.down, 15); // Using RaycastAll as the ray should ignore everything except the terrain collider.
+        foreach (var hit in hits)
+        {
+            if (hit.transform.gameObject.GetComponent<TerrainCollider>())
+            {
+                transform.position = new Vector3(transform.position.x, hit.point.y + 3, transform.position.z);
+                break;
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Vector3 rayStart = new Vector3(transform.position.x, transform.position.y + 10, transform.position.z);
+        Gizmos.DrawLine(rayStart, rayStart + (Vector3.down * 15));
+    }
+
     public void SelectUnit()
     {
         unitSelected = true;
@@ -200,12 +249,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         if (IsHiveMode)
         {
             // Maintain same position on the XY plane.
-            target.z = transform.position.z;
-        }
-        else
-        {
-            // Maintain same position on the XZ plane.
-            target.y = 3;
+            target.z = -3.2f;
         }
         
         targetObject = info.transform.gameObject;
@@ -231,7 +275,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position, 1, 5);
             targetCell.MarkCellAsOccupied();
             target = targetCell.Position;
-            target.y = 3;
+            target.y = position.y;
         }
 
         moving = true;
@@ -261,7 +305,9 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             {
                 // Interact with the building.
                 Debug.Log($"Interacting with {targetObject.GetComponent<Building>().type.label}!");
-                transform.forward = (targetObject.transform.position - transform.position).normalized;
+                Vector3 forward = (targetObject.transform.position - transform.position).normalized;
+                forward.y = 0;
+                transform.forward = forward;
 
                 if (targetObject.GetComponent<Building>().type.label == "Hive")
                 {
@@ -280,7 +326,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 else if (targetObject.GetComponent<Building>().type.label == "Hive Exit")
                 {
                     // Move the bee to the overworld.
-                    transform.position = new Vector3(hivePosition.x + 10, hivePosition.y + 3, hivePosition.z + 10);
+                    transform.position = new Vector3(hivePosition.x + 10, 3, hivePosition.z + 10);
                     transform.forward = Vector3.forward;
                     InHiveMode = false;
                     MoveToPosition(GameObject.FindGameObjectWithTag("Hive").transform.GetChild(0).transform.position, false);
@@ -290,7 +336,9 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             {
                 // Interact with the unit.
                 Debug.Log($"Interacting with {targetObject.GetComponent<Unit>().type.label}!");
-                transform.forward = (targetObject.transform.position - transform.position).normalized;
+                Vector3 forward = (targetObject.transform.position - transform.position).normalized;
+                forward.y = 0;
+                transform.forward = forward;
             }
             else if (targetObject.GetComponent<ResourceNode>() && type.isBuilder)
             {
@@ -299,7 +347,9 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 target = targetObject.transform.position;
                 target.y = transform.position.y;
                 Debug.Log($"Let the {targetObject.GetComponent<ResourceNode>().resource.displayName} harvest begin!");
-                transform.forward = (targetObject.transform.position - transform.position).normalized;
+                Vector3 forward = (targetObject.transform.position - transform.position).normalized;
+                forward.y = 0;
+                transform.forward = forward;
                 harvestRoutine = StartCoroutine(WaitToReturn(5));
             }
             else if (targetObject.GetComponent<EnemySpawner>() || targetObject.GetComponent<Enemy>())
