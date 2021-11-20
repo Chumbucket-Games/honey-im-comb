@@ -9,7 +9,7 @@ public class MouseDrag : MonoBehaviour
 {
     [SerializeField] private PlayerControls playerControls;
     [SerializeField] private Image mouseDragSelection;
-    [SerializeField] private UnityEvent<Vector2, Vector3> onMouseDragEnd;
+    [SerializeField] private UnityEvent<Vector3, Vector3> onMouseDragEnd;
 
     private bool isMouseDown = false;
     private Vector3 startPosition = Vector3.zero;
@@ -42,9 +42,9 @@ public class MouseDrag : MonoBehaviour
             Vector3 position = GetSelectBoxWorldPosition(startPosition, currentEndPosition);
 
             mouseDragSelection.rectTransform.position = position;
-            mouseDragSelection.rectTransform.up = Camera.main.transform.up;
+            mouseDragSelection.rectTransform.up = Camera.main.transform.up == Vector3.up ? Vector3.up : Vector3.forward;
             mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, dimensions.x);
-            mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, dimensions.y);
+            mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.transform.forward == Vector3.forward ? dimensions.y : dimensions.z);
         }
     }
 
@@ -70,13 +70,17 @@ public class MouseDrag : MonoBehaviour
         mouseDragSelection.gameObject.SetActive(false);
     }
 
-    private Vector2 GetSelectBoxWorldDimensions(Vector3 startPosition, Vector2 currentEndPosition)
+    private Vector3 GetSelectBoxWorldDimensions(Vector3 startPosition, Vector2 currentEndPosition)
     {
         float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 3.2f : Camera.main.transform.position.y - 3;
         Vector3 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
 
         Vector3 dimensions = currentEndWorldPosition - startPosition;
-        dimensions = new Vector2(Mathf.Abs(dimensions.x), Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(dimensions.y) : Mathf.Abs(dimensions.z));
+        dimensions = new Vector3(
+            Mathf.Abs(dimensions.x),
+            Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(dimensions.y) : 0,
+            Camera.main.transform.forward == Vector3.forward ? 0 : Mathf.Abs(dimensions.z)
+        );
 
         return dimensions;
     }

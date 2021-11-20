@@ -116,19 +116,18 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         cursorPosition = context.ReadValue<Vector2>();
     }
 
-    public void OnBoxSelect(Vector2 dimensions, Vector3 position)
+    public void OnBoxSelect(Vector3 dimensions, Vector3 position)
     {
         foreach (var selectedObject in selectedObjects)
         {
             selectedObject.OnDeselect();
         }
         selectedObjects.Clear();
-        Vector3 worldPos;
 
-        Vector2 halfExtents = dimensions / 2f;
+        Vector3 halfExtents = dimensions / 2f;
 
-        // Select the units within the bounding box
-        RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward);
+        // Select the units within the bounding box. Cast up from the ground in overworld mode; otherwise cast forward.
+        RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward == Vector3.forward ? Camera.main.transform.forward : Vector3.up, Quaternion.identity, 20);
             
         foreach (var hit in hits)
         {
