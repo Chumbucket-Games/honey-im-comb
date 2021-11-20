@@ -26,6 +26,8 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
     bool SwitchingRole = false;
     [SerializeField] BuildingType[] buildings;
     [SerializeField] BuildingType emptyCell;
+    [SerializeField] ResourceType honeyResource;
+    [SerializeField] ResourceType pebbleResource;
     static MapController mapController;
     BuildingType selectedBuilding;
     bool unitSelected = false;
@@ -395,11 +397,11 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         yield return new WaitForSeconds(seconds);
         
         // Deposit the collected resource, leave the hive and return to the resource node.
-        if (stack.resource == MapController.GetTotalHoney().resource)
+        if (stack.resource == honeyResource)
         {
             mapController.ChangeHoney(stack.quantity, false);
         }
-        else if (stack.resource == MapController.GetTotalPebbles().resource)
+        else if (stack.resource == pebbleResource)
         {
             mapController.ChangePebbles(stack.quantity, false);
         }

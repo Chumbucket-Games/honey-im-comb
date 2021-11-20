@@ -62,7 +62,7 @@ public class Building : MonoBehaviour, ISelectable
 
     public void OnAction1(InputAction.CallbackContext context)
     {
-        if (isSelected && type.name == "Throne" && MapController.GetTotalHoney().quantity > GetComponentInParent<HexGrid>().unitHoneyCost)
+        if (isSelected && type.name == "Throne" && MapController.GetTotalHoney() > GetComponentInParent<HexGrid>().unitHoneyCost)
         {
             // Create a bee unit in front of a random unoccupied cell.
             HexCell cell;

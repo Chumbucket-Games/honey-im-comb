@@ -17,10 +17,10 @@ MonoBehaviour:
   maxHealth: 0
   gridLayout: 5
   pebbles:
-    resource: {fileID: 0}
+    resource: {fileID: 11400000, guid: 498da7d6d783c6e4e8c5c8ff64fd7ca3, type: 2}
     quantity: 0
   honey:
-    resource: {fileID: 0}
+    resource: {fileID: 11400000, guid: 320f76d6d8333bb47a010ca5b37ce89c, type: 2}
     quantity: 0
   associatedUnitPrefab: {fileID: 0}
   workerPrefab: {fileID: 2587172669540973284, guid: b1a012c57093c4d419e26b2951bffbf5,

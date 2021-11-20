@@ -15,15 +15,15 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     private List<ISelectable> selectedObjects = new List<ISelectable>();
     public bool IsHiveMode { get; private set; } = true;
     [SerializeField] EnemySpawner[] spawners;
-    static ResourceStack Pebbles;
-    static ResourceStack Honey;
+    static int Pebbles;
+    static int Honey;
 
-    public static ResourceStack GetTotalPebbles()
+    public static int GetTotalPebbles()
     {
         return Pebbles;
     }
 
-    public static ResourceStack GetTotalHoney()
+    public static int GetTotalHoney()
     {
         return Honey;
     }
@@ -32,11 +32,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     {
         if (reduce)
         {
-            Pebbles.quantity = Mathf.Max(0, Pebbles.quantity - pebbles);
+            Pebbles = Mathf.Max(0, Pebbles - pebbles);
         }
         else
         {
-            Pebbles.quantity += pebbles;
+            Pebbles += pebbles;
         }
     }
 
@@ -44,11 +44,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     {
         if (reduce)
         {
-            Honey.quantity = Mathf.Max(0, Honey.quantity - honey);
+            Honey = Mathf.Max(0, Honey - honey);
         }
         else
         {
-            Honey.quantity += honey;
+            Honey += honey;
         }
     }
 

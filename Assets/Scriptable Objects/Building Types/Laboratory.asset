@@ -16,8 +16,12 @@ MonoBehaviour:
   image: {fileID: 0}
   maxHealth: 0
   gridLayout: 1
-  pebbleCost: 0
-  honeyCost: 0
+  pebbles:
+    resource: {fileID: 11400000, guid: 498da7d6d783c6e4e8c5c8ff64fd7ca3, type: 2}
+    quantity: 40
+  honey:
+    resource: {fileID: 11400000, guid: 320f76d6d8333bb47a010ca5b37ce89c, type: 2}
+    quantity: 50
   associatedUnitPrefab: {fileID: 9123303313072117556, guid: 4206ea8ecde763d4b87c60d3b3a4e7aa,
     type: 3}
   workerPrefab: {fileID: 2587172669540973284, guid: b1a012c57093c4d419e26b2951bffbf5,
@@ -26,3 +30,5 @@ MonoBehaviour:
   cell: {fileID: 7546146144917143012, guid: 94eeb146cbfaa7e4ab4f7b156a7b7860, type: 3}
   winWhenDestroyed: 0
   loseWhenDestroyed: 0
+  canDismantle: 1
+  canOccupy: 1

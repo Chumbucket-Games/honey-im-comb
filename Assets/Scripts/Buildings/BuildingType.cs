@@ -27,7 +27,7 @@ public class BuildingType : ColonyObject
     
     public bool PlaceBuilding(HexGrid grid, int cellIndex)
     {
-        if (MapController.GetTotalPebbles().quantity < pebbles.quantity || MapController.GetTotalHoney().quantity < honey.quantity)
+        if (MapController.GetTotalPebbles() < pebbles.quantity || MapController.GetTotalHoney() < honey.quantity)
         {
             return false;
         }

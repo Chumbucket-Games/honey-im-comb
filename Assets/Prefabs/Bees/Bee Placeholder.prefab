@@ -347,7 +347,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de5798dcd12d6e2419d3572be0627d31, type: 2}
   - {fileID: 11400000, guid: 4d9180772e82f4744b2f4d978f63e2cb, type: 2}
   emptyCell: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
-  workerPrefab: {fileID: 2587172669540973284}
+  honeyResource: {fileID: 11400000, guid: 320f76d6d8333bb47a010ca5b37ce89c, type: 2}
+  pebbleResource: {fileID: 11400000, guid: 498da7d6d783c6e4e8c5c8ff64fd7ca3, type: 2}
 --- !u!65 &4795079757857621639
 BoxCollider:
   m_ObjectHideFlags: 0
