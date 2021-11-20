@@ -52,6 +52,11 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         playerControls.HiveManagement.Disable();
     }
 
+    public void SetTargetObject(GameObject targetObject)
+    {
+        this.targetObject = targetObject;
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -249,10 +254,24 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         if (IsHiveMode)
         {
             // Maintain same position on the XY plane.
+            if (info.transform.gameObject.GetComponent<HexCell>().IsOccupied)
+            {
+                return;
+            }
             target.z = -3.2f;
         }
-        
+        if (targetObject.GetComponent<HexCell>())
+        {
+            // Mark the current cell as unoccupied.
+            targetObject.GetComponent<HexCell>().IsOccupied = false;
+        }
+
         targetObject = info.transform.gameObject;
+        if (targetObject.GetComponent<HexCell>() && targetObject.GetComponent<Building>().type.canOccupy)
+        {
+            // Mark the destination as occupied.
+            targetObject.GetComponent<HexCell>().IsOccupied = true;
+        }
         moving = true;
     }
 
@@ -332,14 +351,6 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     MoveToPosition(GameObject.FindGameObjectWithTag("Hive").transform.GetChild(0).transform.position, false);
                 }
             }
-            else if (targetObject.GetComponent<Unit>())
-            {
-                // Interact with the unit.
-                Debug.Log($"Interacting with {targetObject.GetComponent<Unit>().type.label}!");
-                Vector3 forward = (targetObject.transform.position - transform.position).normalized;
-                forward.y = 0;
-                transform.forward = forward;
-            }
             else if (targetObject.GetComponent<ResourceNode>() && type.isBuilder)
             {
                 // Start harvesting the resource node.
@@ -384,6 +395,15 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         yield return new WaitForSeconds(seconds);
         
         // Deposit the collected resource, leave the hive and return to the resource node.
+        if (stack.resource == MapController.GetTotalHoney().resource)
+        {
+            mapController.ChangeHoney(stack.quantity, false);
+        }
+        else if (stack.resource == MapController.GetTotalPebbles().resource)
+        {
+            mapController.ChangePebbles(stack.quantity, false);
+        }
+
         stack.resource = null;
         stack.quantity = 0;
 
@@ -457,6 +477,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         }
 
         IsDead = true;
+        HexGrid.DecreaseTotalUnits(1);
         
         StartCoroutine(DelayDestroy(5));
     }
@@ -552,6 +573,8 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     {
                         Debug.Log($"{selectedBuilding.label} has been built.");
                         // Spend resources on the building. In a future commit, the allocated cells will require a worker bee present to construct the building over time.
+                        mapController.ChangePebbles(selectedBuilding.pebbles.quantity);
+                        mapController.ChangeHoney(selectedBuilding.honey.quantity);
 
                         // Switch off build mode.
                         IsBuildMode = false;

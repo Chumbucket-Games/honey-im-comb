@@ -14,17 +14,23 @@ public class BuildingType : ColonyObject
         Hexagon
     }
     public LayoutType gridLayout;
-    public int pebbleCost;
-    public int honeyCost;
+    public ResourceStack pebbles;
+    public ResourceStack honey;
     public Unit associatedUnitPrefab = null; // The unit associated with this building.
     public Unit workerPrefab;
     public int totalUnits = 1; // Default to 1 per building, but this can be increased on a per-building basis.
     public HexCell cell; // The cell prefab that represents this building.
     public bool winWhenDestroyed = false;
     public bool loseWhenDestroyed = false;
+    public bool canDismantle = true;
+    public bool canOccupy = true;
     
     public bool PlaceBuilding(HexGrid grid, int cellIndex)
     {
+        if (MapController.GetTotalPebbles().quantity < pebbles.quantity || MapController.GetTotalHoney().quantity < honey.quantity)
+        {
+            return false;
+        }
         //Vector2Int[] cellPositions;
         int[] cellPositions;
         switch (gridLayout)

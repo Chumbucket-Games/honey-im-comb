@@ -15,6 +15,42 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     private List<ISelectable> selectedObjects = new List<ISelectable>();
     public bool IsHiveMode { get; private set; } = true;
     [SerializeField] EnemySpawner[] spawners;
+    static ResourceStack Pebbles;
+    static ResourceStack Honey;
+
+    public static ResourceStack GetTotalPebbles()
+    {
+        return Pebbles;
+    }
+
+    public static ResourceStack GetTotalHoney()
+    {
+        return Honey;
+    }
+
+    public void ChangePebbles(int pebbles, bool reduce = true)
+    {
+        if (reduce)
+        {
+            Pebbles.quantity = Mathf.Max(0, Pebbles.quantity - pebbles);
+        }
+        else
+        {
+            Pebbles.quantity += pebbles;
+        }
+    }
+
+    public void ChangeHoney(int honey, bool reduce = true)
+    {
+        if (reduce)
+        {
+            Honey.quantity = Mathf.Max(0, Honey.quantity - honey);
+        }
+        else
+        {
+            Honey.quantity += honey;
+        }
+    }
 
     private void Update()
     {
@@ -128,6 +164,20 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
         // Select the units within the bounding box. Cast up from the ground in overworld mode; otherwise cast forward.
         RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward == Vector3.forward ? Camera.main.transform.forward : Vector3.up, Quaternion.identity, 20);
+
+        if (hits.Length == 1)
+        {
+            if (hits[0].collider.CompareTag("Building"))
+            {
+                hits[0].transform.gameObject.GetComponent<Building>().OnSelect();
+                selectedObjects.Add(hits[0].transform.gameObject.GetComponent<Building>());
+            }
+            else if (hits[0].collider.CompareTag("ResourceNode"))
+            {
+                hits[0].transform.gameObject.GetComponent<ResourceNode>().OnSelect();
+                selectedObjects.Add(hits[0].transform.gameObject.GetComponent<ResourceNode>());
+            }
+        }
             
         foreach (var hit in hits)
         {
@@ -137,10 +187,6 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
 
                 Debug.Log($"Unit {hit.transform.gameObject.name} selected");
-            }
-            else if (hit.collider.CompareTag("Building"))
-            {
-                selectedObjects.Add(hit.transform.gameObject.GetComponent<Building>());
             }
         }
     }

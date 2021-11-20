@@ -7,6 +7,7 @@ public class HexGrid : MonoBehaviour
 {
 	public int width = 6;
 	public int height = 6;
+	public int unitHoneyCost = 50;
 
 	public HexCell emptyCellPrefab;
 	public HexCell exitPrefab;
@@ -17,7 +18,9 @@ public class HexGrid : MonoBehaviour
 	public BuildingType lab;
 	public BuildingType wall;
 	static List<Building> placedBuildings;
+	[SerializeField] Unit workerPrefab;
 	public static int MaxUnits { get; private set; } = 6;
+	public static int TotalUnits { get; private set; } = 6;
 	public static int CurrentUnits { get; private set; } = 6;
 
 	HexCell[] cells;
@@ -66,6 +69,56 @@ public class HexGrid : MonoBehaviour
 
 		// Set the starting unit maximum based on the number of empty cells.
 		MaxUnits = height * width - 7;
+		TotalUnits = height * width - 7;
+		CurrentUnits = 6;
+
+		// Place 6 bees in random cell positions;
+		for (int i = 0; i < 6; i++)
+		{
+			HexCell cell;
+			do
+			{
+				cell = SelectRandomCell();
+			} while (cell.IsOccupied);
+			
+			Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, -3.2f), Quaternion.identity);
+			unit.SetTargetObject(cell.gameObject);
+			cell.IsOccupied = true;
+		}
+	}
+
+	public HexCell SelectRandomCell()
+	{
+		return cells[Random.Range(0, height * width)];
+	}
+
+	public static void IncreaseUnitCap(int amount)
+	{
+		if (TotalUnits == MaxUnits)
+		{
+			Debug.Log("Cannot increase unit cap any further.");
+			return;
+		}
+		TotalUnits = Mathf.Min(MaxUnits, TotalUnits + amount);
+	}
+
+	public static void DecreaseUnitCap(int amount)
+	{
+		if (CurrentUnits == TotalUnits)
+		{
+			Debug.Log("Cannot decrease unit cap any further.");
+		}
+		TotalUnits = Mathf.Max(CurrentUnits, TotalUnits - amount);
+	}
+
+	public static void IncreaseTotalUnits(int amount)
+	{
+		CurrentUnits = Mathf.Min(TotalUnits, CurrentUnits + amount);
+	}
+
+	public static void DecreaseTotalUnits(int amount)
+	{
+		CurrentUnits = Mathf.Max(0, CurrentUnits - amount);
 	}
 
 	#region Cell manipulation
@@ -130,12 +183,22 @@ public class HexGrid : MonoBehaviour
 		return true;
 	}
 
+	public void DismantleBuildingCell(int index)
+	{
+		HexCell cellToReplace = cells[index];
+		if (cellToReplace.GetComponent<Building>())
+		{
+			placedBuildings.Remove(cellToReplace.GetComponent<Building>());
+		}
+		GetComponentInParent<HexGrid>().ReplaceCell(index, emptyCellPrefab);
+	}
+
 	/// <summary>
 	/// Replace the cell at the specified index with a different cell.
 	/// </summary>
 	/// <param name="index">The index of the cell to replace.</param>
 	/// <param name="newCell">The new cell</param>
-	HexCell ReplaceCell(int index, HexCell newCell)
+	public HexCell ReplaceCell(int index, HexCell newCell)
 	{
 		Vector3 position = cells[index].transform.localPosition;
 		HexCoordinates coord = cells[index].coordinates;

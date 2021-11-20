@@ -129,6 +129,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMaterial: {fileID: 2100000, guid: dc6fe57e7f0945d45bd18de6be5564f4, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 4a7914f2f3119f44eb8a98ef4ca89cc5, type: 2}
+  emptyCellPrefab: {fileID: 3359574947941848935, guid: 6f730c686a4ea7f4da3dbc2cb619c465,
+    type: 3}
+  workerPrefab: {fileID: 2587172669540973284, guid: b1a012c57093c4d419e26b2951bffbf5,
+    type: 3}
   type: {fileID: 11400000, guid: de5798dcd12d6e2419d3572be0627d31, type: 2}
 --- !u!1001 &123936903018568573
 PrefabInstance:
