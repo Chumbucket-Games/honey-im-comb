@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class SquareGrid : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class SquareGrid : MonoBehaviour
 
     private Cell[,] grid;
     private Cell selectedCell = null;
+    [SerializeField] Vector2Int[] walls;
 
     public bool IsGridFull { get; private set; }
     public uint TotalCells { get; private set; }
@@ -32,6 +34,15 @@ public class SquareGrid : MonoBehaviour
 
         IsGridFull = false;
         TotalCells = rows * columns;
+        SetWalls();
+    }
+
+    public void SetWalls()
+    {
+        foreach (var wall in walls)
+        {
+            grid[wall.y, wall.x].SetWall();
+        }
     }
 
     // Update is called once per frame
@@ -48,6 +59,7 @@ public class SquareGrid : MonoBehaviour
         {
             grid = new Cell[rows, columns];
             InitGridCells();
+            SetWalls();
         }
 
         DrawCellsGizmos();
@@ -66,7 +78,7 @@ public class SquareGrid : MonoBehaviour
                 float colPos = posX + (col * columnPadding);
 
                 var position = new Vector3(colPos, transform.position.y, rowPos);
-                grid[row, col] = new Cell(row, col, position);
+                grid[row, col] = new Cell(row, col, position, this);
             }
         }
     }
@@ -96,8 +108,6 @@ public class SquareGrid : MonoBehaviour
         // continue the search
         var unoccupiedCell = SearchSurroundingCellsForAvailable(startCell, maxRowSearchDistance, maxColumnSearchDistance);
         selectedCell = unoccupiedCell;
-
-        Debug.Log(unoccupiedCell);
 
         return unoccupiedCell;
     }
@@ -158,6 +168,100 @@ public class SquareGrid : MonoBehaviour
                     grid[row, col].DrawCellGizmos(rowPadding, columnPadding, gridColor);
                 }
             }
+        }
+    }
+
+    public static Stack<Cell> FindPath(Node startNode, Node targetNode)
+    {
+        var toSearch = new List<Node> { startNode };
+        var processed = new List<Node>();
+
+        while (toSearch.Any())
+        {
+            // The first entry in the list has the current 'best' F value (or H value if they're equal).
+            // This is achieved by sorting the list of nodes once the list has been populated.
+            var current = toSearch[0]; 
+            processed.Add(current);
+            toSearch.Remove(current);
+
+            if (current.cell == targetNode.cell)
+            {
+                var currentPathTile = current;
+                var path = new Stack<Cell>(); // Using a stack ensures we have the list of moves in the right order.
+                Debug.Log($"Start cell: ({startNode.cell.ColIndex}, {startNode.cell.RowIndex})");
+                
+                while (currentPathTile.cell != startNode.cell)
+                {
+                    path.Push(currentPathTile.cell);
+                    currentPathTile = currentPathTile.Connection;
+                    Debug.Log($"Current cell: ({currentPathTile.cell.ColIndex}, {currentPathTile.cell.RowIndex})");
+                }
+
+                return path;
+            }
+
+            foreach (var neighbor in current.Neighbors.Where(t => !t.cell.IsWall && !processed.Contains(t)))
+            {
+                var inSearch = toSearch.Contains(neighbor);
+                var costToNeighbor = current.G + current.GetDistance(neighbor);
+
+                if (!inSearch || costToNeighbor < neighbor.G)
+                {
+                    neighbor.SetG(costToNeighbor);
+                    neighbor.SetConnection(current);
+
+                    if (!inSearch)
+                    {
+                        neighbor.SetH(neighbor.GetDistance(targetNode));
+                        toSearch.Add(neighbor);
+                    }
+                }
+            }
+            // After filling the list, sort it
+            toSearch.Sort(CompareNodes);
+        }
+        return null;
+    }
+
+    public uint GetRows()
+    {
+        return rows;
+    }
+
+    public uint GetColumns()
+    {
+        return columns;
+    }
+
+    public Cell GetCell(int x, int y)
+    {
+        return grid[y, x];
+    }
+
+    static int CompareNodes(Node a, Node b)
+    {
+        if (a.F < b.F)
+        {
+            return -1;
+        }
+        else if (a.F == b.F)
+        {
+            if (a.H < b.H)
+            {
+                return -1;
+            }
+            else if (a.H > b.H)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return 1;
         }
     }
 }

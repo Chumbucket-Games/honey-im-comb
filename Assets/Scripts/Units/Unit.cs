@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementActions
@@ -38,6 +39,9 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
 
     PlayerControls playerControls;
     bool IsBuildMode = false;
+
+    Stack<Cell> waypoints;
+    Cell currentWaypoint;
 
     private void OnEnable()
     {
@@ -94,27 +98,34 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             {
                 if (targetObject != null && targetObject.GetComponent<Unit>())
                 {
-                    // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position.
+                    // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position and recalc pathfinding.
                     target = targetObject.transform.position;
+                    Pathfind();
                 }
-                Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+                
                 
                 if (!InHiveMode)
                 {
-                    Vector3 forward = (target - transform.position).normalized;
+                    Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
+                    Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
                     forward.y = 0;
                     transform.forward = forward;
                     transform.position = newPosition;
                     CorrectYPosition();
-                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(target.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(target.z))
+                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
                     {
-                        target = Vector3.zero;
-                        moving = false;
-                        DidReachDestination();
+                        // If all waypoints have been iterated through
+                        if (!waypoints.TryPop(out currentWaypoint))
+                        {
+                            waypoints = null;
+                            moving = false;
+                            DidReachDestination();
+                        }
                     }
                 }
                 else
                 {
+                    Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
                     transform.forward = (target - transform.position).normalized;
                     transform.position = newPosition;
                     if (transform.position == target)
@@ -262,7 +273,13 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             }
             target.z = -3.2f;
         }
-        if (targetObject.GetComponent<HexCell>())
+        else
+        {
+            Pathfind();
+            currentWaypoint = waypoints.Pop();
+            Debug.Log(waypoints.Count);
+        }
+        if (targetObject != null && targetObject.GetComponent<HexCell>())
         {
             // Mark the current cell as unoccupied.
             targetObject.GetComponent<HexCell>().IsOccupied = false;
@@ -275,6 +292,27 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             targetObject.GetComponent<HexCell>().IsOccupied = true;
         }
         moving = true;
+    }
+
+    void Pathfind(Cell cell = null)
+    {
+        Cell targetCell;
+        if (cell == null)
+        {
+            targetCell = overworldGrid.GetClosestAvailableCellToPosition(target, 5, 5);
+        }
+        else
+        {
+            targetCell = cell;
+        }
+        
+        Cell startCell = overworldGrid.GetClosestAvailableCellToPosition(transform.position, 5, 5);
+
+        Node startNode = new Node(startCell);
+        Node endNode = new Node(targetCell);
+
+        // Find the shortest path to the target.
+        waypoints = SquareGrid.FindPath(startNode, endNode);
     }
 
     public void MoveToPosition(Vector3 position, bool IsHiveMode)
@@ -294,9 +332,11 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         {
             // Maintain same position on the XZ plane.
             var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position, 1, 5);
-            targetCell.MarkCellAsOccupied();
+            targetCell.OccupyCell();
             target = targetCell.Position;
             target.y = position.y;
+            Pathfind(targetCell);
+            currentWaypoint = waypoints.Pop();
         }
 
         moving = true;

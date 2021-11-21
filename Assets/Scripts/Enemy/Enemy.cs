@@ -15,6 +15,9 @@ public class Enemy : MonoBehaviour
     private GameObject targetObject;
     private Rigidbody rb;
     private EnemyWave wave;
+    SquareGrid grid;
+    Stack<Cell> waypoints;
+    Cell currentWaypoint;
 
     private bool isMoving = false;
     private float health;
@@ -23,17 +26,23 @@ public class Enemy : MonoBehaviour
 
     Coroutine attackRoutine;
 
-    static Vector3 hivePosition;
+    static Vector3 hivePosition = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
         health = unitType.maxHealth;
         rb = GetComponent<Rigidbody>();
-        if (hivePosition == null)
+        if (hivePosition == Vector3.zero)
         {
-            hivePosition = GameObject.FindGameObjectWithTag("Hive") ? GameObject.FindGameObjectWithTag("Hive").transform.position : Vector3.zero;
+            hivePosition = GameObject.FindGameObjectWithTag("Hive").transform.position;
+            hivePosition.y = 3;
         }
+    }
+
+    public void SetGrid(SquareGrid grid)
+    {
+        this.grid = grid;
     }
 
     // Update is called once per frame
@@ -44,30 +53,36 @@ public class Enemy : MonoBehaviour
             CheckNearbyTargets();
             if (isMoving)
             {
-                if (Mathf.Floor(targetPosition.x) != Mathf.Floor(transform.position.x) && Mathf.Floor(targetPosition.z) != Mathf.Floor(transform.position.z))
+                if (Mathf.Floor(currentWaypoint.Position.x) != Mathf.Floor(transform.position.x) && Mathf.Floor(currentWaypoint.Position.z) != Mathf.Floor(transform.position.z))
+                //if (Mathf.Floor(targetPosition.x) != Mathf.Floor(transform.position.x) && Mathf.Floor(targetPosition.z) != Mathf.Floor(transform.position.z))
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, unitType.moveSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
+                    //transform.position = Vector3.MoveTowards(transform.position, targetPosition, unitType.moveSpeed * Time.deltaTime);
                     CorrectYPosition();
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, unitType.turnSpeed * Time.deltaTime);
-                    
-                    Debug.DrawLine(transform.position, targetPosition, Color.blue);
+
+                    Debug.DrawLine(transform.position, currentWaypoint.Position, Color.blue);
+                    //Debug.DrawLine(transform.position, targetPosition, Color.blue);
                 }
                 else
                 {
-                    isMoving = false;
-
-                    // Add to the associated wave once movement has ended.
-                    if (!registeredToWave)
+                    if (!waypoints.TryPop(out currentWaypoint))
                     {
-                        wave.AddUnitToWave(this);
-                        registeredToWave = true;
-                    }
+                        isMoving = false;
 
-                    // If a target object has been set, start attacking the object.
-                    if (targetObject != null && !isAttacking)
-                    {
-                        isAttacking = true;
-                        attackRoutine = StartCoroutine(Attack());
+                        // Add to the associated wave once movement has ended.
+                        if (!registeredToWave)
+                        {
+                            wave.AddUnitToWave(this);
+                            registeredToWave = true;
+                        }
+
+                        // If a target object has been set, start attacking the object.
+                        if (targetObject != null && !isAttacking)
+                        {
+                            isAttacking = true;
+                            attackRoutine = StartCoroutine(Attack());
+                        }
                     }
                 }
             }
@@ -88,17 +103,29 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    void Pathfind()
+    {
+        Cell targetCell = grid.GetClosestAvailableCellToPosition(targetPosition, 5, 5);
+        Cell startCell = grid.GetClosestAvailableCellToPosition(transform.position, 5, 5);
+
+        Node startNode = new Node(startCell);
+        Node endNode = new Node(targetCell);
+
+        // Find the shortest path to the target.
+        waypoints = SquareGrid.FindPath(startNode, endNode);
+    }
+
     void CheckNearbyTargets()
     {
         GameObject closestTarget = null;
         float distanceToClosestTarget = 999;
         foreach (var collider in Physics.OverlapSphere(transform.position, attackScanRadius))
         {
-            // Ignore any collisions that aren't units, buildings or the hive
+            // Ignore any collisions that aren't units or buildings that aren't enemy spawners.
             if (collider.gameObject != gameObject && collider.gameObject != targetObject &&
                 (
                     (collider.gameObject.GetComponent<Unit>() && !collider.gameObject.GetComponent<Unit>().IsDead) ||
-                    (collider.gameObject.GetComponent<Building>() /* && !collider.gameObject.GetComponent<Building>().IsDead*/)
+                    (collider.gameObject.GetComponent<Building>() && !collider.gameObject.GetComponent<EnemySpawner>() && !collider.gameObject.GetComponent<Building>().IsDead)
                 )
             )
             {
@@ -114,6 +141,7 @@ public class Enemy : MonoBehaviour
 
         if (closestTarget != null && closestTarget != targetObject)
         {
+            Debug.Log("New target identified!");
             Vector3 faceDirection = (closestTarget.transform.position - transform.position).normalized;
             Move(closestTarget.transform.position, Quaternion.FromToRotation(transform.forward, faceDirection), closestTarget);
         }
@@ -121,11 +149,13 @@ public class Enemy : MonoBehaviour
 
     public void Move(Vector3 targetPosition, Quaternion targetRotation, GameObject targetObject = null)
     {
-        isMoving = true;
-
         this.targetPosition = targetPosition;
         this.targetRotation = targetRotation;
         this.targetObject = targetObject;
+
+        Pathfind();
+        currentWaypoint = waypoints.Pop();
+        isMoving = true;
     }
 
     public void AssignToWave(EnemyWave wave)
@@ -178,6 +208,7 @@ public class Enemy : MonoBehaviour
                 break;
             }
         }
+        
         Move(target, Quaternion.FromToRotation(transform.forward, lookDirection));
     }
 

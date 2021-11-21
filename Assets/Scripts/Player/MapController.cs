@@ -139,7 +139,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                         }
                         else
                         {
-                            selectedObject.MoveToPosition(hit.point + new Vector3(0, 3, 0), hit, false);
+                            selectedObject.MoveToPosition(hit.point + Vector3.up * 3, hit, false);
                         }
                     }
                 }
