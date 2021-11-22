@@ -8,6 +8,7 @@ public class ResourceNode : MonoBehaviour, ISelectable
     [Tooltip("The total amount of the resource in this node.")]
     public int totalAmount;
     int remainingAmount; // This will be reduced based on the length of time a bee is harvesting the node.
+    [SerializeField] GameObject selectionRing;
 
     public bool IsMovable()
     {
@@ -22,11 +23,18 @@ public class ResourceNode : MonoBehaviour, ISelectable
     public void OnSelect()
     {
         Debug.Log($"{remainingAmount} {resource.displayName} remaining.");
+        if (selectionRing != null)
+        {
+            selectionRing.gameObject.SetActive(true);
+        }
     }
 
     public void OnDeselect()
     {
-
+        if (selectionRing != null)
+        {
+            selectionRing.gameObject.SetActive(false);
+        }
     }
 
     // Start is called before the first frame update

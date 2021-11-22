@@ -52,7 +52,7 @@ public class MouseDrag : MonoBehaviour
     {
         isMouseDown = true;
         Vector3 startInput = Mouse.current.position.ReadValue();
-        startInput.z = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) + GameConstants.HiveUnitOffset : Camera.main.transform.position.y - GameConstants.OverworldUnitOffset;
+        startInput.z = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) : Camera.main.transform.position.y;
  
         startPosition = Camera.main.ScreenToWorldPoint(startInput);
         mouseDragSelection.gameObject.SetActive(true);
@@ -72,7 +72,7 @@ public class MouseDrag : MonoBehaviour
 
     private Vector3 GetSelectBoxWorldDimensions(Vector3 startPosition, Vector2 currentEndPosition)
     {
-        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) + GameConstants.HiveUnitOffset : Camera.main.transform.position.y - GameConstants.OverworldUnitOffset;
+        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) : Camera.main.transform.position.y;
         Vector3 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
 
         Vector3 dimensions = currentEndWorldPosition - startPosition;
@@ -88,7 +88,7 @@ public class MouseDrag : MonoBehaviour
     private Vector3 GetSelectBoxWorldPosition(Vector3 startPosition, Vector2 currentEndPosition)
     {
         Vector3 position = new Vector3();
-        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) + GameConstants.HiveUnitOffset : Camera.main.transform.position.y - GameConstants.OverworldUnitOffset;
+        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) : Camera.main.transform.position.y;
         Vector3 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
         if (Camera.main.transform.forward == Vector3.forward)
         {

@@ -29,6 +29,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
     [SerializeField] BuildingType emptyCell;
     [SerializeField] ResourceType honeyResource;
     [SerializeField] ResourceType pebbleResource;
+    [SerializeField] GameObject selectionRing;
     static MapController mapController;
     BuildingType selectedBuilding;
     bool unitSelected = false;
@@ -249,16 +250,6 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         Gizmos.DrawLine(rayStart, rayStart + (Vector3.down * 15));
     }
 
-    public void SelectUnit()
-    {
-        unitSelected = true;
-    }
-
-    public void DeselectUnit()
-    {
-        unitSelected = false;
-    }
-
     public bool IsMovable()
     {
         return true;
@@ -364,13 +355,21 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         string resource = stack.resource ? stack.resource.displayName + " - " + stack.quantity : "None";
         Debug.Log($"{type.label} selected. Current health: {health}. Current resources collected: {resource}");
         // Bring up the UI for the selected unit.
-        SelectUnit();
+        unitSelected = true;
+        if (selectionRing != null)
+        {
+            selectionRing.gameObject.SetActive(true);
+        }
     }
 
     public void OnDeselect()
     {
         // Dismiss UI for selected unit and remove selection ring.
-        DeselectUnit();
+        unitSelected = false;
+        if (selectionRing != null)
+        {
+            selectionRing.gameObject.SetActive(false);
+        }
     }
 
     public void DidReachDestination()
@@ -541,6 +540,9 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             rb.useGravity = true;
             rb.isKinematic = false;
         }
+
+        animator.SetBool("Flying", false);
+        animator.SetBool("Moving", false);
 
         IsDead = true;
         HexGrid.DecreaseTotalUnits(1);

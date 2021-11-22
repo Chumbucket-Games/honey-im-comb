@@ -94,8 +94,8 @@ public class SquareGrid : MonoBehaviour
         var row = Mathf.FloorToInt(rowValue);
         var col = Mathf.FloorToInt(colValue);
 
-        row = Mathf.Clamp(row, 0, (int)rows);
-        col = Mathf.Clamp(col, 0, (int)columns);
+        row = Mathf.Clamp(row, 0, (int)rows - 1);
+        col = Mathf.Clamp(col, 0, (int)columns - 1);
 
         var startCell = grid[row, col];
 

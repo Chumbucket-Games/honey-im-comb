@@ -163,7 +163,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         Vector3 halfExtents = dimensions / 2f;
 
         // Select the units within the bounding box. Cast up from the ground in overworld mode; otherwise cast forward.
-        RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward == Vector3.forward ? Camera.main.transform.forward : Vector3.up, Quaternion.identity, 20);
+        RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward == Vector3.forward ? -Vector3.forward : Vector3.up, Quaternion.identity, 20);
 
         if (hits.Length == 1)
         {
@@ -183,7 +183,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         {
             if (hit.collider.CompareTag("Unit"))
             {
-                hit.transform.gameObject.GetComponent<Unit>().SelectUnit();
+                hit.transform.gameObject.GetComponent<Unit>().OnSelect();
                 selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
 
                 Debug.Log($"Unit {hit.transform.gameObject.name} selected");
@@ -207,42 +207,4 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         playerControls.UnitManagement.Enable();
         playerControls.CommonControls.ToggleMapMode.Enable();
     }
-
-    //public void OnSelect(InputAction.CallbackContext context)
-    //{
-    //    if (context.performed)
-    //    {
-    //        Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
-
-    //        if (Physics.Raycast(ray, out var hit))
-    //        {
-    //            if (selectedObject != null)
-    //            {
-    //                // Deselect the currently selected object.
-    //                selectedObject.OnDeselect();
-    //            }
-    //            if (hit.collider.CompareTag("Unit"))
-    //            {
-    //                selectedObject = hit.transform.gameObject.GetComponent<Unit>();
-    //                selectedObject.OnSelect();
-    //            }
-    //            else if (hit.collider.CompareTag("Building") || hit.collider.CompareTag("Hive"))
-    //            {
-    //                selectedObject = hit.transform.gameObject.GetComponent<Building>();
-    //                selectedObject.OnSelect();
-    //            }
-    //            else if (hit.collider.CompareTag("ResourceNode"))
-    //            {
-    //                selectedObject = hit.transform.gameObject.GetComponent<ResourceNode>();
-    //                selectedObject.OnSelect();
-    //            }
-    //        }
-    //        else if (selectedObject != null)
-    //        {
-    //            // Deselect the currently selected object.
-    //            selectedObject.OnDeselect();
-    //            selectedObject = null;
-    //        }
-    //    }
-    //}
 }

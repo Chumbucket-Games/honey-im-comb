@@ -258,6 +258,8 @@ public class Enemy : MonoBehaviour
 
     void OnDie()
     {
+        animator.SetBool("Flying", false);
+        animator.SetBool("Moving", false);
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);

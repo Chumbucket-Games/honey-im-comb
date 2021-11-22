@@ -9,6 +9,7 @@ public class Building : MonoBehaviour, ISelectable
     [SerializeField] private Material selectedMaterial;
     [SerializeField] HexCell emptyCellPrefab;
     [SerializeField] Unit workerPrefab;
+    [SerializeField] GameObject selectionRing;
 
     private MeshRenderer meshRenderer;
 
@@ -33,6 +34,10 @@ public class Building : MonoBehaviour, ISelectable
     public void OnSelect()
     {
         meshRenderer.material = selectedMaterial;
+        if (selectionRing != null)
+        {
+            selectionRing.gameObject.SetActive(true);
+        }
 
         Debug.Log($"{type.label} selected.");
         isSelected = true;
@@ -41,6 +46,10 @@ public class Building : MonoBehaviour, ISelectable
     public void OnDeselect()
     {
         meshRenderer.material = defaultMaterial;
+        if (selectionRing != null)
+        {
+            selectionRing.gameObject.SetActive(false);
+        }
         isSelected = false;
     }
 
