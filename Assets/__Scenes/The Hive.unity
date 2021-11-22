@@ -1446,7 +1446,7 @@ MonoBehaviour:
   rowPadding: 6
   columns: 50
   columnPadding: 6
-  displayGrid: 1
+  displayGrid: 0
   gridColor: {r: 0, g: 1, b: 0.9155474, a: 1}
   walls:
   - {x: 0, y: 0}
