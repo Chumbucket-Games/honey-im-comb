@@ -23,7 +23,7 @@ MonoBehaviour:
     resource: {fileID: 11400000, guid: 320f76d6d8333bb47a010ca5b37ce89c, type: 2}
     quantity: 0
   associatedUnitPrefab: {fileID: 0}
-  workerPrefab: {fileID: 2587172669540973284, guid: b1a012c57093c4d419e26b2951bffbf5,
+  workerPrefab: {fileID: 8048237650387774137, guid: 569b7a83aa9da5c41a15ed15836aa85a,
     type: 3}
   totalUnits: 0
   cell: {fileID: 3359574947941848935, guid: 6f730c686a4ea7f4da3dbc2cb619c465, type: 3}

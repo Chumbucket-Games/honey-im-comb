@@ -4,33 +4,52 @@ using UnityEngine;
 
 public class Cell
 {
+    public SquareGrid grid { get; private set; }
     public int RowIndex { get; private set; }
     public int ColIndex { get; private set; }
     public Vector3 Position { get; private set; }
-    public bool IsOccupied { get; private set; }
+    public bool IsOccupied { get; private set; } = false;
+    public bool IsWall { get; private set; }
 
-    public Cell(int rowIndex, int colIndex, Vector3 position)
+    public Cell(int rowIndex, int colIndex, Vector3 position, SquareGrid grid)
     {
-        this.RowIndex = rowIndex;
-        this.ColIndex = colIndex;
-        this.Position = position;
-
-        IsOccupied = false;
+        RowIndex = rowIndex;
+        ColIndex = colIndex;
+        Position = position;
+        this.grid = grid;
     }
 
     public void DrawCellGizmos(float rowPadding, float colPadding, Color color)
     {
-        Gizmos.color = color;
-        Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
+        if (IsWall)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(Position, new Vector3(colPadding, 0f, rowPadding));
+        }
+        else if (IsOccupied)
+        {
+            Gizmos.color = Color.gray;
+            Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
+        }
+        else
+        {
+            Gizmos.color = color;
+            Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
+        }
     }
 
-    public void MarkCellAsOccupied()
+    public void OccupyCell()
     {
         IsOccupied = true;
     }
 
-    public void MarkCellAsUnoccupied()
+    public void EmptyCell()
     {
         IsOccupied = false;
+    }
+
+    public void SetWall()
+    {
+        IsWall = true;
     }
 }

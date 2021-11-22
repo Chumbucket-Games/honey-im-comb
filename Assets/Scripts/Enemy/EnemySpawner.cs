@@ -44,6 +44,7 @@ public class EnemySpawner : MonoBehaviour
     private void Spawn()
     {
         var spawnedInstance = Instantiate(objectToSpawn, transform.position, Quaternion.identity);
+        spawnedInstance.SetGrid(gameGrid);
         spawnedInstance.AssignToWave(currentWave);
 
         if (!gameGrid.IsGridFull)
@@ -53,12 +54,10 @@ public class EnemySpawner : MonoBehaviour
 
             if (rallyGridCell != null)
             {
-                rallyGridCell.MarkCellAsOccupied();
-
                 // This rotation will turn the enemy to face the direction it is moving rather than having it face the same way as the rally point grid.
                 Vector3 faceDirection = (rallyGridCell.Position - spawnedInstance.transform.position).normalized;
                 faceDirection.y = 0;
-                spawnedInstance.Move(rallyGridCell.Position, Quaternion.FromToRotation(spawnedInstance.transform.forward, faceDirection));
+                spawnedInstance.Move(rallyGridCell, Quaternion.FromToRotation(spawnedInstance.transform.forward, faceDirection));
             }
         }
     }

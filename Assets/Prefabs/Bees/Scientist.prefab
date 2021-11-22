@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &3466776501951118380
+--- !u!1001 &8762649924756730649
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -11,11 +11,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8d29f2fcef81fef49ac4c44e5019ae98, type: 2}
+      objectReference: {fileID: 2100000, guid: ad69645f5244de849aae4ebb930a71a1, type: 2}
     - target: {fileID: 8048237650387774133, guid: 569b7a83aa9da5c41a15ed15836aa85a,
         type: 3}
       propertyPath: m_Name
-      value: Drone 1
+      value: Scientist
       objectReference: {fileID: 0}
     - target: {fileID: 8048237650387774136, guid: 569b7a83aa9da5c41a15ed15836aa85a,
         type: 3}
@@ -76,12 +76,12 @@ PrefabInstance:
         type: 3}
       propertyPath: type
       value: 
-      objectReference: {fileID: 11400000, guid: e411c856f9933cb45beaf1e2bbce2a93,
+      objectReference: {fileID: 11400000, guid: c633bac8eee0eca49aa783953d914df2,
         type: 2}
     - target: {fileID: 8048237650387774137, guid: 569b7a83aa9da5c41a15ed15836aa85a,
         type: 3}
       propertyPath: moveSpeed
-      value: 10
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 569b7a83aa9da5c41a15ed15836aa85a, type: 3}

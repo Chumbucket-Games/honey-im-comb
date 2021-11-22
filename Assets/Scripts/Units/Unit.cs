@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementActions
@@ -39,6 +40,11 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
     PlayerControls playerControls;
     bool IsBuildMode = false;
 
+    Stack<Cell> waypoints;
+    Cell currentWaypoint;
+
+    Animator animator;
+
     private void OnEnable()
     {
         if (playerControls == null)
@@ -62,6 +68,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
     // Use this for initialization
     void Start()
     {
+        animator = GetComponentInChildren<Animator>();
         if (mapController == null)
         {
             mapController = GameObject.Find("Kingdom Manager").GetComponent<MapController>();
@@ -83,6 +90,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             overworldGrid = GameObject.Find("Game Grid").GetComponent<SquareGrid>();
         }
         rb = GetComponent<Rigidbody>();
+        transform.forward = Vector3.up;
     }
 
     // Update is called once per frame
@@ -94,33 +102,42 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             {
                 if (targetObject != null && targetObject.GetComponent<Unit>())
                 {
-                    // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position.
+                    // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position and recalc pathfinding.
                     target = targetObject.transform.position;
+                    Pathfind();
                 }
-                Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+                
                 
                 if (!InHiveMode)
                 {
-                    Vector3 forward = (target - transform.position).normalized;
+                    Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
+                    Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
                     forward.y = 0;
                     transform.forward = forward;
                     transform.position = newPosition;
                     CorrectYPosition();
-                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(target.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(target.z))
+                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
                     {
-                        target = Vector3.zero;
-                        moving = false;
-                        DidReachDestination();
+                        // If all waypoints have been iterated through, stop movement.
+                        if (!waypoints.TryPop(out currentWaypoint))
+                        {
+                            waypoints = null;
+                            moving = false;
+                            animator.SetBool("Moving", false);
+                            DidReachDestination();
+                        }
                     }
                 }
                 else
                 {
-                    transform.forward = (target - transform.position).normalized;
+                    Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.LookRotation((target - transform.position).normalized, Vector3.back);
                     transform.position = newPosition;
                     if (transform.position == target)
                     {
                         target = Vector3.zero;
                         moving = false;
+                        animator.SetBool("Moving", false);
                         DidReachDestination();
                     }
                 }
@@ -177,7 +194,8 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     if (Mathf.Floor(transform.position.x) == Mathf.Floor(hivePosition.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(hivePosition.z))
                     {
                         Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
-                        exitPosition.z = -3.2f;
+                        animator.SetBool("Flying", false);
+                        exitPosition.z = GameConstants.HiveUnitOffset;
                         transform.position = exitPosition;
                         transform.forward = hiveGrid.transform.forward;
                         InHiveMode = true;
@@ -188,7 +206,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 else if (movingToBuilding)
                 {
                     Vector3 buildingPosition = AssociatedBuilding.transform.position;
-                    buildingPosition.z = -3.2f;
+                    buildingPosition.z = GameConstants.HiveUnitOffset;
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, buildingPosition, moveSpeed * Time.deltaTime);
 
                     transform.forward = (buildingPosition - transform.position).normalized;
@@ -218,7 +236,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         {
             if (hit.transform.gameObject.GetComponent<TerrainCollider>())
             {
-                transform.position = new Vector3(transform.position.x, hit.point.y + 3, transform.position.z);
+                transform.position = new Vector3(transform.position.x, hit.point.y + GameConstants.OverworldUnitOffset, transform.position.z);
                 break;
             }
         }
@@ -256,13 +274,23 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         if (IsHiveMode)
         {
             // Maintain same position on the XY plane.
+            animator.SetBool("Flying", false);
+            animator.SetBool("Moving", true);
             if (info.transform.gameObject.GetComponent<HexCell>().IsOccupied)
             {
                 return;
             }
-            target.z = -3.2f;
+            target.z = GameConstants.HiveUnitOffset;
         }
-        if (targetObject.GetComponent<HexCell>())
+        else
+        {
+            animator.SetBool("Flying", true);
+            animator.SetBool("Moving", true);
+            Pathfind();
+            currentWaypoint = waypoints.Pop();
+            Debug.Log(waypoints.Count);
+        }
+        if (targetObject != null && targetObject.GetComponent<HexCell>())
         {
             // Mark the current cell as unoccupied.
             targetObject.GetComponent<HexCell>().IsOccupied = false;
@@ -277,6 +305,28 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         moving = true;
     }
 
+    void Pathfind(Cell cell = null)
+    {
+        Cell targetCell;
+        if (cell == null)
+        {
+            targetCell = overworldGrid.GetClosestAvailableCellToPosition(target, 5, 5);
+        }
+        else
+        {
+            targetCell = cell;
+        }
+        
+        Cell startCell = overworldGrid.GetClosestAvailableCellToPosition(transform.position, 5, 5);
+
+        Node startNode = new Node(startCell);
+        Node endNode = new Node(targetCell);
+
+        // Find the shortest path to the target.
+        waypoints = SquareGrid.FindPath(startNode, endNode);
+        targetCell.OccupyCell();
+    }
+
     public void MoveToPosition(Vector3 position, bool IsHiveMode)
     {
         harvestMode = false;
@@ -288,18 +338,25 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         if (IsHiveMode)
         {
             // Maintain same position on the XY plane.
-            target.z = -3.2f;
+            animator.SetBool("Flying", false);
+            animator.SetBool("Moving", true);
+            target.z = GameConstants.HiveUnitOffset;
+            moving = true;
         }
         else
         {
             // Maintain same position on the XZ plane.
+            animator.SetBool("Flying", true);
+            animator.SetBool("Moving", true);
             var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position, 1, 5);
-            targetCell.MarkCellAsOccupied();
             target = targetCell.Position;
             target.y = position.y;
+            Pathfind(targetCell);
+            if (waypoints.TryPop(out currentWaypoint))
+            {
+                moving = true;
+            }
         }
-
-        moving = true;
     }
 
     public void OnSelect()
@@ -326,17 +383,21 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             {
                 // Interact with the building.
                 Debug.Log($"Interacting with {targetObject.GetComponent<Building>().type.label}!");
-                Vector3 forward = (targetObject.transform.position - transform.position).normalized;
-                forward.y = 0;
-                transform.forward = forward;
+                if (!InHiveMode)
+                {
+                    Vector3 forward = (targetObject.transform.position - transform.position).normalized;
+                    forward.y = 0;
+                    transform.forward = forward;
+                }
+                
 
                 if (targetObject.GetComponent<Building>().type.label == "Hive")
                 {
                     // Move the bee to the exit cell of the hive grid.
                     Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
-                    exitPosition.z = -3.2f;
+                    exitPosition.z = GameConstants.HiveUnitOffset;
                     transform.position = exitPosition;
-                    transform.forward = hiveGrid.transform.forward;
+                    transform.forward = hiveGrid.transform.up;
                     InHiveMode = true;
                     if (SwitchingRole)
                     {
@@ -347,7 +408,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 else if (targetObject.GetComponent<Building>().type.label == "Hive Exit")
                 {
                     // Move the bee to the overworld.
-                    transform.position = new Vector3(hivePosition.x + 10, 3, hivePosition.z + 10);
+                    transform.position = new Vector3(hivePosition.x + 10, GameConstants.OverworldUnitOffset, hivePosition.z + 10);
                     transform.forward = Vector3.forward;
                     InHiveMode = false;
                     MoveToPosition(GameObject.FindGameObjectWithTag("Hive").transform.GetChild(0).transform.position, false);
@@ -426,6 +487,8 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         if (targetObject.GetComponent<Unit>())
         {
             Debug.Log("Attacking enemy!");
+            animator.SetTrigger("Attack");
+
             targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage);
             if (!targetObject.GetComponent<Enemy>().IsDead)
             {
@@ -435,6 +498,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         else if (targetObject.GetComponent<EnemySpawner>())
         {
             Debug.Log("Attacking spawner!");
+            animator.SetTrigger("Attack");
             targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
             if (!targetObject.GetComponent<EnemySpawner>().IsDead)
             {
@@ -641,6 +705,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         moving = false;
         StopAllCoroutines();
         SwitchingRole = true;
+        animator.SetBool("Moving", true);
         if (InHiveMode)
         {
             movingToBuilding = true;

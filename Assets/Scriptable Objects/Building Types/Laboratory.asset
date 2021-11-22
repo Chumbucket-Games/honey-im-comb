@@ -22,9 +22,9 @@ MonoBehaviour:
   honey:
     resource: {fileID: 11400000, guid: 320f76d6d8333bb47a010ca5b37ce89c, type: 2}
     quantity: 50
-  associatedUnitPrefab: {fileID: 9123303313072117556, guid: 4206ea8ecde763d4b87c60d3b3a4e7aa,
+  associatedUnitPrefab: {fileID: 1597152989036140960, guid: 7ffb8de24659e2241bbba01196b7e487,
     type: 3}
-  workerPrefab: {fileID: 2587172669540973284, guid: b1a012c57093c4d419e26b2951bffbf5,
+  workerPrefab: {fileID: 8048237650387774137, guid: 569b7a83aa9da5c41a15ed15836aa85a,
     type: 3}
   totalUnits: 1
   cell: {fileID: 7546146144917143012, guid: 94eeb146cbfaa7e4ab4f7b156a7b7860, type: 3}
