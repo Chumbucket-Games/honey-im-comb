@@ -99,7 +99,7 @@ public class SquareGrid : MonoBehaviour
 
         var startCell = grid[row, col];
 
-        if (!startCell.IsOccupied)
+        if (!startCell.IsOccupied && !startCell.IsWall)
         {
             selectedCell = grid[row, col];
             return grid[row, col];
@@ -124,14 +124,14 @@ public class SquareGrid : MonoBehaviour
                 if (startCell.ColIndex - colOffset >= 0)
                 {
                     var cell = grid[startCell.RowIndex, startCell.ColIndex - colOffset];
-                    if (!cell.IsOccupied) return cell;
+                    if (!cell.IsOccupied && !cell.IsWall) return cell;
                 }
 
                 // then right
                 if (startCell.ColIndex + colOffset < columns)
                 {
                     var cell = grid[startCell.RowIndex, startCell.ColIndex + colOffset];
-                    if (!cell.IsOccupied) return cell;
+                    if (!cell.IsOccupied && !cell.IsWall) return cell;
                 }
             }
 
@@ -139,14 +139,14 @@ public class SquareGrid : MonoBehaviour
             if (startCell.RowIndex - rowOffset >= 0)
             {
                 var cell = grid[startCell.RowIndex - rowOffset, startCell.ColIndex];
-                if (!cell.IsOccupied) return cell;
+                if (!cell.IsOccupied && !cell.IsWall) return cell;
             }
 
             // then up
             if (startCell.RowIndex + rowOffset < rows)
             {
                 var cell = grid[startCell.RowIndex + rowOffset, startCell.ColIndex];
-                if (!cell.IsOccupied) return cell;
+                if (!cell.IsOccupied && !cell.IsWall) return cell;
             }
         }
 
