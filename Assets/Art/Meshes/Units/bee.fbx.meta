@@ -24,7 +24,17 @@ ModelImporter:
   - first:
       74: 3316786127858398870
     second: Release
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Body
+    second: {fileID: 2100000, guid: e0e59e0c84c827d4891cbc0e5b73ab45, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wings
+    second: {fileID: 2100000, guid: 6a6ae186fc3fa8a4ca3f91d34dd92108, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
