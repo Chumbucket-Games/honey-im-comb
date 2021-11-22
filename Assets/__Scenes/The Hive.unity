@@ -1289,7 +1289,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3333334, y: 1}
+    m_SensorSize: {x: 2.8208094, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2427,6 +2427,16 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453148, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453148, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4358430038858453149, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
       propertyPath: m_IsActive
@@ -2465,8 +2475,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
         type: 3}
+      propertyPath: m_FillCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
       propertyPath: m_PreserveAspect
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4358430038858453151, guid: 427694a146cb90a42b37c1aa3804884f,
+        type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427694a146cb90a42b37c1aa3804884f, type: 3}
