@@ -71,7 +71,7 @@ public class Building : MonoBehaviour, ISelectable
                 cell = GetComponentInParent<HexGrid>().SelectRandomCell();
             } while (cell.IsOccupied);
             
-            Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, -3.2f), Quaternion.identity);
+            Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, GameConstants.HiveUnitOffset), Quaternion.identity);
             unit.SetTargetObject(cell.gameObject);
             HexGrid.IncreaseTotalUnits(1);
             Debug.Log("A new worker is born!");

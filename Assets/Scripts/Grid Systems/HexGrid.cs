@@ -81,7 +81,7 @@ public class HexGrid : MonoBehaviour
 				cell = SelectRandomCell();
 			} while (cell == null || cell.IsOccupied);
 			
-			Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, -3.2f), Quaternion.identity);
+			Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, GameConstants.HiveUnitOffset), Quaternion.identity);
 			unit.SetTargetObject(cell.gameObject);
 			cell.IsOccupied = true;
 		}

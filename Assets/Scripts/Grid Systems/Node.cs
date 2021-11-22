@@ -13,6 +13,7 @@ public class Node
             if (_neighbors == null)
             {
                 _neighbors = new List<Node>();
+
                 SquareGrid grid = cell.grid;
                 Cell neighborCell;
                 Node node;

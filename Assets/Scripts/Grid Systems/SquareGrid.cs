@@ -200,7 +200,7 @@ public class SquareGrid : MonoBehaviour
                 return path;
             }
 
-            foreach (var neighbor in current.Neighbors.Where(t => !t.cell.IsWall && !processed.Contains(t)))
+            foreach (var neighbor in current.Neighbors.Where(t => !t.cell.IsWall && !t.cell.IsOccupied && !processed.Contains(t)))
             {
                 var inSearch = toSearch.Contains(neighbor);
                 var costToNeighbor = current.G + current.GetDistance(neighbor);

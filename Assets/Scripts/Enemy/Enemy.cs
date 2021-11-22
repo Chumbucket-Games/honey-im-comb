@@ -28,7 +28,16 @@ public class Enemy : MonoBehaviour
 
     static Vector3 hivePosition = Vector3.zero;
 
+    Animator animator;
+
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        animator = GetComponentInChildren<Animator>();
+        animator.SetBool("Flying", true);
+    }
+
     void Start()
     {
         health = unitType.maxHealth;
@@ -69,6 +78,7 @@ public class Enemy : MonoBehaviour
                     if (!waypoints.TryPop(out currentWaypoint))
                     {
                         isMoving = false;
+                        animator.SetBool("Moving", false);
 
                         // Add to the associated wave once movement has ended.
                         if (!registeredToWave)
@@ -147,14 +157,30 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Move(Cell target, Quaternion targetRotation, GameObject targetObject = null)
+    {
+        animator.SetBool("Moving", true);
+        targetPosition = target.Position;
+        this.targetRotation = targetRotation;
+        this.targetObject = targetObject;
+
+        Pathfind();
+        currentWaypoint = waypoints.Pop();
+
+        target.OccupyCell();
+        isMoving = true;
+    }
+
     public void Move(Vector3 targetPosition, Quaternion targetRotation, GameObject targetObject = null)
     {
+        animator.SetBool("Moving", true);
         this.targetPosition = targetPosition;
         this.targetRotation = targetRotation;
         this.targetObject = targetObject;
 
         Pathfind();
         currentWaypoint = waypoints.Pop();
+
         isMoving = true;
     }
 
@@ -169,6 +195,7 @@ public class Enemy : MonoBehaviour
         if (targetObject.GetComponent<Unit>())
         {
             Debug.Log("Attacking bee!");
+            animator.SetTrigger("Attack");
             targetObject.GetComponent<Unit>().TakeDamage(gameObject, unitType.baseDamage);
             if (!targetObject.GetComponent<Unit>().IsDead)
             {
@@ -185,6 +212,7 @@ public class Enemy : MonoBehaviour
         else if (targetObject.CompareTag("Hive"))
         {
             Debug.Log("Attacking the hive!");
+            animator.SetTrigger("Attack");
             targetObject.GetComponent<Building>().TakeDamage(unitType.baseDamage);
             if (!targetObject.GetComponent<Building>().IsDead)
             {

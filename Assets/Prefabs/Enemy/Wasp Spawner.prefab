@@ -120,7 +120,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  objectToSpawn: {fileID: 8648457178137194994, guid: c61a0cea464a7f049b782f0bad2cbd8a,
+  objectToSpawn: {fileID: -868445462795682132, guid: a91761573ed420a45b91c8ed104b7fbb,
     type: 3}
   buildingType: {fileID: 11400000, guid: de9f0d86a384aeb43ad487c05988e0d5, type: 2}
   rallyPoint: {fileID: 6432886953236687565}
