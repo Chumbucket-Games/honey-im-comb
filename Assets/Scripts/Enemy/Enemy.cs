@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
             CheckNearbyTargets();
             if (isMoving)
             {
-                if (Mathf.Floor(currentWaypoint.Position.x) != Mathf.Floor(transform.position.x) && Mathf.Floor(currentWaypoint.Position.z) != Mathf.Floor(transform.position.z))
+                if (Mathf.Round(currentWaypoint.Position.x) != Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) != Mathf.Round(transform.position.z))
                 //if (Mathf.Floor(targetPosition.x) != Mathf.Floor(transform.position.x) && Mathf.Floor(targetPosition.z) != Mathf.Floor(transform.position.z))
                 {
                     transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
@@ -164,6 +164,11 @@ public class Enemy : MonoBehaviour
         this.targetRotation = targetRotation;
         this.targetObject = targetObject;
 
+        if (currentWaypoint != null && currentWaypoint.IsOccupied)
+        {
+            currentWaypoint.EmptyCell();
+        }
+
         Pathfind();
         currentWaypoint = waypoints.Pop();
 
@@ -178,10 +183,16 @@ public class Enemy : MonoBehaviour
         this.targetRotation = targetRotation;
         this.targetObject = targetObject;
 
-        Pathfind();
-        currentWaypoint = waypoints.Pop();
+        if (currentWaypoint != null && currentWaypoint.IsOccupied)
+        {
+            currentWaypoint.EmptyCell();
+        }
 
-        isMoving = true;
+        Pathfind();
+        if (waypoints.TryPop(out currentWaypoint))
+        {
+            isMoving = true;
+        }
     }
 
     public void AssignToWave(EnemyWave wave)

@@ -114,15 +114,18 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
                     Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
                     forward.y = 0;
-                    transform.forward = forward;
+                    if (forward != Vector3.zero)
+                    {
+                        transform.forward = forward;
+                    }
+                    
                     transform.position = newPosition;
                     CorrectYPosition();
-                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
+                    if (Mathf.Round(transform.position.x) == Mathf.Round(currentWaypoint.Position.x) && Mathf.Round(transform.position.z) == Mathf.Round(currentWaypoint.Position.z))
                     {
                         // If all waypoints have been iterated through, stop movement.
                         if (!waypoints.TryPop(out currentWaypoint))
                         {
-                            waypoints = null;
                             moving = false;
                             animator.SetBool("Moving", false);
                             DidReachDestination();
@@ -275,6 +278,10 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         }
         else
         {
+            if (currentWaypoint != null && currentWaypoint.IsOccupied)
+            {
+                currentWaypoint.EmptyCell();
+            }
             animator.SetBool("Flying", true);
             animator.SetBool("Moving", true);
             Pathfind();
@@ -336,6 +343,10 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         }
         else
         {
+            if (currentWaypoint != null && currentWaypoint.IsOccupied)
+            {
+                currentWaypoint.EmptyCell();
+            }
             // Maintain same position on the XZ plane.
             animator.SetBool("Flying", true);
             animator.SetBool("Moving", true);
