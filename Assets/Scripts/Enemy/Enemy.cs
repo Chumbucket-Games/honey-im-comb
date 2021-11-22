@@ -63,15 +63,12 @@ public class Enemy : MonoBehaviour
             if (isMoving)
             {
                 if (Mathf.Round(currentWaypoint.Position.x) != Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) != Mathf.Round(transform.position.z))
-                //if (Mathf.Floor(targetPosition.x) != Mathf.Floor(transform.position.x) && Mathf.Floor(targetPosition.z) != Mathf.Floor(transform.position.z))
                 {
                     transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
-                    //transform.position = Vector3.MoveTowards(transform.position, targetPosition, unitType.moveSpeed * Time.deltaTime);
                     CorrectYPosition();
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, unitType.turnSpeed * Time.deltaTime);
 
                     Debug.DrawLine(transform.position, currentWaypoint.Position, Color.blue);
-                    //Debug.DrawLine(transform.position, targetPosition, Color.blue);
                 }
                 else
                 {
