@@ -87,14 +87,14 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
     public static void LoseGame()
     {
-        Debug.Log("You lost. This world will fall to Decay.");
+        Debug.Log("The Hive has fallen. This world will fall to Decay.");
         SceneManager.LoadScene("Main Menu");
     }
 
     public static void WinGame()
     {
         Debug.Log("You won! The Decay is in retreat!");
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene("Credits");
     }
 
     private void OnDisable()
