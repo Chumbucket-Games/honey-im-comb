@@ -3,7 +3,12 @@ guid: 8b8284dfc63a8f240b26c9d9663f981c
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wax
+    second: {fileID: 2100000, guid: 1de03eae0b5ec614eb16093efcc57bf4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

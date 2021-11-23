@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5582246764288437019}
-  m_Mesh: {fileID: -2124705421725058983, guid: 8b8284dfc63a8f240b26c9d9663f981c, type: 3}
+  m_Mesh: {fileID: -6098815316096142772, guid: 8b8284dfc63a8f240b26c9d9663f981c, type: 3}
 --- !u!23 &6230980408571579086
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9080c94f1be00cf4d8e7f2aa7a46d74b, type: 2}
+  - {fileID: 2100000, guid: 1de03eae0b5ec614eb16093efcc57bf4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,7 +126,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultMaterial: {fileID: 2100000, guid: 9080c94f1be00cf4d8e7f2aa7a46d74b, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 4a7914f2f3119f44eb8a98ef4ca89cc5, type: 2}
-  emptyCellPrefab: {fileID: 3359574947941848935}
   workerPrefab: {fileID: 2587172669540973284, guid: b1a012c57093c4d419e26b2951bffbf5,
     type: 3}
+  selectionRing: {fileID: 0}
+  selectionView: {fileID: 0}
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
