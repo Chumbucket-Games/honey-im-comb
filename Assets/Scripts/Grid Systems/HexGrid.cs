@@ -87,6 +87,11 @@ public class HexGrid : MonoBehaviour
 		}
 	}
 
+	private void Update()
+	{
+		HUDManager.GetInstance().SetUnitCap(TotalUnits);
+	}
+
 	public HexCell SelectRandomCell()
 	{
 		return cells[Random.Range(0, height * width)];

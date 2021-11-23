@@ -30,6 +30,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
     [SerializeField] ResourceType honeyResource;
     [SerializeField] ResourceType pebbleResource;
     [SerializeField] GameObject selectionRing;
+    [SerializeField] Camera selectionView;
     static MapController mapController;
     BuildingType selectedBuilding;
     bool unitSelected = false;
@@ -371,6 +372,13 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         {
             selectionRing.gameObject.SetActive(true);
         }
+        //HUDManager.GetInstance().SetSelectedObjectImage(type.image);
+        if (selectionView != null)
+        {
+           selectionView.gameObject.SetActive(true);
+        }
+        HUDManager.GetInstance().SetSelectedObjectDetails(type.label, (int)health, stack.resource == pebbleResource ? stack.quantity : 0, stack.resource == honeyResource ? stack.quantity : 0);
+        HUDManager.GetInstance().SetActionImages(type.actionSprites);
     }
 
     public void OnDeselect()
@@ -380,6 +388,10 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         if (selectionRing != null)
         {
             selectionRing.gameObject.SetActive(false);
+        }
+        if (selectionView != null)
+        {
+           selectionView.gameObject.SetActive(false);
         }
     }
 
@@ -453,6 +465,10 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         {
             stack.resource = targetObject.GetComponent<ResourceNode>().resource;
             stack.quantity = targetObject.GetComponent<ResourceNode>().HarvestResources(seconds);
+            if (unitSelected)
+            {
+                HUDManager.GetInstance().SetSelectedObjectResources(stack.resource == pebbleResource ? stack.quantity : 0, stack.resource == honeyResource ? stack.quantity : 0);
+            }
             returningToHive = true;
         }
         else
@@ -460,6 +476,10 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
             harvestMode = false;
             stack.resource = null;
             stack.quantity = 0;
+            if (unitSelected)
+            {
+                HUDManager.GetInstance().SetSelectedObjectResources(0, 0);
+            }
         }
     }
 
@@ -475,6 +495,11 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
         else if (stack.resource == pebbleResource)
         {
             mapController.ChangePebbles(stack.quantity, false);
+        }
+
+        if (unitSelected)
+        {
+            HUDManager.GetInstance().SetSelectedObjectResources(0, 0);
         }
 
         stack.resource = null;
@@ -521,8 +546,17 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
     {
         health = Mathf.Max(0, health - dmg);
 
+        if (unitSelected)
+        {
+            HUDManager.GetInstance().SetSelectedObjectHealth((int)health);
+        }
+
         if (health <= 0)
         {
+            if (unitSelected)
+            {
+                OnDeselect();
+            }
             OnDie();
         }
 

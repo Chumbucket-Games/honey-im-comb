@@ -69,6 +69,9 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
             // Win the game.
             WinGame();
         }
+
+        HUDManager.GetInstance().SetTotalPebbles(Pebbles);
+        HUDManager.GetInstance().SetTotalHoney(Honey);
     }
 
     private void OnEnable()

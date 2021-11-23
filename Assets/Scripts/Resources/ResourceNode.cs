@@ -9,6 +9,7 @@ public class ResourceNode : MonoBehaviour, ISelectable
     public int totalAmount;
     int remainingAmount; // This will be reduced based on the length of time a bee is harvesting the node.
     [SerializeField] GameObject selectionRing;
+    [SerializeField] Camera selectionView;
 
     public bool IsMovable()
     {
@@ -27,6 +28,13 @@ public class ResourceNode : MonoBehaviour, ISelectable
         {
             selectionRing.gameObject.SetActive(true);
         }
+        //HUDManager.GetInstance().SetSelectedObjectImage(resource.image);
+        if (selectionView != null)
+        {
+            selectionView.gameObject.SetActive(true);
+        }
+        HUDManager.GetInstance().SetSelectedObjectDetails(resource.displayName, remainingAmount, 0, 0);
+        HUDManager.GetInstance().SetActionImages(null);
     }
 
     public void OnDeselect()
@@ -34,6 +42,10 @@ public class ResourceNode : MonoBehaviour, ISelectable
         if (selectionRing != null)
         {
             selectionRing.gameObject.SetActive(false);
+        }
+        if (selectionView)
+        {
+           selectionView.gameObject.SetActive(false);
         }
     }
 

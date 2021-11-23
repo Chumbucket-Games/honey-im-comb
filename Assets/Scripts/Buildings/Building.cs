@@ -7,9 +7,9 @@ public class Building : MonoBehaviour, ISelectable
 {
     [SerializeField] private Material defaultMaterial;
     [SerializeField] private Material selectedMaterial;
-    [SerializeField] HexCell emptyCellPrefab;
     [SerializeField] Unit workerPrefab;
     [SerializeField] GameObject selectionRing;
+    [SerializeField] Camera selectionView;
 
     private MeshRenderer meshRenderer;
 
@@ -41,6 +41,13 @@ public class Building : MonoBehaviour, ISelectable
 
         Debug.Log($"{type.label} selected.");
         isSelected = true;
+        if (selectionView != null)
+        {
+            selectionView.gameObject.SetActive(true);
+        }
+        //HUDManager.GetInstance().SetSelectedObjectImage(type.image);
+        HUDManager.GetInstance().SetSelectedObjectDetails(type.label, (int)health, 0, 0);
+        HUDManager.GetInstance().SetActionImages(type.actionSprites);
     }
 
     public void OnDeselect()
@@ -51,6 +58,10 @@ public class Building : MonoBehaviour, ISelectable
             selectionRing.gameObject.SetActive(false);
         }
         isSelected = false;
+        if (selectionView != null)
+        {
+            selectionView.gameObject.SetActive(false);
+        }
     }
 
     private void OnEnable()
@@ -120,8 +131,17 @@ public class Building : MonoBehaviour, ISelectable
     {
         health = Mathf.Max(0, health - dmg);
 
+        if (isSelected)
+        {
+            HUDManager.GetInstance().SetSelectedObjectHealth((int)health);
+        }
+
         if (health <= 0)
         {
+            if (isSelected)
+            {
+                OnDeselect();
+            }
             OnDestroyed();
         }
     }

@@ -9,6 +9,7 @@ TagManager:
   - Hive
   - ResourceNode
   - HexGrid
+  - HUD
   layers:
   - Default
   - TransparentFX
