@@ -902,7 +902,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7805486458552470982}
   - component: {fileID: 8103998081499409344}
-  - component: {fileID: 420869804779511258}
   - component: {fileID: 4888277507768185839}
   m_Layer: 0
   m_Name: Selection Camera
@@ -969,14 +968,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &420869804779511258
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6647376661745101126}
-  m_Enabled: 1
 --- !u!114 &4888277507768185839
 MonoBehaviour:
   m_ObjectHideFlags: 0
