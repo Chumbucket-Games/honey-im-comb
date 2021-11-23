@@ -8,5 +8,11 @@ public static class Constants
     {
         public const int MainMenu = 0;
         public const int TheHive = 1;
+        public const int Credits = 2;
+    }
+
+    public struct Animations
+    {
+        
     }
 }

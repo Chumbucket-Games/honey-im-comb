@@ -91,13 +91,13 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     public static void LoseGame()
     {
         Debug.Log("The Hive has fallen. This world will fall to Decay.");
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene(Constants.Scenes.MainMenu);
     }
 
     public static void WinGame()
     {
         Debug.Log("You won! The Decay is in retreat!");
-        SceneManager.LoadScene("Credits");
+        SceneManager.LoadScene(Constants.Scenes.Credits);
     }
 
     private void OnDisable()
@@ -130,25 +130,28 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         {
             foreach (var selectedObject in selectedObjects)
             {
-                // Move the unit to the target location.
-                if (selectedObject.IsMovable())
+                var moveableObject = selectedObject as IMoveable;
+
+                if (moveableObject != null)
                 {
+                    // Move the unit to the target location.
                     Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
                     if (Physics.Raycast(ray, out var hit))
                     {
                         if (IsHiveMode)
                         {
-                            selectedObject.MoveToPosition(hit.transform.position, hit, true);
+                            moveableObject.MoveToPosition(hit.transform.position, hit, true);
                         }
                         else
                         {
-                            selectedObject.MoveToPosition(hit.point + Vector3.up * 3, hit, false);
+                            moveableObject.MoveToPosition(hit.point + Vector3.up * 3, hit, false);
                         }
                     }
                 }
             }
         }
     }
+
 
     public void OnCursor(InputAction.CallbackContext context)
     {
@@ -181,7 +184,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 selectedObjects.Add(hits[0].transform.gameObject.GetComponent<ResourceNode>());
             }
         }
-            
+
         foreach (var hit in hits)
         {
             if (hit.collider.CompareTag("Unit"))

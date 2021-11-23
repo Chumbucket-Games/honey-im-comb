@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementActions
+public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveManagementActions
 {
     public float moveSpeed;
     Vector3 target = Vector3.zero;
@@ -117,7 +117,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     forward.y = 0;
                     if (forward != Vector3.zero)
                     {
-                        transform.forward = forward;
+                        transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * type.turnSpeed);
                     }
                     
                     transform.position = newPosition;
@@ -136,7 +136,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 else
                 {
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.LookRotation((target - transform.position).normalized, Vector3.back);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((target - transform.position).normalized, Vector3.back), Time.deltaTime * type.turnSpeed);
                     transform.position = newPosition;
                     if (transform.position == target)
                     {
@@ -155,7 +155,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
 
                     Vector3 forward = (hivePosition - transform.position).normalized;
                     forward.y = 0;
-                    transform.forward = forward;
+                    transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * type.turnSpeed);
 
                     transform.position = newPosition;
                     CorrectYPosition();
@@ -171,7 +171,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
                     Vector3 forward = (targetObject.transform.position - transform.position).normalized;
                     forward.y = 0;
-                    transform.forward = forward;
+                    transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * type.moveSpeed);
 
                     transform.position = newPosition;
                     CorrectYPosition();
@@ -189,7 +189,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                 {
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
 
-                    Vector3 forward = (hivePosition - transform.position).normalized;
+                    Vector3 forward = Vector3.Slerp(transform.position, (hivePosition - transform.position).normalized, Time.deltaTime * type.moveSpeed);
                     forward.y = 0;
                     transform.forward = forward;
 
@@ -214,7 +214,7 @@ public class Unit : MonoBehaviour, ISelectable, PlayerControls.IHiveManagementAc
                     buildingPosition.z = GameConstants.HiveUnitOffset;
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, buildingPosition, moveSpeed * Time.deltaTime);
 
-                    transform.forward = (buildingPosition - transform.position).normalized;
+                    transform.forward = Vector3.Slerp(transform.forward, (buildingPosition - transform.position).normalized, Time.deltaTime * type.moveSpeed);
 
                     transform.position = newPosition;
 

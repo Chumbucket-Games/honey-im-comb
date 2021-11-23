@@ -15,8 +15,10 @@ MonoBehaviour:
   label: Worker Bee
   image: {fileID: 0}
   maxHealth: 20
+  actionSprites: []
   moveSpeed: 5
-  turnSpeed: 180
+  turnSpeed: 3
   attackRate: 1
   baseDamage: 5
   isBuilder: 1
+  buildingType: {fileID: 0}
