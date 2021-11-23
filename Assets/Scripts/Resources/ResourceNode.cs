@@ -70,4 +70,9 @@ public class ResourceNode : MonoBehaviour, ISelectable
         remainingAmount = Mathf.Max(0, remainingAmount - value);
         return value;
     }
+
+    public System.Type GetObjectType()
+    {
+        return this.GetType();
+    }
 }

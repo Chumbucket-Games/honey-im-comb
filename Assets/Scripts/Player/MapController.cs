@@ -195,6 +195,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 Debug.Log($"Unit {hit.transform.gameObject.name} selected");
             }
         }
+        if (selectedObjects.Count > 0)
+        {
+            HUDManager.GetInstance().SetSelectedObject(selectedObjects[0]);
+        }
+        
     }
 
     public void OnSelect(InputAction.CallbackContext context)

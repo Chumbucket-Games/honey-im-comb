@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveManagementActions
 {
@@ -31,6 +32,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     [SerializeField] ResourceType pebbleResource;
     [SerializeField] GameObject selectionRing;
     [SerializeField] Camera selectionView;
+    [SerializeField] Image healthBar;
     static MapController mapController;
     BuildingType selectedBuilding;
     bool unitSelected = false;
@@ -93,6 +95,10 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         }
         rb = GetComponent<Rigidbody>();
         transform.forward = Vector3.up;
+
+        healthBar.type = Image.Type.Filled;
+        healthBar.fillMethod = Image.FillMethod.Horizontal;
+        healthBar.fillOrigin = (int)Image.OriginHorizontal.Left;
     }
 
     // Update is called once per frame
@@ -100,6 +106,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     {
         if (!IsDead)
         {
+            healthBar.fillAmount = Mathf.Clamp01(health / type.maxHealth);
             if (moving)
             {
                 if (targetObject != null && targetObject.GetComponent<Unit>())
@@ -780,5 +787,10 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     public void DetachCurrentBuilding()
     {
         AssociatedBuilding = null;
+    }
+
+    public System.Type GetObjectType()
+    {
+        return this.GetType();
     }
 }

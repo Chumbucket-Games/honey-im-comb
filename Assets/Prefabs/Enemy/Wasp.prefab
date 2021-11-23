@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: {fileID: 11400000, guid: 7ed3f986ff04ded46ab71f448e58a92a, type: 2}
   attackScanRadius: 5
+  healthBar: {fileID: 3481020354023844865}
 --- !u!1001 &6636876010467255859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -121,3 +122,15 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6636876010467255859}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3481020354023844865 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7806420410366986802, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6636876010467255859}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

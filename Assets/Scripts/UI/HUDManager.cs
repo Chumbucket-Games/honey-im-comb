@@ -49,7 +49,7 @@ public class HUDManager : MonoBehaviour
         {
             for (int i = 0; i < images.Length; i++)
             {
-                actionButtons[i].GetComponentInChildren<Image>().sprite = images[i];
+                actionButtons[i].transform.GetChild(1).GetComponent<Image>().sprite = images[i];
                 actionButtons[totalActions++].gameObject.SetActive(true);
             }
         }
@@ -57,7 +57,9 @@ public class HUDManager : MonoBehaviour
         while (totalActions < 9)
         {
             // Disable all remaining actions.
-            actionButtons[totalActions++].gameObject.SetActive(false);
+            actionButtons[totalActions].transform.GetChild(1).GetComponent<Image>().sprite = null;
+            actionButtons[totalActions].gameObject.SetActive(false);
+            totalActions++;
         }
     }
 
@@ -107,5 +109,20 @@ public class HUDManager : MonoBehaviour
 
     public void RunAction(int actionID)
     {
+        if (selectedObject.GetObjectType() == typeof(Unit))
+        {
+            ((Unit)selectedObject).type.PerformAction(actionID, (Unit)selectedObject);
+        }
+        else if (selectedObject.GetObjectType() == typeof(Building))
+        {
+            if (actionID == 1 && ((Building)selectedObject).type.label == "Throne")
+            {
+                ((Building)selectedObject).DismantleBuilding();
+            }
+            else
+            {
+                ((Building)selectedObject).DismantleBuilding();
+            }
+        }
     }
 }

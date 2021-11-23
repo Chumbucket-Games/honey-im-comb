@@ -15,7 +15,14 @@ MonoBehaviour:
   label: Worker Bee
   image: {fileID: 0}
   maxHealth: 20
-  actionSprites: []
+  actionSprites:
+  - {fileID: 21300000, guid: 4d30aa4ebdf19fc4fb868c2ff9a6575c, type: 3}
+  - {fileID: 21300000, guid: 9031da0d1ca31df469016bbe8b736ac2, type: 3}
+  - {fileID: 21300000, guid: aa015c03205e42e4dbd9567220faad25, type: 3}
+  - {fileID: 21300000, guid: 2c7cff6497a3556469be7fd129c6977e, type: 3}
+  - {fileID: 21300000, guid: 9a588b8939eb68f49896e122b721d372, type: 3}
+  - {fileID: 21300000, guid: 4e775e0b09e72ff4a8ca85ac6b078db2, type: 3}
+  - {fileID: 21300000, guid: 78e04c44e3aadfd4491add825019209f, type: 3}
   moveSpeed: 5
   turnSpeed: 3
   attackRate: 1

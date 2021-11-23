@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private UnitType unitType;
     [SerializeField] float attackScanRadius; // This is used to determine if there are any units or buildings within range to start attacking (if not already targeting a unit or building).
-    
+    [SerializeField] Image healthBar;
+
     public bool IsDead { get; private set; } = false;
 
     private Vector3 targetPosition = Vector3.zero;
@@ -41,6 +43,9 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         health = unitType.maxHealth;
+        healthBar.type = Image.Type.Filled;
+        healthBar.fillMethod = Image.FillMethod.Horizontal;
+        healthBar.fillOrigin = (int)Image.OriginHorizontal.Left;
         rb = GetComponent<Rigidbody>();
         if (hivePosition == Vector3.zero)
         {
@@ -59,6 +64,7 @@ public class Enemy : MonoBehaviour
     {
         if (!IsDead)
         {
+            healthBar.fillAmount = Mathf.Clamp01(health / unitType.maxHealth);
             CheckNearbyTargets();
             if (isMoving)
             {

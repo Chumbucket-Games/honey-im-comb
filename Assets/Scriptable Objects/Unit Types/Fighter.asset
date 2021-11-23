@@ -15,6 +15,8 @@ MonoBehaviour:
   label: Fighter
   image: {fileID: 0}
   maxHealth: 80
+  actionSprites:
+  - {fileID: 21300000, guid: c620dc6db43d82f4ea47c7686db63b3c, type: 3}
   moveSpeed: 10
   turnSpeed: 180
   attackRate: 2

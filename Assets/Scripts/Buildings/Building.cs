@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Building : MonoBehaviour, ISelectable
 {
@@ -10,6 +11,7 @@ public class Building : MonoBehaviour, ISelectable
     [SerializeField] Unit workerPrefab;
     [SerializeField] GameObject selectionRing;
     [SerializeField] Camera selectionView;
+    [SerializeField] Image healthBar;
 
     private MeshRenderer meshRenderer;
 
@@ -69,8 +71,8 @@ public class Building : MonoBehaviour, ISelectable
         if (playerControls == null)
         {
             playerControls = new PlayerControls();
-            playerControls.HiveManagement.Action1.performed += OnAction1;
-            playerControls.HiveManagement.Action6.performed += DismantleBuilding;
+            playerControls.HiveManagement.Action1.performed += context => GrowBee();
+            playerControls.HiveManagement.Action2.performed += context => DismantleBuilding();
         }
         playerControls.HiveManagement.Enable();
     }
@@ -80,7 +82,7 @@ public class Building : MonoBehaviour, ISelectable
         playerControls.HiveManagement.Disable();
     }
 
-    public void OnAction1(InputAction.CallbackContext context)
+    public void GrowBee()
     {
         if (isSelected && type.name == "Throne" && MapController.GetTotalHoney() > GetComponentInParent<HexGrid>().unitHoneyCost)
         {
@@ -90,7 +92,7 @@ public class Building : MonoBehaviour, ISelectable
             {
                 cell = GetComponentInParent<HexGrid>().SelectRandomCell();
             } while (cell.IsOccupied);
-            
+
             Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, GameConstants.HiveUnitOffset), Quaternion.identity);
             unit.SetTargetObject(cell.gameObject);
             HexGrid.IncreaseTotalUnits(1);
@@ -98,26 +100,40 @@ public class Building : MonoBehaviour, ISelectable
         }
     }
 
-    public void DismantleBuilding(InputAction.CallbackContext context)
+    public void DismantleBuilding()
     {
-        Debug.Log($"{type.name} dismantled. All assigned units reverted to worker status.");
         if (isSelected && type.canDismantle)
         {
+            Debug.Log($"{type.name} dismantled. All assigned units reverted to worker status.");
             foreach (var unit in AssignedUnits)
             {
                 // Unassign all assigned bees.
                 unit.ExchangeUnit(-1);
             }
+            GetComponentInParent<HexGrid>().DismantleBuildingCell(GetComponent<HexCell>().Index);
         }
-        GetComponentInParent<HexGrid>().DismantleBuildingCell(GetComponent<HexCell>().Index);
     }
 
     // Use this for initialization
     void Start()
     {
         health = type.maxHealth;
+        if (healthBar != null)
+        {
+            healthBar.type = Image.Type.Filled;
+            healthBar.fillMethod = Image.FillMethod.Horizontal;
+            healthBar.fillOrigin = (int)Image.OriginHorizontal.Left;
+        }
         meshRenderer = GetComponent<MeshRenderer>();
         AssignedUnits = new List<Unit>();
+    }
+
+    private void Update()
+    {
+        if (healthBar != null)
+        {
+            healthBar.fillAmount = Mathf.Clamp01(health / type.maxHealth);
+        }
     }
 
     public void OnDestroyed()
@@ -154,5 +170,10 @@ public class Building : MonoBehaviour, ISelectable
     public void DetachUnit(Unit unit)
     {
         AssignedUnits.Remove(unit);
+    }
+
+    public System.Type GetObjectType()
+    {
+        return this.GetType();
     }
 }
