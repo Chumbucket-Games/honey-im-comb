@@ -6,7 +6,6 @@ using System;
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] Button[] actionButtons;
-    [SerializeField] Image selectedObjectImage;
     [SerializeField] Text selectedObjectName;
     [SerializeField] Text selectedObjectHealth;
     [SerializeField] Text selectedObjectPebbles;
@@ -98,9 +97,9 @@ public class HUDManager : MonoBehaviour
         totalNectar.text = nectar.ToString();
     }
 
-    public void SetUnitCap(int unitCap)
+    public void SetUnitCap(int currentUnits, int unitCap)
     {
-        this.unitCap.text = unitCap.ToString();
+        this.unitCap.text = $"{currentUnits.ToString()}/{unitCap.ToString()}";
     }
 
     public void SetSelectedObject(ISelectable selected)
@@ -116,9 +115,9 @@ public class HUDManager : MonoBehaviour
         }
         else if (selectedObject.GetObjectType() == typeof(Building))
         {
-            if (actionID == 1 && ((Building)selectedObject).type.label == "Throne")
+            if (actionID == 1 && ((Building)selectedObject).type.label == "Throne Room")
             {
-                ((Building)selectedObject).DismantleBuilding();
+                ((Building)selectedObject).GrowBee();
             }
             else
             {

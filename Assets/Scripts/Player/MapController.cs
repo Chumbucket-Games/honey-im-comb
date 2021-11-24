@@ -173,36 +173,49 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
         // Select the units within the bounding box. Cast up from the ground in overworld mode; otherwise cast forward.
         RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward == Vector3.forward ? -Vector3.forward : Vector3.up, Quaternion.identity, 20);
-
-        if (hits.Length == 1)
-        {
-            if (hits[0].collider.CompareTag("Building"))
-            {
-                hits[0].transform.gameObject.GetComponent<Building>().OnSelect();
-                selectedObjects.Add(hits[0].transform.gameObject.GetComponent<Building>());
-            }
-            else if (hits[0].collider.CompareTag("ResourceNode"))
-            {
-                hits[0].transform.gameObject.GetComponent<ResourceNode>().OnSelect();
-                selectedObjects.Add(hits[0].transform.gameObject.GetComponent<ResourceNode>());
-            }
-        }
+        ISelectable firstSelectedObject = null;
+        int totalSelectedObjects = 0;
 
         foreach (var hit in hits)
         {
             if (hit.collider.CompareTag("Unit"))
             {
+                if (firstSelectedObject == null)
+                {
+                    firstSelectedObject = hit.transform.gameObject.GetComponent<Unit>();
+                }
                 hit.transform.gameObject.GetComponent<Unit>().OnSelect();
                 selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
-
-                Debug.Log($"Unit {hit.transform.gameObject.name} selected");
+                totalSelectedObjects++;
             }
+            else if (hit.collider.CompareTag("Building") || hit.collider.CompareTag("Hive"))
+            {
+                if (firstSelectedObject == null)
+                {
+                    firstSelectedObject = hit.transform.gameObject.GetComponent<Building>();
+                }
+                totalSelectedObjects++;
+            }
+            else if (hit.collider.CompareTag("ResourceNode"))
+            {
+                if (firstSelectedObject == null)
+                {
+                    firstSelectedObject = hit.transform.gameObject.GetComponent<ResourceNode>();
+                }
+                totalSelectedObjects++;
+            }
+        }
+
+        if (totalSelectedObjects == 1 && selectedObjects.Count == 0)
+        {
+            firstSelectedObject.OnSelect();
+            selectedObjects.Add(firstSelectedObject);
+            HUDManager.GetInstance().SetSelectedObject(selectedObjects[0]);
         }
         if (selectedObjects.Count > 0)
         {
             HUDManager.GetInstance().SetSelectedObject(selectedObjects[0]);
         }
-        
     }
 
     public void OnSelect(InputAction.CallbackContext context)

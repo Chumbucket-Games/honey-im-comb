@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1027914624935070354}
   - component: {fileID: 1838162742264829460}
   - component: {fileID: 4419213138435518504}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Beehive
   m_TagString: Hive
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ MonoBehaviour:
     type: 3}
   selectionRing: {fileID: 7987722887503243797}
   selectionView: {fileID: 1017422855327542401}
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 2723642732558191431}
   underAttackNotification: {fileID: 2896570113129692041, guid: 4965c2bd67022e54a9a9fc0b254cdccd,
     type: 3}
   type: {fileID: 11400000, guid: 09e7783559b0e0844b09a6acf74cd6af, type: 2}
@@ -215,14 +215,14 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 2.45
   field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 23
+    m_Bits: 64
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8600000, guid: d4c82e2c5096c6043b1ac175beaee6c5, type: 2}
   m_TargetDisplay: 0
@@ -294,7 +294,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7987722887503243797}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -0, z: -0.01}
+  m_LocalPosition: {x: 0, y: -0, z: -0.00847}
   m_LocalScale: {x: 0.05, y: 0.05, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -372,6 +372,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2164206374063501821}
     m_Modifications:
+    - target: {fileID: 528102927033557055, guid: 28dcac9041012f741bec12f99b580b07,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2173393982599772373, guid: 28dcac9041012f741bec12f99b580b07,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3465130556974164876, guid: 28dcac9041012f741bec12f99b580b07,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -550,3 +560,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1760562103692732698}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2723642732558191431 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4441278506401931869, guid: 28dcac9041012f741bec12f99b580b07,
+    type: 3}
+  m_PrefabInstance: {fileID: 1760562103692732698}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

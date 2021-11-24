@@ -89,7 +89,7 @@ public class HexGrid : MonoBehaviour
 
 	private void Update()
 	{
-		HUDManager.GetInstance().SetUnitCap(TotalUnits);
+		HUDManager.GetInstance().SetUnitCap(CurrentUnits, TotalUnits);
 	}
 
 	public HexCell SelectRandomCell()

@@ -15,6 +15,7 @@ MonoBehaviour:
   label: Hive
   image: {fileID: 0}
   maxHealth: 1000
+  actionSprites: []
   gridLayout: 1
   pebbles:
     resource: {fileID: 11400000, guid: 498da7d6d783c6e4e8c5c8ff64fd7ca3, type: 2}
@@ -31,3 +32,7 @@ MonoBehaviour:
   loseWhenDestroyed: 1
   canDismantle: 0
   canOccupy: 0
+  canAttack: 1
+  extraHiveHealth: 0
+  extraHiveFirepower: 0
+  extraResourceStorage: 0

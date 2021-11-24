@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 12
   height: 12
+  unitHoneyCost: 50
   emptyCellPrefab: {fileID: 3359574947941848935, guid: 6f730c686a4ea7f4da3dbc2cb619c465,
     type: 3}
   exitPrefab: {fileID: 1729939318904997265, guid: ea125c3f49682e347ae5dd385036ece3,
@@ -57,7 +58,8 @@ MonoBehaviour:
   throne: {fileID: 11400000, guid: 0e3614c8c0a2696458dad8d319a3b82b, type: 2}
   lab: {fileID: 11400000, guid: de5798dcd12d6e2419d3572be0627d31, type: 2}
   wall: {fileID: 11400000, guid: 0a5e5c3cfede26144bd2531fad2a8172, type: 2}
-  mapController: {fileID: 0}
+  workerPrefab: {fileID: 8048237650387774137, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+    type: 3}
 --- !u!65 &1740175213534764810
 BoxCollider:
   m_ObjectHideFlags: 0

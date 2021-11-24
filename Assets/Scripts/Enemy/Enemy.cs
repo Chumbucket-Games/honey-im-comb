@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
             CheckNearbyTargets();
             if (isMoving)
             {
-                if (Mathf.Round(currentWaypoint.Position.x) != Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) != Mathf.Round(transform.position.z))
+                if (currentWaypoint != null && Mathf.Round(currentWaypoint.Position.x) != Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) != Mathf.Round(transform.position.z))
                 {
                     transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
                     CorrectYPosition();
@@ -126,6 +126,12 @@ public class Enemy : MonoBehaviour
 
         // Find the shortest path to the target.
         waypoints = SquareGrid.FindPath(startNode, endNode);
+
+        if (waypoints.Count > 0)
+        {
+            targetCell.OccupyCell();
+            startCell.EmptyCell();
+        }
     }
 
     void CheckNearbyTargets()
@@ -173,10 +179,10 @@ public class Enemy : MonoBehaviour
         }
 
         Pathfind();
-        currentWaypoint = waypoints.Pop();
-
-        target.OccupyCell();
-        isMoving = true;
+        if (waypoints.TryPop(out currentWaypoint))
+        {
+            isMoving = true;
+        }
     }
 
     public void Move(Vector3 targetPosition, Quaternion targetRotation, GameObject targetObject = null)
@@ -208,7 +214,6 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(unitType.attackRate);
         if (targetObject.GetComponent<Unit>())
         {
-            Debug.Log("Attacking bee!");
             animator.SetTrigger("Attack");
             targetObject.GetComponent<Unit>().TakeDamage(gameObject, unitType.baseDamage);
             if (!targetObject.GetComponent<Unit>().IsDead)
@@ -225,7 +230,6 @@ public class Enemy : MonoBehaviour
         }
         else if (targetObject.CompareTag("Hive"))
         {
-            Debug.Log("Attacking the hive!");
             animator.SetTrigger("Attack");
             targetObject.GetComponent<Building>().TakeDamage(unitType.baseDamage);
             if (!targetObject.GetComponent<Building>().IsDead)
@@ -285,6 +289,10 @@ public class Enemy : MonoBehaviour
             rb.isKinematic = false;
         }
         IsDead = true;
+        if (currentWaypoint != null)
+        {
+            currentWaypoint.EmptyCell();
+        }
         StartCoroutine(DelayDestroy(5));
     }
 

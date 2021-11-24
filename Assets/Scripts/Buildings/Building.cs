@@ -42,10 +42,13 @@ public class Building : MonoBehaviour, ISelectable
 
     public void OnSelect()
     {
-        meshRenderer.material = selectedMaterial;
         if (selectionRing != null)
         {
             selectionRing.gameObject.SetActive(true);
+        }
+        else
+        {
+            meshRenderer.material = selectedMaterial;
         }
 
         Debug.Log($"{type.label} selected.");
@@ -54,7 +57,6 @@ public class Building : MonoBehaviour, ISelectable
         {
             selectionView.gameObject.SetActive(true);
         }
-        //HUDManager.GetInstance().SetSelectedObjectImage(type.image);
         HUDManager.GetInstance().SetSelectedObjectDetails(type.label, (int)health, 0, 0);
         HUDManager.GetInstance().SetActionImages(type.actionSprites);
     }
@@ -91,7 +93,7 @@ public class Building : MonoBehaviour, ISelectable
 
     public void GrowBee()
     {
-        if (isSelected && type.name == "Throne" && MapController.GetTotalHoney() > GetComponentInParent<HexGrid>().unitHoneyCost)
+        if (isSelected && type.name == "Throne" && MapController.GetTotalHoney() >= GetComponentInParent<HexGrid>().unitHoneyCost)
         {
             // Create a bee unit in front of a random unoccupied cell.
             HexCell cell;
@@ -131,12 +133,6 @@ public class Building : MonoBehaviour, ISelectable
     {
         MaxHealth = type.maxHealth;
         health = type.maxHealth;
-        if (healthBar != null)
-        {
-            healthBar.type = Image.Type.Filled;
-            healthBar.fillMethod = Image.FillMethod.Horizontal;
-            healthBar.fillOrigin = (int)Image.OriginHorizontal.Left;
-        }
         meshRenderer = GetComponent<MeshRenderer>();
         AssignedUnits = new List<Unit>();
 

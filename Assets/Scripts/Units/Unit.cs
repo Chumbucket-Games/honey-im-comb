@@ -100,10 +100,6 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         }
         rb = GetComponent<Rigidbody>();
         transform.forward = Vector3.up;
-
-        healthBar.type = Image.Type.Filled;
-        healthBar.fillMethod = Image.FillMethod.Horizontal;
-        healthBar.fillOrigin = (int)Image.OriginHorizontal.Left;
     }
 
     // Update is called once per frame
@@ -200,7 +196,6 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 if (returningToHive)
                 {
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
-
                     Vector3 forward = Vector3.Slerp(transform.position, (hivePosition - transform.position).normalized, Time.deltaTime * type.moveSpeed);
                     forward.y = 0;
                     transform.forward = forward;
@@ -226,7 +221,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                     buildingPosition.z = GameConstants.HiveUnitOffset;
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, buildingPosition, moveSpeed * Time.deltaTime);
 
-                    transform.forward = Vector3.Slerp(transform.forward, (buildingPosition - transform.position).normalized, Time.deltaTime * type.moveSpeed);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((buildingPosition - transform.position).normalized, Vector3.back), Time.deltaTime * type.moveSpeed);
 
                     transform.position = newPosition;
 
@@ -534,7 +529,6 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         
         if (targetObject.GetComponent<Unit>())
         {
-            Debug.Log("Attacking enemy!");
             animator.SetTrigger("Attack");
 
             targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage);
@@ -545,7 +539,6 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         }
         else if (targetObject.GetComponent<EnemySpawner>())
         {
-            Debug.Log("Attacking spawner!");
             animator.SetTrigger("Attack");
             targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
             if (!targetObject.GetComponent<EnemySpawner>().IsDead)
@@ -619,6 +612,11 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
         IsDead = true;
         HexGrid.DecreaseTotalUnits(1);
+
+        if (currentWaypoint != null)
+        {
+            currentWaypoint.EmptyCell();
+        }
         
         StartCoroutine(DelayDestroy(5));
     }
@@ -795,7 +793,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
     public void PerformSpecialAction(int actionIndex)
     {
-        if (actionIndex == 6)
+        if (actionIndex == 1)
         {
             // Revert to worker bee.
             ExchangeUnit(-1);

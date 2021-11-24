@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4325574498360181541}
   m_LocalRotation: {x: 0.6550736, y: 0.5576153, z: 0.1514205, w: -0.48684254}
-  m_LocalPosition: {x: 0.625, y: -1.411, z: 0.758}
+  m_LocalPosition: {x: 0.565, y: -1.516, z: 0.624}
   m_LocalScale: {x: 0.19999999, y: 0.2, z: 0.19999996}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -57,14 +57,14 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 5
   field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 23
+    m_Bits: 64
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8600000, guid: d4c82e2c5096c6043b1ac175beaee6c5, type: 2}
   m_TargetDisplay: 0
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 8897675662999674962}
   - component: {fileID: 6673793234011624603}
   - component: {fileID: 6214553973699747837}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock
   m_TagString: ResourceNode
   m_Icon: {fileID: 0}

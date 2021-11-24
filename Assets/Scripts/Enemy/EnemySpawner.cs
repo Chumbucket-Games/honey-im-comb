@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] BuildingType buildingType;
     [SerializeField] GameObject rallyPoint;
     [SerializeField] SquareGrid gameGrid;
+    [SerializeField] Image healthBar;
 
     private bool spawningEnabled = false;
     private float nextSpawnTime = 0.0f;
@@ -28,6 +30,7 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        healthBar.fillAmount = Mathf.Clamp01(health / buildingType.maxHealth);
         if (spawningEnabled && Time.time >= nextSpawnTime)
         {
             float currentSpawnRate = spawnRate.Evaluate(Time.time / 60f);

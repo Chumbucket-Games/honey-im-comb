@@ -2531,6 +2531,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 858969156884372790, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1017422855327542401, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: far clip plane
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1532101934406740807, guid: e89673125f10bbf4796435c318e38821,
         type: 3}
       propertyPath: m_Name
@@ -2589,6 +2599,11 @@ PrefabInstance:
     - target: {fileID: 2164206374063501821, guid: e89673125f10bbf4796435c318e38821,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7987722887503243797, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3458,12 +3473,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6497809665727555876, guid: 8a7ea436c2f535148bbfea9c685730d9,
         type: 3}
-      propertyPath: workerPrefab
-      value: 
-      objectReference: {fileID: 8048237650387774137, guid: 569b7a83aa9da5c41a15ed15836aa85a,
-        type: 3}
-    - target: {fileID: 6497809665727555876, guid: 8a7ea436c2f535148bbfea9c685730d9,
-        type: 3}
       propertyPath: mapController
       value: 
       objectReference: {fileID: 739142367}
@@ -3536,6 +3545,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6647376661745101126, guid: 96057ac55131b4a488f7478e576b14b3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7395797096506064498, guid: 96057ac55131b4a488f7478e576b14b3,
         type: 3}
       propertyPath: m_Name

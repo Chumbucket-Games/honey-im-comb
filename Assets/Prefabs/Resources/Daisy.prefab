@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7784482000669843668}
   - component: {fileID: 2102246692068670340}
   - component: {fileID: 6353848156329954071}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4924320744438877795}
   - component: {fileID: 5006611502869198321}
   - component: {fileID: 4232060347409161741}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 1757072055233376696}
   - component: {fileID: 7730665748308207215}
   - component: {fileID: 5530744165177141345}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,9 +262,9 @@ GameObject:
   - component: {fileID: 5438396559328895858}
   - component: {fileID: 1424617613618608879}
   - component: {fileID: 1424617613618608878}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh10
-  m_TagString: Untagged
+  m_TagString: ResourceNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 8170401444679030504}
   - component: {fileID: 368858448509074269}
   - component: {fileID: 6204878270678330799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 3756667744362778476}
   - component: {fileID: 1538550374316755830}
   - component: {fileID: 4604372059400054650}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +541,7 @@ GameObject:
   - component: {fileID: 2443071825156996155}
   - component: {fileID: 1882904338672973436}
   - component: {fileID: 7860845467748452512}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 4836775290898742403}
   - component: {fileID: 7192318953270105536}
   - component: {fileID: 1109023634228633342}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -722,7 +722,7 @@ GameObject:
   - component: {fileID: 6895548045175190141}
   - component: {fileID: 7241677390859173839}
   - component: {fileID: 5058994900309618483}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -806,7 +806,7 @@ GameObject:
   - component: {fileID: 5423988449667945939}
   - component: {fileID: 6698387368962806153}
   - component: {fileID: 7663555912323793642}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Selection Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -949,14 +949,14 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 15
   field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 23
+    m_Bits: 64
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8600000, guid: d4c82e2c5096c6043b1ac175beaee6c5, type: 2}
   m_TargetDisplay: 0
@@ -1010,7 +1010,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7919851433014043848}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Daisy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1057,7 +1057,7 @@ GameObject:
   - component: {fileID: 7493209938315126665}
   - component: {fileID: 4259576805049509372}
   - component: {fileID: 2439230701436756829}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1140,7 +1140,7 @@ GameObject:
   - component: {fileID: 820243129328730040}
   - component: {fileID: 4073540435761513301}
   - component: {fileID: 6399867917507296806}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1223,7 +1223,7 @@ GameObject:
   - component: {fileID: 7251512811477919268}
   - component: {fileID: 1768238782864964242}
   - component: {fileID: 169404777092440751}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NodeMesh4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
