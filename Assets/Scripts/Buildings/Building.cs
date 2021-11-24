@@ -80,8 +80,14 @@ public class Building : MonoBehaviour, ISelectable
         if (playerControls == null)
         {
             playerControls = new PlayerControls();
-            playerControls.HiveManagement.Action1.performed += context => GrowBee();
-            playerControls.HiveManagement.Action2.performed += context => DismantleBuilding();
+            playerControls.HiveManagement.Action1.performed += context =>
+            {
+                if (isSelected) GrowBee();
+            };
+            playerControls.HiveManagement.Action2.performed += context =>
+            {
+                if (isSelected) DismantleBuilding();
+            };
         }
         playerControls.HiveManagement.Enable();
     }
@@ -93,7 +99,7 @@ public class Building : MonoBehaviour, ISelectable
 
     public void GrowBee()
     {
-        if (isSelected && type.name == "Throne" && MapController.GetTotalHoney() >= GetComponentInParent<HexGrid>().unitHoneyCost)
+        if (type.label == "Throne Room" && MapController.GetTotalHoney() >= GetComponentInParent<HexGrid>().unitHoneyCost)
         {
             // Create a bee unit in front of a random unoccupied cell.
             HexCell cell;
@@ -111,7 +117,7 @@ public class Building : MonoBehaviour, ISelectable
 
     public void DismantleBuilding()
     {
-        if (isSelected && type.canDismantle)
+        if (type.canDismantle)
         {
             Debug.Log($"{type.name} dismantled. All assigned units reverted to worker status.");
             foreach (var unit in AssignedUnits)

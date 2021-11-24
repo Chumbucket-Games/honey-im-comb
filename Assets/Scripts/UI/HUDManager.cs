@@ -30,7 +30,15 @@ public class HUDManager : MonoBehaviour
     {
         elapsedTime += Time.deltaTime;
         TimeSpan t = TimeSpan.FromSeconds(elapsedTime);
-        gameTime.text = $"{t.Hours}:{t.Minutes}:{t.Seconds}";
+        if (t.Hours != 0)
+        {
+            gameTime.text = $"{t.Hours}:{t.Minutes}:{t.Seconds}";
+        }
+        else
+        {
+            gameTime.text = $"{t.Minutes}:{t.Seconds}";
+        }
+        
     }
 
     public static HUDManager GetInstance()
