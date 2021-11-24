@@ -130,7 +130,10 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   selectionView: {fileID: 0}
   healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 0}
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
+  hiveBuilding: {fileID: 0}
+  baseAttackRate: 0
 --- !u!1 &3288261778227775267
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,7 +264,10 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   selectionView: {fileID: 0}
   healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 0}
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
+  hiveBuilding: {fileID: 0}
+  baseAttackRate: 0
 --- !u!1 &5001977770936323886
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +398,10 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   selectionView: {fileID: 0}
   healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 0}
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
+  hiveBuilding: {fileID: 0}
+  baseAttackRate: 0
 --- !u!1 &6862976927266369551
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +532,10 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   selectionView: {fileID: 0}
   healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 0}
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
+  hiveBuilding: {fileID: 0}
+  baseAttackRate: 0
 --- !u!1 &7521269455357720572
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,7 +666,10 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   selectionView: {fileID: 0}
   healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 0}
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
+  hiveBuilding: {fileID: 0}
+  baseAttackRate: 0
 --- !u!1 &8611246088183060243
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,7 +800,10 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   selectionView: {fileID: 0}
   healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 0}
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
+  hiveBuilding: {fileID: 0}
+  baseAttackRate: 0
 --- !u!1001 &3865490860566267031
 PrefabInstance:
   m_ObjectHideFlags: 0

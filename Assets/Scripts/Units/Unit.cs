@@ -26,6 +26,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     public bool IsDead { get; private set; } = false;
     bool IsAttacking = false;
     bool SwitchingRole = false;
+    bool warnedOfAttack = false;
+    [SerializeField] float warningCooldown = 10;
     [SerializeField] BuildingType[] buildings;
     [SerializeField] BuildingType emptyCell;
     [SerializeField] ResourceType honeyResource;
@@ -33,6 +35,9 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     [SerializeField] GameObject selectionRing;
     [SerializeField] Camera selectionView;
     [SerializeField] Image healthBar;
+    [SerializeField] Notification reassignmentNotification;
+    [SerializeField] Notification underAttackNotification;
+    [SerializeField] Notification buildingCompleteNotification;
     static MapController mapController;
     BuildingType selectedBuilding;
     bool unitSelected = false;
@@ -230,6 +235,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                         returningToHive = false;
                         movingToBuilding = false;
                         BuildingType.SwitchUnit(this);
+                        HUDManager.GetInstance().CreateNotification(reassignmentNotification);
                         SwitchingRole = false;
                     }
                 }
@@ -549,6 +555,13 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         }
     }
 
+    IEnumerator ResetWarnedStatus(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        warnedOfAttack = false;
+    }
+
+
     public void TakeDamage(GameObject source, float dmg)
     {
         health = Mathf.Max(0, health - dmg);
@@ -556,6 +569,14 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         if (unitSelected)
         {
             HUDManager.GetInstance().SetSelectedObjectHealth((int)health);
+        }
+        else if (!warnedOfAttack)
+        {
+            warnedOfAttack = true;
+            HUDManager.GetInstance().CreateNotification(underAttackNotification);
+
+            // Reset the warned status after a fixed duration. This ensures that units raise the alarm if they are attacked more than once.
+            StartCoroutine(ResetWarnedStatus(warningCooldown));
         }
 
         if (health <= 0)
@@ -695,6 +716,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                         // Spend resources on the building. In a future commit, the allocated cells will require a worker bee present to construct the building over time.
                         mapController.ChangePebbles(selectedBuilding.pebbles.quantity);
                         mapController.ChangeHoney(selectedBuilding.honey.quantity);
+
+                        HUDManager.GetInstance().CreateNotification(buildingCompleteNotification);
 
                         // Switch off build mode.
                         IsBuildMode = false;

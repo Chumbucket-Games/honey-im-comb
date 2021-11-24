@@ -15,8 +15,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     private List<ISelectable> selectedObjects = new List<ISelectable>();
     public bool IsHiveMode { get; private set; } = true;
     [SerializeField] EnemySpawner[] spawners;
-    static int Pebbles;
-    static int Honey;
+    static int Pebbles = 200;
+    static int Honey = 200;
+
+    static int MaxPebbles;
+    static int MaxHoney;
 
     public static int GetTotalPebbles()
     {

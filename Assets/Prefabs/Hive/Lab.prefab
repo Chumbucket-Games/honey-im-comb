@@ -134,7 +134,11 @@ MonoBehaviour:
   selectionRing: {fileID: 0}
   selectionView: {fileID: 0}
   healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 0}
   type: {fileID: 11400000, guid: de5798dcd12d6e2419d3572be0627d31, type: 2}
+  hiveBuilding: {fileID: 1838162742264829460, guid: e89673125f10bbf4796435c318e38821,
+    type: 3}
+  baseAttackRate: 0
 --- !u!1001 &123936903018568573
 PrefabInstance:
   m_ObjectHideFlags: 0

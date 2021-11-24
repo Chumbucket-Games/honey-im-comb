@@ -107,7 +107,12 @@ MonoBehaviour:
     type: 3}
   selectionRing: {fileID: 7987722887503243797}
   selectionView: {fileID: 1017422855327542401}
+  healthBar: {fileID: 0}
+  underAttackNotification: {fileID: 2896570113129692041, guid: 4965c2bd67022e54a9a9fc0b254cdccd,
+    type: 3}
   type: {fileID: 11400000, guid: 09e7783559b0e0844b09a6acf74cd6af, type: 2}
+  hiveBuilding: {fileID: 0}
+  baseAttackRate: 0
 --- !u!64 &4419213138435518504
 MeshCollider:
   m_ObjectHideFlags: 0

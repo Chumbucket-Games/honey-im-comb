@@ -15,6 +15,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] Text totalNectar;
     [SerializeField] Text unitCap;
     [SerializeField] Text gameTime;
+    [SerializeField] VerticalLayoutGroup notificationPane;
     static HUDManager instance;
     float elapsedTime = 0;
     private ISelectable selectedObject;
@@ -124,5 +125,10 @@ public class HUDManager : MonoBehaviour
                 ((Building)selectedObject).DismantleBuilding();
             }
         }
+    }
+
+    public void CreateNotification(Notification n)
+    {
+        Instantiate(n, notificationPane.transform);
     }
 }

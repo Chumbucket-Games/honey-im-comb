@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 4358430038620363068}
   - component: {fileID: 4358430038620363008}
   m_Layer: 5
-  m_Name: Player UI
+  m_Name: Unit Selection Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

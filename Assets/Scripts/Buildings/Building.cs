@@ -12,16 +12,23 @@ public class Building : MonoBehaviour, ISelectable
     [SerializeField] GameObject selectionRing;
     [SerializeField] Camera selectionView;
     [SerializeField] Image healthBar;
+    [SerializeField] Notification underAttackNotification;
 
     private MeshRenderer meshRenderer;
 
     float health;
+    float MaxHealth;
     public bool IsDead { get; private set; } = false;
     public BuildingType type;
     public List<Unit> AssignedUnits { get; private set; }
     PlayerControls playerControls;
     
     bool isSelected;
+
+    [SerializeField] Building hiveBuilding;
+
+    [SerializeField] float baseAttackRate = 0;
+    int attackRateMultiplier = 1;
     
     public bool IsMovable()
     {
@@ -114,9 +121,15 @@ public class Building : MonoBehaviour, ISelectable
         }
     }
 
+    public void Attack()
+    {
+        // if the building can attack, fire projectiles at the closest enemy.
+    }
+
     // Use this for initialization
     void Start()
     {
+        MaxHealth = type.maxHealth;
         health = type.maxHealth;
         if (healthBar != null)
         {
@@ -126,13 +139,21 @@ public class Building : MonoBehaviour, ISelectable
         }
         meshRenderer = GetComponent<MeshRenderer>();
         AssignedUnits = new List<Unit>();
+
+        if (hiveBuilding != null)
+        {
+            hiveBuilding.MaxHealth += type.extraHiveHealth;
+            hiveBuilding.health += type.extraHiveHealth;
+            hiveBuilding.attackRateMultiplier += type.extraHiveFirepower;
+        }
+        
     }
 
     private void Update()
     {
         if (healthBar != null)
         {
-            healthBar.fillAmount = Mathf.Clamp01(health / type.maxHealth);
+            healthBar.fillAmount = Mathf.Clamp01(health / MaxHealth);
         }
     }
 
@@ -150,6 +171,11 @@ public class Building : MonoBehaviour, ISelectable
         if (isSelected)
         {
             HUDManager.GetInstance().SetSelectedObjectHealth((int)health);
+        }
+
+        if (underAttackNotification != null)
+        {
+            HUDManager.GetInstance().CreateNotification(underAttackNotification);
         }
 
         if (health <= 0)

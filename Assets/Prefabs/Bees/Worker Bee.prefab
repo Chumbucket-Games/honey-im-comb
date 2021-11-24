@@ -1791,6 +1791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   type: {fileID: 11400000, guid: 014db35d75c20ed44b20a7b000ba96eb, type: 2}
+  warningCooldown: 0
   buildings:
   - {fileID: 11400000, guid: 0a5e5c3cfede26144bd2531fad2a8172, type: 2}
   - {fileID: 11400000, guid: 2cf553eaf103f7148b2acba55dc501b2, type: 2}
@@ -1803,6 +1804,12 @@ MonoBehaviour:
   selectionRing: {fileID: 1078506354338443965}
   selectionView: {fileID: 6247015254101418379}
   healthBar: {fileID: 7806420410366986802}
+  reassignmentNotification: {fileID: 7923413877696022166, guid: b797329ddda26c2408ad850b5990506d,
+    type: 3}
+  underAttackNotification: {fileID: 2532114652943727838, guid: 624b7b0dd66833b4182b5bafe6e065e6,
+    type: 3}
+  buildingCompleteNotification: {fileID: 1342026907157938843, guid: 5ddbf7c48fba89e4aa01fcd7d688fa89,
+    type: 3}
 --- !u!65 &8048237650387774134
 BoxCollider:
   m_ObjectHideFlags: 0
