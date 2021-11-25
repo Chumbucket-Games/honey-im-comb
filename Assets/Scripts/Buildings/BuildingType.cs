@@ -150,12 +150,12 @@ public class BuildingType : ColonyObject
         if (winWhenDestroyed)
         {
             // Win the game.
-            MapController.WinGame();
+            HUDManager.GetInstance().WinGame();
         }
         else if (loseWhenDestroyed)
         {
             // Lose the game.
-            MapController.LoseGame();
+            HUDManager.GetInstance().LoseGame();
         }
     }
 }

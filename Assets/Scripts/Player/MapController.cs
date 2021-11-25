@@ -75,7 +75,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         if (destroyedSpawners == spawners.Length)
         {
             // Win the game.
-            WinGame();
+            HUDManager.GetInstance().WinGame();
         }
 
         HUDManager.GetInstance().SetTotalPebbles(Pebbles);
@@ -94,18 +94,6 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
         playerControls.UnitManagement.Enable();
         playerControls.CommonControls.ToggleMapMode.Enable();
-    }
-
-    public static void LoseGame()
-    {
-        Debug.Log("The Hive has fallen. This world will fall to Decay.");
-        SceneManager.LoadScene(Constants.Scenes.MainMenu);
-    }
-
-    public static void WinGame()
-    {
-        Debug.Log("You won! The Decay is in retreat!");
-        SceneManager.LoadScene(Constants.Scenes.Credits);
     }
 
     private void OnDisable()

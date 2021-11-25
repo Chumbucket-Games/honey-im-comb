@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using System.Collections;
-using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
@@ -19,6 +19,8 @@ public class HUDManager : MonoBehaviour
     [SerializeField] VerticalLayoutGroup notificationPane;
     [SerializeField] VerticalLayoutGroup objectDetails;
     [SerializeField] VerticalLayoutGroup pauseMenu;
+    [SerializeField] Image winDialogue;
+    [SerializeField] Image lossDialogue;
     static HUDManager instance;
     float elapsedTime = 0;
     private ISelectable selectedObject;
@@ -184,5 +186,25 @@ public class HUDManager : MonoBehaviour
     public void ExitToDesktop()
     {
         Application.Quit();
+    }
+
+    public void LoseGame()
+    {
+        lossDialogue.gameObject.SetActive(true);
+        Time.timeScale = 0;
+        StartCoroutine(DelayedSceneTransition(Constants.Scenes.MainMenu));
+    }
+
+    public void WinGame()
+    {
+        lossDialogue.gameObject.SetActive(true);
+        Time.timeScale = 0;
+        StartCoroutine(DelayedSceneTransition(Constants.Scenes.Credits));
+    }
+
+    IEnumerator DelayedSceneTransition(int sceneId)
+    {
+        yield return new WaitForSeconds(10);
+        SceneManager.LoadScene(sceneId);
     }
 }

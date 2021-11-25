@@ -1806,7 +1806,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.1271677, y: 1}
+    m_SensorSize: {x: 1.8461539, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4085,6 +4085,51 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -2.4678955
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269151059581, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269151059581, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269151059581, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 117.1183
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269151059581, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -66.9223
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269737474334, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269737474334, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269737474334, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 117.1183
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759269737474334, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -21.7908
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709759270506033584, guid: 3f68d9163a0daea4fadecf2c5884cf76,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8329916342437719596, guid: 3f68d9163a0daea4fadecf2c5884cf76,
         type: 3}
