@@ -33,3 +33,8 @@ MonoBehaviour:
   loseWhenDestroyed: 0
   canDismantle: 1
   canOccupy: 1
+  canAttack: 0
+  extraHiveHealth: 0
+  extraHiveFirepower: 0
+  extraResourceStorage: 50
+  attackRadius: 10

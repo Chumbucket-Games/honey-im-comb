@@ -36,3 +36,4 @@ MonoBehaviour:
   extraHiveHealth: 0
   extraHiveFirepower: 0
   extraResourceStorage: 0
+  attackRadius: 20

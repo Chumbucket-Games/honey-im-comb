@@ -27,12 +27,23 @@ public class Building : MonoBehaviour, ISelectable
 
     [SerializeField] Building hiveBuilding;
 
-    [SerializeField] float baseAttackRate = 0;
-    int attackRateMultiplier = 1;
+    [SerializeField] float baseAttackDelay = 0;
+    [SerializeField] float baseAttackDamage = 5;
+    float attackRateMultiplier = 1;
+    float damageMultiplier = 1;
     
     public bool IsMovable()
     {
         return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (type.canAttack)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, type.attackRadius);
+        }
     }
 
     public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode)
@@ -115,6 +126,14 @@ public class Building : MonoBehaviour, ISelectable
         if (type.canDismantle)
         {
             Debug.Log($"{type.name} dismantled. All assigned units reverted to worker status.");
+            if (hiveBuilding != null)
+            {
+                hiveBuilding.MaxHealth -= type.extraHiveHealth;
+                hiveBuilding.health = Mathf.Max(1, hiveBuilding.health - type.extraHiveHealth);
+                hiveBuilding.attackRateMultiplier -= type.extraHiveFirepower;
+                hiveBuilding.damageMultiplier -= type.extraHiveFirepower / 2f;
+            }
+
             foreach (var unit in AssignedUnits)
             {
                 // Unassign all assigned bees.
@@ -124,9 +143,36 @@ public class Building : MonoBehaviour, ISelectable
         }
     }
 
-    public void Attack()
+    IEnumerator Attack(float seconds)
     {
+        yield return new WaitForSeconds(seconds);
         // if the building can attack, fire projectiles at the closest enemy.
+        Enemy closestEnemy = null;
+        float closestEnemyDistance = 999;
+        foreach (var collider in Physics.OverlapSphere(transform.position, type.attackRadius))
+        {
+            if (collider.gameObject.GetComponent<Enemy>())
+            {
+                if (closestEnemy == null)
+                {
+                    closestEnemy = collider.gameObject.GetComponent<Enemy>();
+                    closestEnemyDistance = (collider.transform.position - transform.position).magnitude;
+                }
+                else if ((collider.transform.position - transform.position).magnitude < closestEnemyDistance)
+                {
+                    closestEnemy = collider.gameObject.GetComponent<Enemy>();
+                    closestEnemyDistance = (collider.transform.position - transform.position).magnitude;
+                }
+            }
+        }
+
+        // If no enemies are in range, stop attacking. Otherwise, attack the closest enemy.
+        if (closestEnemy != null)
+        {
+            // Damage the enemy and delay to the next attack check.
+            closestEnemy.TakeDamage(baseAttackDamage * damageMultiplier);
+            StartCoroutine(Attack(baseAttackDelay * (1f / attackRateMultiplier)));
+        }
     }
 
     // Use this for initialization
@@ -142,8 +188,8 @@ public class Building : MonoBehaviour, ISelectable
             hiveBuilding.MaxHealth += type.extraHiveHealth;
             hiveBuilding.health += type.extraHiveHealth;
             hiveBuilding.attackRateMultiplier += type.extraHiveFirepower;
+            hiveBuilding.damageMultiplier += type.extraHiveFirepower / 2f;
         }
-        
     }
 
     private void Update()
@@ -151,6 +197,11 @@ public class Building : MonoBehaviour, ISelectable
         if (healthBar != null)
         {
             healthBar.fillAmount = Mathf.Clamp01(health / MaxHealth);
+        }
+
+        if (type.canAttack)
+        {
+            StartCoroutine(Attack(0));
         }
     }
 
@@ -197,6 +248,6 @@ public class Building : MonoBehaviour, ISelectable
 
     public System.Type GetObjectType()
     {
-        return this.GetType();
+        return GetType();
     }
 }

@@ -925,7 +925,7 @@ PrefabInstance:
     - target: {fileID: 7724174751389981501, guid: b3df612e3e689784194861636d103135,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.9
+      value: 46
       objectReference: {fileID: 0}
     - target: {fileID: 7724174751389981501, guid: b3df612e3e689784194861636d103135,
         type: 3}
@@ -2872,6 +2872,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Beehive
       objectReference: {fileID: 0}
+    - target: {fileID: 1838162742264829460, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: baseAttackRate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2164206374063501821, guid: e89673125f10bbf4796435c318e38821,
         type: 3}
       propertyPath: m_RootOrder
@@ -2895,7 +2900,7 @@ PrefabInstance:
     - target: {fileID: 2164206374063501821, guid: e89673125f10bbf4796435c318e38821,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.11
+      value: 24.65
       objectReference: {fileID: 0}
     - target: {fileID: 2164206374063501821, guid: e89673125f10bbf4796435c318e38821,
         type: 3}
@@ -3954,7 +3959,7 @@ PrefabInstance:
     - target: {fileID: 7919851433014043848, guid: 96057ac55131b4a488f7478e576b14b3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 43.96742
+      value: 59.49
       objectReference: {fileID: 0}
     - target: {fileID: 7919851433014043848, guid: 96057ac55131b4a488f7478e576b14b3,
         type: 3}

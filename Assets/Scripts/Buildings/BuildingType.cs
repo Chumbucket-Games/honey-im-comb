@@ -25,10 +25,10 @@ public class BuildingType : ColonyObject
     public bool canDismantle = true;
     public bool canOccupy = true;
     public bool canAttack = false;
-    public int extraHiveHealth = 0;
-    public int extraHiveFirepower = 0;
+    public float extraHiveHealth = 0;
+    public float extraHiveFirepower = 0;
     public int extraResourceStorage = 0;
-
+    public float attackRadius = 10;
     
     public bool PlaceBuilding(HexGrid grid, int cellIndex)
     {

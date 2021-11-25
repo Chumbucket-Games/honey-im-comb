@@ -112,7 +112,8 @@ MonoBehaviour:
     type: 3}
   type: {fileID: 11400000, guid: 09e7783559b0e0844b09a6acf74cd6af, type: 2}
   hiveBuilding: {fileID: 0}
-  baseAttackRate: 0
+  baseAttackDelay: 3
+  baseAttackDamage: 5
 --- !u!64 &4419213138435518504
 MeshCollider:
   m_ObjectHideFlags: 0
