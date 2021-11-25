@@ -71,10 +71,13 @@ public class Building : MonoBehaviour, ISelectable
 
     public void OnDeselect()
     {
-        meshRenderer.material = defaultMaterial;
         if (selectionRing != null)
         {
             selectionRing.gameObject.SetActive(false);
+        }
+        else if (meshRenderer != null)
+        {
+            meshRenderer.material = defaultMaterial;
         }
         isSelected = false;
         HUDManager.GetInstance().SetActionImages(null);
@@ -88,11 +91,13 @@ public class Building : MonoBehaviour, ISelectable
             playerControls = new PlayerControls();
             playerControls.HiveManagement.Action1.performed += context =>
             {
-                if (isSelected) GrowBee();
-            };
-            playerControls.HiveManagement.Action2.performed += context =>
-            {
-                if (isSelected) DismantleBuilding();
+                if (isSelected)
+                {
+                    if (type.label == "Throne Room")
+                        GrowBee();
+                    else
+                        DismantleBuilding();
+                }
             };
         }
         playerControls.HiveManagement.Enable();

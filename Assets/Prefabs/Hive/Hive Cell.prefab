@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc57b98e4095ad438540524523f687d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 2100000, guid: 9080c94f1be00cf4d8e7f2aa7a46d74b, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 1de03eae0b5ec614eb16093efcc57bf4, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 4a7914f2f3119f44eb8a98ef4ca89cc5, type: 2}
   workerPrefab: {fileID: 8048237650387774137, guid: 569b7a83aa9da5c41a15ed15836aa85a,
     type: 3}
@@ -135,4 +135,5 @@ MonoBehaviour:
   type: {fileID: 11400000, guid: 95bd6cbb7ffd67b4c997a33c88a1175a, type: 2}
   hiveBuilding: {fileID: 1838162742264829460, guid: e89673125f10bbf4796435c318e38821,
     type: 3}
-  baseAttackRate: 0
+  baseAttackDelay: 0
+  baseAttackDamage: 5

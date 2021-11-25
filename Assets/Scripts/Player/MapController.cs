@@ -21,6 +21,11 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     static int MaxPebbles;
     static int MaxHoney;
 
+    bool boxSelectQueued = false;
+    Vector3 dimensions;
+    Vector3 position;
+
+
     public static int GetTotalPebbles()
     {
         return Pebbles;
@@ -127,6 +132,14 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         }
     }
 
+    void LateUpdate()
+    {
+        if (boxSelectQueued)
+        {
+            PerformBoxSelect();
+        }
+    }
+
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (context.performed && selectedObjects.Count > 0)
@@ -160,8 +173,16 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
     {
         cursorPosition = context.ReadValue<Vector2>();
     }
-
+    
+    // We want to defer the box select until the end of the update cycle (LateUpdate) to allow UI events (eg. buttons) to be captured first.
     public void OnBoxSelect(Vector3 dimensions, Vector3 position)
+    {
+        this.dimensions = dimensions;
+        this.position = position;
+        boxSelectQueued = true;
+    }
+
+    public void PerformBoxSelect()
     {
         foreach (var selectedObject in selectedObjects)
         {
@@ -169,9 +190,9 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         }
         selectedObjects.Clear();
 
-        Vector3 halfExtents = dimensions / 2f;
+        HUDManager.GetInstance().SetSelectedObject(null);
 
-        // Select the units within the bounding box. Cast up from the ground in overworld mode; otherwise cast forward.
+        Vector3 halfExtents = dimensions / 2f;
         RaycastHit[] hits = Physics.BoxCastAll(position, halfExtents, Camera.main.transform.forward == Vector3.forward ? -Vector3.forward : Vector3.up, Quaternion.identity, 20);
         ISelectable firstSelectedObject = null;
         int totalSelectedObjects = 0;
@@ -216,6 +237,10 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
         {
             HUDManager.GetInstance().SetSelectedObject(selectedObjects[0]);
         }
+        
+        boxSelectQueued = false;
+        dimensions = Vector3.zero;
+        position = Vector3.zero;
     }
 
     public void OnSelect(InputAction.CallbackContext context)

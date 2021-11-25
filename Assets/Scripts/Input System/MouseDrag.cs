@@ -20,7 +20,7 @@ public class MouseDrag : MonoBehaviour
         if (playerControls == null)
         {
             playerControls = new PlayerControls();
-            playerControls.UnitManagement.Select.performed += ctx => OnSelect(ctx);
+            playerControls.UnitManagement.Select.started += ctx => OnSelect(ctx);
             playerControls.UnitManagement.Select.canceled += ctx => OnSelectCancelled(ctx);
         }
 
@@ -38,13 +38,13 @@ public class MouseDrag : MonoBehaviour
         if (isMouseDown)
         {
             var currentEndPosition = Mouse.current.position.ReadValue();
-            var dimensions = GetSelectBoxWorldDimensions(startPosition, currentEndPosition);
-            Vector3 position = GetSelectBoxWorldPosition(startPosition, currentEndPosition);
+            var startScreenPosition = Camera.main.WorldToScreenPoint(startPosition);
+            var dimensions = GetSelectBoxDimensions(startScreenPosition, currentEndPosition);
+            Vector2 position = GetSelectBoxPosition(startScreenPosition, currentEndPosition);
 
             mouseDragSelection.rectTransform.position = position;
-            mouseDragSelection.rectTransform.up = Camera.main.transform.up == Vector3.up ? Vector3.up : Vector3.forward;
             mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, dimensions.x);
-            mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Camera.main.transform.forward == Vector3.forward ? dimensions.y : dimensions.z);
+            mouseDragSelection.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, dimensions.y);
         }
     }
 
@@ -52,7 +52,7 @@ public class MouseDrag : MonoBehaviour
     {
         isMouseDown = true;
         Vector3 startInput = Mouse.current.position.ReadValue();
-        startInput.z = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) : Camera.main.transform.position.y;
+        startInput.z = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 2.5f : Camera.main.transform.position.y;
  
         startPosition = Camera.main.ScreenToWorldPoint(startInput);
         mouseDragSelection.gameObject.SetActive(true);
@@ -70,9 +70,20 @@ public class MouseDrag : MonoBehaviour
         mouseDragSelection.gameObject.SetActive(false);
     }
 
+    private Vector2 GetSelectBoxDimensions(Vector2 startPosition, Vector2 currentEndPosition)
+    {
+        Vector2 dimensions = currentEndPosition - startPosition;
+        dimensions = new Vector2(
+            Mathf.Abs(dimensions.x),
+            Mathf.Abs(dimensions.y)
+        );
+
+        return dimensions;
+    }
+
     private Vector3 GetSelectBoxWorldDimensions(Vector3 startPosition, Vector2 currentEndPosition)
     {
-        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) : Camera.main.transform.position.y;
+        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 2.5f : Camera.main.transform.position.y;
         Vector3 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
 
         Vector3 dimensions = currentEndWorldPosition - startPosition;
@@ -85,10 +96,34 @@ public class MouseDrag : MonoBehaviour
         return dimensions;
     }
 
+    private Vector2 GetSelectBoxPosition(Vector3 startPosition, Vector2 currentEndPosition)
+    {
+        Vector2 position = new Vector2();
+        if (startPosition.x < currentEndPosition.x)
+        {
+            position.x = currentEndPosition.x - ((currentEndPosition.x - startPosition.x) / 2f);
+        }
+        else
+        {
+            position.x = startPosition.x - ((startPosition.x - currentEndPosition.x) / 2f);
+        }
+
+        if (startPosition.y > currentEndPosition.y)
+        {
+            position.y = currentEndPosition.y - ((currentEndPosition.y - startPosition.y) / 2f);
+        }
+        else
+        {
+            position.y = startPosition.y - ((startPosition.y - currentEndPosition.y) / 2f);
+        }
+
+        return position;
+    }
+
     private Vector3 GetSelectBoxWorldPosition(Vector3 startPosition, Vector2 currentEndPosition)
     {
         Vector3 position = new Vector3();
-        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) : Camera.main.transform.position.y;
+        float zPosition = Camera.main.transform.forward == Vector3.forward ? Mathf.Abs(Camera.main.transform.position.z) - 2.5f : Camera.main.transform.position.y;
         Vector3 currentEndWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(currentEndPosition.x, currentEndPosition.y, zPosition));
         if (Camera.main.transform.forward == Vector3.forward)
         {
@@ -132,7 +167,6 @@ public class MouseDrag : MonoBehaviour
             }
             position.y = 3;
         }
-        
 
         return position;
     }
