@@ -53,12 +53,9 @@ public class Building : MonoBehaviour, ISelectable
 
         Debug.Log($"{type.label} selected.");
         isSelected = true;
-        if (selectionView != null)
-        {
-            selectionView.gameObject.SetActive(true);
-        }
         HUDManager.GetInstance().SetSelectedObjectDetails(type.label, (int)health, 0, 0);
         HUDManager.GetInstance().SetActionImages(type.actionSprites);
+        HUDManager.GetInstance().ShowSelectedObjectDetails(selectionView);
     }
 
     public void OnDeselect()
@@ -69,10 +66,8 @@ public class Building : MonoBehaviour, ISelectable
             selectionRing.gameObject.SetActive(false);
         }
         isSelected = false;
-        if (selectionView != null)
-        {
-            selectionView.gameObject.SetActive(false);
-        }
+        HUDManager.GetInstance().SetActionImages(null);
+        HUDManager.GetInstance().HideSelectedObjectDetails(selectionView);
     }
 
     private void OnEnable()

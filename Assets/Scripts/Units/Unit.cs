@@ -381,12 +381,11 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             selectionRing.gameObject.SetActive(true);
         }
         //HUDManager.GetInstance().SetSelectedObjectImage(type.image);
-        if (selectionView != null)
-        {
-           selectionView.gameObject.SetActive(true);
-        }
+        
         HUDManager.GetInstance().SetSelectedObjectDetails(type.label, (int)health, stack.resource == pebbleResource ? stack.quantity : 0, stack.resource == honeyResource ? stack.quantity : 0);
         HUDManager.GetInstance().SetActionImages(type.actionSprites);
+        HUDManager.GetInstance().ShowSelectedObjectDetails(selectionView);
+        
     }
 
     public void OnDeselect()
@@ -397,10 +396,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         {
             selectionRing.gameObject.SetActive(false);
         }
-        if (selectionView != null)
-        {
-           selectionView.gameObject.SetActive(false);
-        }
+        HUDManager.GetInstance().SetActionImages(null);
+        HUDManager.GetInstance().HideSelectedObjectDetails(selectionView);
     }
 
     public void DidReachDestination()

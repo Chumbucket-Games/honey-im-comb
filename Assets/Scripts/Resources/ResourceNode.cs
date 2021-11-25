@@ -28,13 +28,9 @@ public class ResourceNode : MonoBehaviour, ISelectable
         {
             selectionRing.gameObject.SetActive(true);
         }
-        //HUDManager.GetInstance().SetSelectedObjectImage(resource.image);
-        if (selectionView != null)
-        {
-            selectionView.gameObject.SetActive(true);
-        }
         HUDManager.GetInstance().SetSelectedObjectDetails(resource.displayName, remainingAmount, 0, 0);
         HUDManager.GetInstance().SetActionImages(null);
+        HUDManager.GetInstance().ShowSelectedObjectDetails(selectionView);
     }
 
     public void OnDeselect()
@@ -43,10 +39,7 @@ public class ResourceNode : MonoBehaviour, ISelectable
         {
             selectionRing.gameObject.SetActive(false);
         }
-        if (selectionView)
-        {
-           selectionView.gameObject.SetActive(false);
-        }
+        HUDManager.GetInstance().HideSelectedObjectDetails(selectionView);
     }
 
     // Start is called before the first frame update

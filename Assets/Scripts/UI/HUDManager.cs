@@ -6,6 +6,7 @@ using System;
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] Button[] actionButtons;
+    [SerializeField] Image selectedObjectView;
     [SerializeField] Text selectedObjectName;
     [SerializeField] Text selectedObjectHealth;
     [SerializeField] Text selectedObjectPebbles;
@@ -15,6 +16,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] Text unitCap;
     [SerializeField] Text gameTime;
     [SerializeField] VerticalLayoutGroup notificationPane;
+    [SerializeField] VerticalLayoutGroup objectDetails;
     static HUDManager instance;
     float elapsedTime = 0;
     private ISelectable selectedObject;
@@ -137,5 +139,25 @@ public class HUDManager : MonoBehaviour
     public void CreateNotification(Notification n)
     {
         Instantiate(n, notificationPane.transform);
+    }
+
+    public void ShowSelectedObjectDetails(Camera selectedObjectCamera)
+    {
+        if (selectedObjectCamera != null)
+        {
+            selectedObjectCamera.gameObject.SetActive(true);
+            selectedObjectView.gameObject.SetActive(true);
+        }
+        objectDetails.gameObject.SetActive(true);
+    }
+
+    public void HideSelectedObjectDetails(Camera selectedObjectCamera)
+    {
+        objectDetails.gameObject.SetActive(false);
+        if (selectedObjectCamera != null)
+        {
+            selectedObjectCamera.gameObject.SetActive(false);
+            selectedObjectView.gameObject.SetActive(false);
+        }
     }
 }
