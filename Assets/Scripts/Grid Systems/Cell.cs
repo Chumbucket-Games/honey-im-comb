@@ -19,22 +19,22 @@ public class Cell
         this.grid = grid;
     }
 
-    public void DrawCellGizmos(float rowPadding, float colPadding, Color color)
+    public void DrawCellGizmos(float rowPadding, float colPadding, Color color, float heightOffset)
     {
         if (IsWall)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawCube(Position, new Vector3(colPadding, 0f, rowPadding));
+            Gizmos.DrawCube(Position + Vector3.up * heightOffset, new Vector3(colPadding, 0f, rowPadding));
         }
         else if (IsOccupied)
         {
             Gizmos.color = Color.gray;
-            Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
+            Gizmos.DrawCube(Position + Vector3.up * heightOffset, new Vector3(colPadding, 0f, rowPadding));
         }
         else
         {
             Gizmos.color = color;
-            Gizmos.DrawWireCube(Position, new Vector3(colPadding, 0f, rowPadding));
+            Gizmos.DrawWireCube(Position + Vector3.up * heightOffset, new Vector3(colPadding, 0f, rowPadding));
         }
     }
 

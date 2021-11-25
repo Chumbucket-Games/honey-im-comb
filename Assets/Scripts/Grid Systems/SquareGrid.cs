@@ -18,10 +18,13 @@ public class SquareGrid : MonoBehaviour
     [Header("Debug Options")]
     [SerializeField] private bool displayGrid = false;
     [SerializeField] private Color gridColor = Color.red;
+    [SerializeField] private float heightOffset = 0;
 
     private Cell[,] grid;
     private Cell selectedCell = null;
+    [Header("Occupied Cells")]
     [SerializeField] Vector2Int[] walls;
+    [SerializeField] GridObject[] overworldObjects;
 
     public bool IsGridFull { get; private set; }
     public uint TotalCells { get; private set; }
@@ -35,6 +38,8 @@ public class SquareGrid : MonoBehaviour
         IsGridFull = false;
         TotalCells = rows * columns;
         SetWalls();
+
+        OccupyAllObjectCells();
     }
 
     public void SetWalls()
@@ -42,6 +47,41 @@ public class SquareGrid : MonoBehaviour
         foreach (var wall in walls)
         {
             grid[wall.y, wall.x].SetWall();
+        }
+    }
+
+    public void OccupyAllObjectCells()
+    {
+        foreach (var go in overworldObjects)
+        {
+            Vector2Int centerCell = WorldToCell(go.transform.position);
+            if (go.dimensions.x % 2 == 0 && go.dimensions.y % 2 == 0)
+            {
+                // Even-numbered grid arrangements will treat the middle of the middle 4 cells as the center (which floors to the bottom left cell of the center).
+                // Otherwise, we treat the center point as the center cell.
+                // The bottom left needs to be offset by 1 cell in this calculation.
+                Vector2Int bottomLeft = new Vector2Int(centerCell.x - (go.dimensions.x / 2) + 1, centerCell.y - (go.dimensions.y / 2) + 1);
+                Vector2Int topRight = new Vector2Int(centerCell.x + (go.dimensions.x / 2), centerCell.y + (go.dimensions.y / 2));
+                for (int x = bottomLeft.x; x <= topRight.x; x++)
+                {
+                    for (int y = bottomLeft.y; y <= topRight.y; y++)
+                    {
+                        grid[y, x].OccupyCell();
+                    }
+                }
+            }
+            else
+            {
+                Vector2Int bottomLeft = new Vector2Int(centerCell.x - (go.dimensions.x / 2), centerCell.y - (go.dimensions.y / 2));
+                Vector2Int topRight = new Vector2Int(centerCell.x + (go.dimensions.x / 2), centerCell.y + (go.dimensions.y / 2));
+                for (int x = bottomLeft.x; x <= topRight.x; x++)
+                {
+                    for (int y = bottomLeft.y; y <= topRight.y; y++)
+                    {
+                        grid[y, x].OccupyCell();
+                    }
+                }
+            }
         }
     }
 
@@ -60,6 +100,7 @@ public class SquareGrid : MonoBehaviour
             grid = new Cell[rows, columns];
             InitGridCells();
             SetWalls();
+            OccupyAllObjectCells();
         }
 
         DrawCellsGizmos();
@@ -83,11 +124,8 @@ public class SquareGrid : MonoBehaviour
         }
     }
 
-    public Cell GetClosestAvailableCellToPosition(Vector3 position, int maxRowSearchDistance, int maxColumnSearchDistance)
+    public Vector2Int WorldToCell(Vector3 position)
     {
-        Debug.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z), Color.magenta);
-        Debug.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f), Color.magenta);
-        
         var rowValue = (position.z - (gameObject.transform.position.z - rowPadding * rows / 2f)) / rowPadding;
         var colValue = (position.x - (gameObject.transform.position.x - columnPadding * columns / 2f)) / columnPadding;
 
@@ -96,13 +134,22 @@ public class SquareGrid : MonoBehaviour
 
         row = Mathf.Clamp(row, 0, (int)rows - 1);
         col = Mathf.Clamp(col, 0, (int)columns - 1);
+        return new Vector2Int(col, row);
+    }
 
-        var startCell = grid[row, col];
+    public Cell GetClosestAvailableCellToPosition(Vector3 position, int maxRowSearchDistance, int maxColumnSearchDistance)
+    {
+        Debug.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z), Color.magenta);
+        Debug.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f), Color.magenta);
+
+        Vector2Int cell = WorldToCell(position);
+
+        var startCell = grid[cell.y, cell.x];
 
         if (!startCell.IsOccupied && !startCell.IsWall)
         {
-            selectedCell = grid[row, col];
-            return grid[row, col];
+            selectedCell = grid[cell.y, cell.x];
+            return grid[cell.y, cell.x];
         }
 
         // continue the search
@@ -161,11 +208,11 @@ public class SquareGrid : MonoBehaviour
             {
                 if (selectedCell != null && selectedCell.RowIndex == row && selectedCell.ColIndex == col)
                 {
-                    grid[row, col].DrawCellGizmos(rowPadding - .5f, columnPadding - .5f, Color.magenta);
+                    grid[row, col].DrawCellGizmos(rowPadding - .5f, columnPadding - .5f, Color.magenta, heightOffset);
                 }
                 else
                 {
-                    grid[row, col].DrawCellGizmos(rowPadding, columnPadding, gridColor);
+                    grid[row, col].DrawCellGizmos(rowPadding, columnPadding, gridColor, heightOffset);
                 }
             }
         }
