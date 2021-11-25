@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 
 public class HUDManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] Text gameTime;
     [SerializeField] VerticalLayoutGroup notificationPane;
     [SerializeField] VerticalLayoutGroup objectDetails;
+    [SerializeField] VerticalLayoutGroup pauseMenu;
     static HUDManager instance;
     float elapsedTime = 0;
     private ISelectable selectedObject;
@@ -159,5 +161,28 @@ public class HUDManager : MonoBehaviour
             selectedObjectCamera.gameObject.SetActive(false);
             selectedObjectView.gameObject.SetActive(false);
         }
+    }
+
+    public void PauseGame()
+    {
+        pauseMenu.gameObject.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        pauseMenu.gameObject.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(Constants.Scenes.MainMenu);
+    }
+
+    public void ExitToDesktop()
+    {
+        Application.Quit();
     }
 }
