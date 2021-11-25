@@ -3,7 +3,22 @@ guid: be89110bb1d5b7b4c83b42a7e103acb6
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: petal
+    second: {fileID: 2100000, guid: 030ec97d27a7dd1478cc53fe10d04308, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stalk
+    second: {fileID: 2100000, guid: 7a04c55122fb0ec45b42e27efa2e4382, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stamen
+    second: {fileID: 2100000, guid: fa9dcc08391be5946a3c88ae86bc8251, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -88,7 +103,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.06
+    globalScale: 6
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
