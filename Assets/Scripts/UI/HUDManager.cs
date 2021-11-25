@@ -191,14 +191,12 @@ public class HUDManager : MonoBehaviour
     public void LoseGame()
     {
         lossDialogue.gameObject.SetActive(true);
-        Time.timeScale = 0;
         StartCoroutine(DelayedSceneTransition(Constants.Scenes.MainMenu));
     }
 
     public void WinGame()
     {
         lossDialogue.gameObject.SetActive(true);
-        Time.timeScale = 0;
         StartCoroutine(DelayedSceneTransition(Constants.Scenes.Credits));
     }
 
