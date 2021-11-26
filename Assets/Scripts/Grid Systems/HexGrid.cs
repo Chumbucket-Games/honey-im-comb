@@ -102,6 +102,7 @@ public class HexGrid : MonoBehaviour
 		if (TotalUnits == MaxUnits)
 		{
 			Debug.Log("Cannot increase unit cap any further.");
+			HUDManager.GetInstance().DisplayErrorMessage("Cannot increase unit cap");
 			return;
 		}
 		TotalUnits = Mathf.Min(MaxUnits, TotalUnits + amount);
@@ -112,6 +113,8 @@ public class HexGrid : MonoBehaviour
 		if (CurrentUnits == TotalUnits)
 		{
 			Debug.Log("Cannot decrease unit cap any further.");
+			HUDManager.GetInstance().DisplayErrorMessage("Cannot decrease unit cap");
+			return;
 		}
 		TotalUnits = Mathf.Max(CurrentUnits, TotalUnits - amount);
 	}

@@ -799,6 +799,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             }
             else
             {
+                HUDManager.GetInstance().DisplayErrorMessage("Cannot reassign selected unit");
                 Debug.Log("Could not change unit role.");
                 return;
             }

@@ -32,8 +32,14 @@ public class BuildingType : ColonyObject
     
     public bool PlaceBuilding(HexGrid grid, int cellIndex)
     {
-        if (MapController.GetTotalPebbles() < pebbles.quantity || MapController.GetTotalHoney() < honey.quantity)
+        if (MapController.GetTotalPebbles() < pebbles.quantity)
         {
+            HUDManager.GetInstance().DisplayErrorMessage("Not enough pebbles");
+            return false;
+        }
+        else if (MapController.GetTotalHoney() < honey.quantity)
+        {
+            HUDManager.GetInstance().DisplayErrorMessage("Not enough honey");
             return false;
         }
         //Vector2Int[] cellPositions;
@@ -122,7 +128,12 @@ public class BuildingType : ColonyObject
                 cellPositions = new int[1] { cellIndex };
                 break;
         }
-        return grid.ReplaceCells(cellPositions, gridLayout, cell);
+        if (!grid.ReplaceCells(cellPositions, gridLayout, cell))
+        {
+            HUDManager.GetInstance().DisplayErrorMessage("Building cannot be placed in this cell");
+            return false;
+        }
+        return true;
     }
 
     public static void SwitchUnit(Unit oldUnit)

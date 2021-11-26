@@ -16,6 +16,8 @@ public class HUDManager : MonoBehaviour
     [SerializeField] Text totalNectar;
     [SerializeField] Text unitCap;
     [SerializeField] Text gameTime;
+    [SerializeField] Text errorDisplay;
+    [SerializeField] float errorDisplaySeconds = 5;
     [SerializeField] VerticalLayoutGroup notificationPane;
     [SerializeField] VerticalLayoutGroup objectDetails;
     [SerializeField] VerticalLayoutGroup pauseMenu;
@@ -204,5 +206,18 @@ public class HUDManager : MonoBehaviour
     {
         yield return new WaitForSeconds(10);
         SceneManager.LoadScene(sceneId);
+    }
+
+    public void DisplayErrorMessage(string error)
+    {
+        errorDisplay.text = error;
+        errorDisplay.gameObject.SetActive(true);
+        StartCoroutine(DismissDialogue());
+    }
+
+    IEnumerator DismissDialogue()
+    {
+        yield return new WaitForSeconds(errorDisplaySeconds);
+        errorDisplay.gameObject.SetActive(false);
     }
 }

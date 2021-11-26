@@ -125,6 +125,10 @@ public class Building : MonoBehaviour, ISelectable
             HexGrid.IncreaseTotalUnits(1);
             Debug.Log("A new worker is born!");
         }
+        else
+        {
+            HUDManager.GetInstance().DisplayErrorMessage("Not enough honey");
+        }
     }
 
     public void DismantleBuilding()
