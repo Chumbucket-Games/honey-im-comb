@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     private Vector3 targetPosition = Vector3.zero;
     private Quaternion targetRotation = Quaternion.identity;
 
-    private GameObject targetObject;
+    private ISelectable targetObject;
     private Rigidbody rb;
     private EnemyWave wave;
     SquareGrid grid;
@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
     Coroutine attackRoutine;
 
     static Vector3 hivePosition = Vector3.zero;
+    static Building hiveObject;
 
     Animator animator;
 
@@ -37,7 +38,11 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
-        animator.SetBool("Flying", true);
+        animator.SetBool(Constants.Animations.EnemyFlying, true);
+        if (hiveObject == null)
+        {
+            hiveObject = GameObject.FindGameObjectWithTag(Constants.Tags.Hive).GetComponent<Building>();
+        }
     }
 
     void Start()
@@ -68,20 +73,18 @@ public class Enemy : MonoBehaviour
             CheckNearbyTargets();
             if (isMoving)
             {
-                if (currentWaypoint != null && Mathf.Round(currentWaypoint.Position.x) != Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) != Mathf.Round(transform.position.z))
-                {
-                    transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
-                    CorrectYPosition();
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, unitType.turnSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
+                CorrectYPosition();
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, unitType.turnSpeed * Time.deltaTime);
 
-                    Debug.DrawLine(transform.position, currentWaypoint.Position, Color.blue);
-                }
-                else
+                Debug.DrawLine(transform.position, currentWaypoint.Position, Color.blue);
+                if (currentWaypoint != null && Mathf.Round(currentWaypoint.Position.x) == Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) == Mathf.Round(transform.position.z))
                 {
                     if (!waypoints.TryPop(out currentWaypoint))
                     {
+                        Debug.Log(targetObject);
                         isMoving = false;
-                        animator.SetBool("Moving", false);
+                        animator.SetBool(Constants.Animations.EnemyMoving, false);
 
                         // Add to the associated wave once movement has ended.
                         if (!registeredToWave)
@@ -116,10 +119,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Pathfind()
+    void Pathfind(bool emptyStartCell = true)
     {
-        Cell targetCell = grid.GetClosestAvailableCellToPosition(targetPosition, 5, 5);
-        Cell startCell = grid.GetClosestAvailableCellToPosition(transform.position, 5, 5);
+        Cell targetCell = grid.GetClosestAvailableCellToPosition(targetPosition);
+        Cell startCell = grid.GetCell(grid.WorldToCell(transform.position));
+
+        targetPosition = targetCell.Position;
 
         Node startNode = new Node(startCell);
         Node endNode = new Node(targetCell);
@@ -130,22 +135,30 @@ public class Enemy : MonoBehaviour
         if (waypoints.Count > 0)
         {
             targetCell.OccupyCell();
-            startCell.EmptyCell();
+            if (emptyStartCell)
+            {
+                startCell.EmptyCell();
+            }
         }
     }
 
     void CheckNearbyTargets()
     {
-        GameObject closestTarget = null;
+        ISelectable closestTarget = null;
         float distanceToClosestTarget = 999;
         foreach (var collider in Physics.OverlapSphere(transform.position, attackScanRadius))
         {
-            // Ignore any collisions that aren't units or buildings that aren't enemy spawners.
-            if (collider.gameObject != gameObject && collider.gameObject != targetObject &&
+            // Ignore collisions on the following:
+            // 1. This unit.
+            // 2. The unit's spawner.
+            // 3. The unit's current target (if they have one).
+            // 4. Any dead units or buildings.
+            if (collider.gameObject != gameObject &&
                 (
                     (collider.gameObject.GetComponent<Unit>() && !collider.gameObject.GetComponent<Unit>().IsDead) ||
                     (collider.gameObject.GetComponent<Building>() && !collider.gameObject.GetComponent<EnemySpawner>() && !collider.gameObject.GetComponent<Building>().IsDead)
-                )
+                ) &&
+                (targetObject == null || collider.gameObject != targetObject.GetGameObject())
             )
             {
                 float distance = (transform.position - collider.transform.position).magnitude;
@@ -153,7 +166,14 @@ public class Enemy : MonoBehaviour
                 if (distance < distanceToClosestTarget)
                 {
                     distanceToClosestTarget = distance;
-                    closestTarget = collider.gameObject;
+                    if (collider.gameObject.GetComponent<Unit>() != null)
+                    {
+                        closestTarget = collider.gameObject.GetComponent<Unit>();
+                    }
+                    else if (collider.gameObject.GetComponent<Building>() != null)
+                    {
+                        closestTarget = collider.gameObject.GetComponent<Building>();
+                    }
                 }
             }
         }
@@ -161,43 +181,34 @@ public class Enemy : MonoBehaviour
         if (closestTarget != null && closestTarget != targetObject)
         {
             Debug.Log("New target identified!");
-            Vector3 faceDirection = (closestTarget.transform.position - transform.position).normalized;
-            Move(closestTarget.transform.position, Quaternion.FromToRotation(transform.forward, faceDirection), closestTarget);
+            Vector3 faceDirection = (closestTarget.GetGameObject().transform.position - transform.position).normalized;
+
+            Move(closestTarget.GetGameObject().transform.position, Quaternion.FromToRotation(transform.forward, faceDirection), closestTarget);
         }
     }
 
-    public void Move(Cell target, Quaternion targetRotation, GameObject targetObject = null)
+    public void Move(Cell target, Quaternion targetRotation, ISelectable targetObject = null, bool emptyStartCell = true)
     {
-        animator.SetBool("Moving", true);
+        animator.SetBool(Constants.Animations.EnemyMoving, true);
         targetPosition = target.Position;
         this.targetRotation = targetRotation;
         this.targetObject = targetObject;
 
-        if (currentWaypoint != null && currentWaypoint.IsOccupied)
-        {
-            currentWaypoint.EmptyCell();
-        }
-
-        Pathfind();
+        Pathfind(emptyStartCell);
         if (waypoints.TryPop(out currentWaypoint))
         {
             isMoving = true;
         }
     }
 
-    public void Move(Vector3 targetPosition, Quaternion targetRotation, GameObject targetObject = null)
+    public void Move(Vector3 targetPosition, Quaternion targetRotation, ISelectable targetObject = null, bool emptyStartCell = true)
     {
-        animator.SetBool("Moving", true);
+        animator.SetBool(Constants.Animations.EnemyMoving, true);
         this.targetPosition = targetPosition;
         this.targetRotation = targetRotation;
         this.targetObject = targetObject;
 
-        if (currentWaypoint != null && currentWaypoint.IsOccupied)
-        {
-            currentWaypoint.EmptyCell();
-        }
-
-        Pathfind();
+        Pathfind(emptyStartCell);
         if (waypoints.TryPop(out currentWaypoint))
         {
             isMoving = true;
@@ -212,50 +223,45 @@ public class Enemy : MonoBehaviour
     IEnumerator Attack()
     {
         yield return new WaitForSeconds(unitType.attackRate);
-        if (targetObject.GetComponent<Unit>())
+        if (targetObject != null && targetObject.GetGameObject() != null && isAttacking)
         {
-            animator.SetTrigger("Attack");
-            targetObject.GetComponent<Unit>().TakeDamage(gameObject, unitType.baseDamage);
-            if (!targetObject.GetComponent<Unit>().IsDead)
+            if (targetObject.GetGameObject().GetComponent<Unit>())
             {
-                attackRoutine = StartCoroutine(Attack());
+                if (!targetObject.GetGameObject().GetComponent<Unit>().IsDead)
+                {
+                    animator.SetTrigger(Constants.Animations.EnemyAttacking);
+                    targetObject.GetGameObject().GetComponent<Unit>().TakeDamage(gameObject, unitType.baseDamage);
+                    attackRoutine = StartCoroutine(Attack());
+                }
+                else
+                {
+                    // Retarget the hive.
+                    targetObject = null;
+                    isAttacking = false;
+                    Debug.Log("Re-targeting the hive!");
+                    TargetHive();
+                }
             }
-            else
+            else if (targetObject.GetGameObject().CompareTag(Constants.Tags.Hive))
             {
-                // Retarget the hive.
-                targetObject = null;
-                Debug.Log("Re-targeting the hive!");
-                TargetHive();
-            }
-        }
-        else if (targetObject.CompareTag("Hive"))
-        {
-            animator.SetTrigger("Attack");
-            targetObject.GetComponent<Building>().TakeDamage(unitType.baseDamage);
-            if (!targetObject.GetComponent<Building>().IsDead)
-            {
-                attackRoutine = StartCoroutine(Attack());
+                if (!targetObject.GetGameObject().GetComponent<Building>().IsDead)
+                {
+                    animator.SetTrigger(Constants.Animations.EnemyAttacking);
+                    targetObject.GetGameObject().GetComponent<Building>().TakeDamage(unitType.baseDamage);
+                    attackRoutine = StartCoroutine(Attack());
+                }
             }
         }
     }
 
     public void TargetHive()
     {
-        hivePosition.y = transform.position.y;
+        hivePosition.y = 3;
         Vector3 lookDirection = -(transform.position - hivePosition).normalized;
         lookDirection.y = 0;
         Vector3 target = hivePosition;
-        foreach (var hit in Physics.RaycastAll(transform.position, lookDirection, 100))
-        {
-            if (hit.collider.CompareTag("Hive"))
-            {
-                target = hit.point - Vector3.one; // Set the target to one unit away from the collision point.
-                target.y = transform.position.y;
-                break;
-            }
-        }
         
-        Move(target, Quaternion.FromToRotation(transform.forward, lookDirection));
+        Move(target, Quaternion.FromToRotation(transform.forward, lookDirection), hiveObject);
     }
 
     private void OnDrawGizmos()
@@ -276,11 +282,12 @@ public class Enemy : MonoBehaviour
 
     void OnDie()
     {
-        animator.SetBool("Flying", false);
-        animator.SetBool("Moving", false);
+        animator.SetBool(Constants.Animations.EnemyFlying, false);
+        animator.SetBool(Constants.Animations.EnemyMoving, false);
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);
+            isAttacking = false;
         }
 
         if (rb != null)
@@ -289,7 +296,7 @@ public class Enemy : MonoBehaviour
             rb.isKinematic = false;
         }
         IsDead = true;
-        if (currentWaypoint != null)
+        if (currentWaypoint != null && currentWaypoint.IsOccupied)
         {
             currentWaypoint.EmptyCell();
         }

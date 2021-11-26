@@ -68,4 +68,11 @@ public class ResourceNode : MonoBehaviour, ISelectable
     {
         return this.GetType();
     }
+
+    public GameObject GetGameObject()
+    {
+        if (gameObject != null)
+            return gameObject;
+        return null;
+    }
 }

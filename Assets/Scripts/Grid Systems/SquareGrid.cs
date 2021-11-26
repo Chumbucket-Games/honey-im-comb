@@ -39,7 +39,7 @@ public class SquareGrid : MonoBehaviour
         TotalCells = rows * columns;
         SetWalls();
 
-        OccupyAllObjectCells();
+        WallAllObjectCells();
     }
 
     public void SetWalls()
@@ -50,7 +50,7 @@ public class SquareGrid : MonoBehaviour
         }
     }
 
-    public void OccupyAllObjectCells()
+    public void WallAllObjectCells()
     {
         foreach (var go in overworldObjects)
         {
@@ -66,7 +66,7 @@ public class SquareGrid : MonoBehaviour
                 {
                     for (int y = bottomLeft.y; y <= topRight.y; y++)
                     {
-                        grid[y, x].OccupyCell();
+                        grid[y, x].SetWall();
                     }
                 }
             }
@@ -78,7 +78,7 @@ public class SquareGrid : MonoBehaviour
                 {
                     for (int y = bottomLeft.y; y <= topRight.y; y++)
                     {
-                        grid[y, x].OccupyCell();
+                        grid[y, x].SetWall();
                     }
                 }
             }
@@ -100,7 +100,7 @@ public class SquareGrid : MonoBehaviour
             grid = new Cell[rows, columns];
             InitGridCells();
             SetWalls();
-            OccupyAllObjectCells();
+            WallAllObjectCells();
         }
 
         DrawCellsGizmos();
@@ -137,7 +137,12 @@ public class SquareGrid : MonoBehaviour
         return new Vector2Int(col, row);
     }
 
-    public Cell GetClosestAvailableCellToPosition(Vector3 position, int maxRowSearchDistance, int maxColumnSearchDistance)
+    public Cell GetCell(Vector2Int cellPosition)
+    {
+        return grid[cellPosition.y, cellPosition.x];
+    }
+
+    public Cell GetClosestAvailableCellToPosition(Vector3 position)
     {
         Debug.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z), Color.magenta);
         Debug.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f), Color.magenta);
@@ -153,19 +158,19 @@ public class SquareGrid : MonoBehaviour
         }
 
         // continue the search
-        var unoccupiedCell = SearchSurroundingCellsForAvailable(startCell, maxRowSearchDistance, maxColumnSearchDistance);
+        var unoccupiedCell = SearchSurroundingCellsForAvailable(startCell);
         selectedCell = unoccupiedCell;
 
         return unoccupiedCell;
     }
 
     // NOTE: Could be further optimized by storing the current row and col offset on the wave
-    private Cell SearchSurroundingCellsForAvailable(Cell startCell, int maxRowSearchDistance, int maxColumnSearchDistance)
+    private Cell SearchSurroundingCellsForAvailable(Cell startCell)
     {
-        for (int rowOffset = 0; rowOffset < maxRowSearchDistance; rowOffset++)
+        for (int rowOffset = 0; rowOffset < rows; rowOffset++)
         {
             // search columns first
-            for (int colOffset = 1; colOffset < maxColumnSearchDistance; colOffset++)
+            for (int colOffset = 1; colOffset < columns; colOffset++)
             {
                 // left first
                 if (startCell.ColIndex - colOffset >= 0)
@@ -247,7 +252,7 @@ public class SquareGrid : MonoBehaviour
                 return path;
             }
 
-            foreach (var neighbor in current.Neighbors.Where(t => !t.cell.IsWall && !t.cell.IsOccupied && !processed.Contains(t)))
+            foreach (var neighbor in current.Neighbors.Where(t => !t.cell.IsWall && !processed.Contains(t)))
             {
                 var inSearch = toSearch.Contains(neighbor);
                 var costToNeighbor = current.G + current.GetDistance(neighbor);

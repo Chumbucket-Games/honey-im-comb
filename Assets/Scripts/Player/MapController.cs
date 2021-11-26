@@ -187,7 +187,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
 
         foreach (var hit in hits)
         {
-            if (hit.collider.CompareTag("Unit"))
+            if (hit.collider.CompareTag(Constants.Tags.Unit))
             {
                 if (firstSelectedObject == null)
                 {
@@ -197,7 +197,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 selectedObjects.Add(hit.transform.gameObject.GetComponent<Unit>());
                 totalSelectedObjects++;
             }
-            else if (hit.collider.CompareTag("Building") || hit.collider.CompareTag("Hive"))
+            else if (hit.collider.CompareTag(Constants.Tags.Building) || hit.collider.CompareTag(Constants.Tags.Hive))
             {
                 if (firstSelectedObject == null)
                 {
@@ -205,7 +205,7 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                 }
                 totalSelectedObjects++;
             }
-            else if (hit.collider.CompareTag("ResourceNode"))
+            else if (hit.collider.CompareTag(Constants.Tags.ResourceNode))
             {
                 if (firstSelectedObject == null)
                 {

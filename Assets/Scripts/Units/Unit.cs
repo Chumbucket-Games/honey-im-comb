@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -102,6 +102,26 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         transform.forward = Vector3.up;
     }
 
+    void OverworldMove()
+    {
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
+        Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
+        forward.y = 0;
+        if (forward != Vector3.zero)
+        {
+            transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * type.turnSpeed);
+        }
+
+        transform.position = newPosition;
+        CorrectYPosition();
+    }
+
+    void HiveMove()
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((target - transform.position).normalized, Vector3.back), Time.deltaTime * type.turnSpeed);
+        transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -120,16 +140,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 
                 if (!InHiveMode)
                 {
-                    Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
-                    Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
-                    forward.y = 0;
-                    if (forward != Vector3.zero)
-                    {
-                        transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * type.turnSpeed);
-                    }
-                    
-                    transform.position = newPosition;
-                    CorrectYPosition();
+                    OverworldMove();
                     if (Mathf.Round(transform.position.x) == Mathf.Round(currentWaypoint.Position.x) && Mathf.Round(transform.position.z) == Mathf.Round(currentWaypoint.Position.z))
                     {
                         // If all waypoints have been iterated through, stop movement.
@@ -143,9 +154,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 }
                 else
                 {
-                    Vector3 newPosition = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((target - transform.position).normalized, Vector3.back), Time.deltaTime * type.turnSpeed);
-                    transform.position = newPosition;
+                    HiveMove();
                     if (transform.position == target)
                     {
                         target = Vector3.zero;
@@ -159,17 +168,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             {
                 if (returningToHive)
                 {
-                    Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
-                    Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
-                    forward.y = 0;
-                    if (forward != Vector3.zero)
-                    {
-                        transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * type.turnSpeed);
-                    }
-
-                    transform.position = newPosition;
-                    CorrectYPosition();
-
+                    OverworldMove();
                     if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
                     {
                         if (!waypoints.TryPop(out currentWaypoint))
@@ -181,17 +180,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 }
                 else if (returningToNode)
                 {
-                    Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
-                    Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
-                    forward.y = 0;
-                    if (forward != Vector3.zero)
-                    {
-                        transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * type.turnSpeed);
-                    }
-
-                    transform.position = newPosition;
-                    CorrectYPosition();
-
+                    OverworldMove();
                     if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
                     {
                         if (!waypoints.TryPop(out currentWaypoint))
@@ -206,30 +195,27 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             {
                 if (returningToHive)
                 {
-                    Vector3 newPosition = Vector3.MoveTowards(transform.position, hivePosition, moveSpeed * Time.deltaTime);
-                    Vector3 forward = Vector3.Slerp(transform.position, (hivePosition - transform.position).normalized, Time.deltaTime * type.moveSpeed);
-                    forward.y = 0;
-                    transform.forward = forward;
+                    OverworldMove();
 
-                    transform.position = newPosition;
-                    CorrectYPosition();
-
-                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(hivePosition.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(hivePosition.z))
+                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
                     {
-                        Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
-                        animator.SetBool("Flying", false);
-                        exitPosition.z = GameConstants.HiveUnitOffset;
-                        transform.position = exitPosition;
-                        transform.forward = hiveGrid.transform.forward;
-                        InHiveMode = true;
-                        returningToHive = false;
-                        movingToBuilding = true;
+                        if (!waypoints.TryPop(out currentWaypoint))
+                        {
+                            Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
+                            animator.SetBool("Flying", false);
+                            exitPosition.z = Constants.HiveUnitOffset;
+                            transform.position = exitPosition;
+                            transform.forward = hiveGrid.transform.forward;
+                            InHiveMode = true;
+                            returningToHive = false;
+                            movingToBuilding = true;
+                        }
                     }
                 }
                 else if (movingToBuilding)
                 {
                     Vector3 buildingPosition = AssociatedBuilding.transform.position;
-                    buildingPosition.z = GameConstants.HiveUnitOffset;
+                    buildingPosition.z = Constants.HiveUnitOffset;
                     Vector3 newPosition = Vector3.MoveTowards(transform.position, buildingPosition, moveSpeed * Time.deltaTime);
 
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((buildingPosition - transform.position).normalized, Vector3.back), Time.deltaTime * type.moveSpeed);
@@ -260,7 +246,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         {
             if (hit.transform.gameObject.GetComponent<TerrainCollider>())
             {
-                transform.position = new Vector3(transform.position.x, hit.point.y + GameConstants.OverworldUnitOffset, transform.position.z);
+                transform.position = new Vector3(transform.position.x, hit.point.y + Constants.OverworldUnitOffset, transform.position.z);
                 break;
             }
         }
@@ -278,7 +264,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         return true;
     }
 
-    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode)
+    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode, bool emptyStartCell = true)
     {
         harvestMode = false;
         returningToHive = false;
@@ -294,7 +280,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             {
                 return;
             }
-            target.z = GameConstants.HiveUnitOffset;
+            target.z = Constants.HiveUnitOffset;
         }
         else
         {
@@ -304,9 +290,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             }
             animator.SetBool("Flying", true);
             animator.SetBool("Moving", true);
-            Pathfind();
+            Pathfind(null, emptyStartCell);
             currentWaypoint = waypoints.Pop();
-            Debug.Log(waypoints.Count);
         }
         if (targetObject != null && targetObject.GetComponent<HexCell>())
         {
@@ -323,43 +308,56 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         moving = true;
     }
 
-    void Pathfind(Cell cell = null)
+    void Pathfind(Cell cell = null, bool emptyStartCell = true)
     {
         Cell targetCell;
         if (cell == null)
         {
-            targetCell = overworldGrid.GetClosestAvailableCellToPosition(target, 5, 5);
+            targetCell = overworldGrid.GetClosestAvailableCellToPosition(target);
         }
         else
         {
             targetCell = cell;
         }
-        
-        Cell startCell = overworldGrid.GetClosestAvailableCellToPosition(transform.position, 5, 5);
+
+        Cell startCell = overworldGrid.GetCell(overworldGrid.WorldToCell(transform.position));
 
         Node startNode = new Node(startCell);
         Node endNode = new Node(targetCell);
 
         // Find the shortest path to the target.
         waypoints = SquareGrid.FindPath(startNode, endNode);
-        targetCell.OccupyCell();
+        if (waypoints.Count > 0)
+        {
+            targetCell.OccupyCell();
+            if (emptyStartCell)
+            {
+                startCell.EmptyCell();
+            }
+        }
     }
 
-    void Pathfind(Vector3 target)
+    void Pathfind(Vector3 target, bool emptyStartCell = true)
     {
-        Cell targetCell = overworldGrid.GetClosestAvailableCellToPosition(target, 5, 5);
-
-        Cell startCell = overworldGrid.GetClosestAvailableCellToPosition(transform.position, 5, 5);
+        Cell targetCell = overworldGrid.GetClosestAvailableCellToPosition(target);
+        Cell startCell = overworldGrid.GetCell(overworldGrid.WorldToCell(transform.position));
 
         Node startNode = new Node(startCell);
         Node endNode = new Node(targetCell);
 
         // Find the shortest path to the target.
         waypoints = SquareGrid.FindPath(startNode, endNode);
-        targetCell.OccupyCell();
+        if (waypoints.Count > 0)
+        {
+            targetCell.OccupyCell();
+            if (emptyStartCell)
+            {
+                startCell.EmptyCell();
+            }
+        }
     }
 
-    public void MoveToPosition(Vector3 position, bool IsHiveMode)
+    public void MoveToPosition(Vector3 position, bool IsHiveMode, bool emptyStartCell = true)
     {
         harvestMode = false;
         returningToHive = false;
@@ -370,9 +368,9 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         if (IsHiveMode)
         {
             // Maintain same position on the XY plane.
-            animator.SetBool("Flying", false);
-            animator.SetBool("Moving", true);
-            target.z = GameConstants.HiveUnitOffset;
+            animator.SetBool(Constants.Animations.BeeFlying, false);
+            animator.SetBool(Constants.Animations.BeeMoving, true);
+            target.z = Constants.HiveUnitOffset;
             moving = true;
         }
         else
@@ -382,12 +380,12 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 currentWaypoint.EmptyCell();
             }
             // Maintain same position on the XZ plane.
-            animator.SetBool("Flying", true);
-            animator.SetBool("Moving", true);
-            var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position, 1, 5);
+            animator.SetBool(Constants.Animations.BeeFlying, true);
+            animator.SetBool(Constants.Animations.BeeMoving, true);
+            var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position);
             target = targetCell.Position;
             target.y = position.y;
-            Pathfind(targetCell);
+            Pathfind(targetCell, emptyStartCell);
             if (waypoints.TryPop(out currentWaypoint))
             {
                 moving = true;
@@ -445,7 +443,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 {
                     // Move the bee to the exit cell of the hive grid.
                     Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
-                    exitPosition.z = GameConstants.HiveUnitOffset;
+                    exitPosition.z = Constants.HiveUnitOffset;
                     transform.position = exitPosition;
                     transform.forward = hiveGrid.transform.up;
                     InHiveMode = true;
@@ -458,10 +456,10 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 else if (targetObject.GetComponent<Building>().type.label == "Hive Exit")
                 {
                     // Move the bee to the overworld.
-                    transform.position = new Vector3(hivePosition.x + 10, GameConstants.OverworldUnitOffset, hivePosition.z + 10);
+                    transform.position = new Vector3(hivePosition.x + 10, Constants.OverworldUnitOffset, hivePosition.z + 10);
                     transform.forward = Vector3.forward;
                     InHiveMode = false;
-                    MoveToPosition(GameObject.FindGameObjectWithTag("Hive").transform.GetChild(0).transform.position, false);
+                    MoveToPosition(GameObject.FindGameObjectWithTag("Hive").transform.GetChild(0).transform.position, false, false);
                 }
             }
             else if (targetObject.GetComponent<ResourceNode>() && type.isBuilder)
@@ -495,10 +493,6 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             if (unitSelected)
             {
                 HUDManager.GetInstance().SetSelectedObjectResources(stack.resource == pebbleResource ? stack.quantity : 0, stack.resource == honeyResource ? stack.quantity : 0);
-            }
-            if (currentWaypoint != null && currentWaypoint.IsOccupied)
-            {
-                currentWaypoint.EmptyCell();
             }
             Pathfind(hivePosition);
             if (waypoints.TryPop(out currentWaypoint))
@@ -543,10 +537,6 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
         if (targetObject.activeSelf)
         {
-            if (currentWaypoint != null && currentWaypoint.IsOccupied)
-            {
-                currentWaypoint.EmptyCell();
-            }
             Pathfind(target);
             if (waypoints.TryPop(out currentWaypoint))
             {
@@ -563,23 +553,26 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     {
         yield return new WaitForSeconds(type.attackRate);
         
-        if (targetObject.GetComponent<Unit>())
+        if (targetObject != null)
         {
-            animator.SetTrigger("Attack");
+            if (targetObject.GetComponent<Unit>())
+            {
+                animator.SetTrigger(Constants.Animations.BeeAttacking);
 
-            targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage);
-            if (!targetObject.GetComponent<Enemy>().IsDead)
-            {
-                attackRoutine = StartCoroutine(Attack());
+                targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage);
+                if (!targetObject.GetComponent<Enemy>().IsDead)
+                {
+                    attackRoutine = StartCoroutine(Attack());
+                }
             }
-        }
-        else if (targetObject.GetComponent<EnemySpawner>())
-        {
-            animator.SetTrigger("Attack");
-            targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
-            if (!targetObject.GetComponent<EnemySpawner>().IsDead)
+            else if (targetObject.GetComponent<EnemySpawner>())
             {
-                attackRoutine = StartCoroutine(Attack());
+                animator.SetTrigger(Constants.Animations.BeeAttacking);
+                targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
+                if (!targetObject.GetComponent<EnemySpawner>().IsDead)
+                {
+                    attackRoutine = StartCoroutine(Attack());
+                }
             }
         }
     }
@@ -643,13 +636,13 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             rb.isKinematic = false;
         }
 
-        animator.SetBool("Flying", false);
-        animator.SetBool("Moving", false);
+        animator.SetBool(Constants.Animations.BeeFlying, false);
+        animator.SetBool(Constants.Animations.BeeMoving, false);
 
         IsDead = true;
         HexGrid.DecreaseTotalUnits(1);
 
-        if (currentWaypoint != null)
+        if (currentWaypoint != null && currentWaypoint.IsOccupied)
         {
             currentWaypoint.EmptyCell();
         }
@@ -742,7 +735,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             Ray ray = Camera.main.ScreenPointToRay(cursorPosition);
             if (Physics.Raycast(ray, out var hit))
             {
-                if (hit.collider.CompareTag("Building") && hit.transform.gameObject.GetComponent<Building>().type == emptyCell)
+                if (hit.collider.CompareTag(Constants.Tags.Building) && hit.transform.gameObject.GetComponent<Building>().type == emptyCell)
                 {
                     if (selectedBuilding.PlaceBuilding(hiveGrid, hit.transform.gameObject.GetComponent<HexCell>().Index))
                     {
@@ -796,12 +789,13 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
     public void ExchangeUnit(int buildingIndex)
     {
+        Building currentBuilding = AssociatedBuilding;
         if (buildingIndex != -1)
         {
-            Building target = HexGrid.FindFirstUnallocatedBuildingOfType(buildings[buildingIndex]);
-            if (target)
+            Building targetBuilding = HexGrid.FindFirstUnallocatedBuildingOfType(buildings[buildingIndex]);
+            if (targetBuilding)
             {
-                AssociatedBuilding = target;
+                AssociatedBuilding = targetBuilding;
             }
             else
             {
@@ -816,14 +810,25 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         moving = false;
         StopAllCoroutines();
         SwitchingRole = true;
-        animator.SetBool("Moving", true);
+        animator.SetBool(Constants.Animations.BeeMoving, true);
+        
         if (InHiveMode)
         {
             movingToBuilding = true;
         }
         else
         {
-            returningToHive = true;
+            Cell targetCell = overworldGrid.GetClosestAvailableCellToPosition(hivePosition);
+            Pathfind(targetCell);
+            if (waypoints.TryPop(out currentWaypoint))
+            {
+                returningToHive = true;
+            }
+            else
+            {
+                Debug.Log("Unable to enter hive. Unit not reassigned.");
+                AssociatedBuilding = currentBuilding;
+            }
         }
     }
 
@@ -849,5 +854,12 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     public System.Type GetObjectType()
     {
         return this.GetType();
+    }
+
+    public GameObject GetGameObject()
+    {
+        if (gameObject != null)
+            return gameObject;
+        return null;
     }
 }

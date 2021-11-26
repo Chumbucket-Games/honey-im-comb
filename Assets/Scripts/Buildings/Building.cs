@@ -119,7 +119,7 @@ public class Building : MonoBehaviour, ISelectable
                 cell = GetComponentInParent<HexGrid>().SelectRandomCell();
             } while (cell.IsOccupied);
 
-            Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, GameConstants.HiveUnitOffset), Quaternion.identity);
+            Unit unit = Instantiate(workerPrefab, cell.transform.position + new Vector3(0, 0, Constants.HiveUnitOffset), Quaternion.identity);
             unit.SetTargetObject(cell.gameObject);
             HexGrid.IncreaseTotalUnits(1);
             Debug.Log("A new worker is born!");
@@ -212,9 +212,9 @@ public class Building : MonoBehaviour, ISelectable
 
     public void OnDestroyed()
     {
-        type.OnDestroyed(/*this*/);
         IsDead = true;
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        type.OnDestroyed(/*this*/);
     }
 
     public void TakeDamage(int dmg)
@@ -254,5 +254,10 @@ public class Building : MonoBehaviour, ISelectable
     public System.Type GetObjectType()
     {
         return GetType();
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
     }
 }
