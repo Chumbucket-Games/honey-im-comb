@@ -34,6 +34,8 @@ public class Enemy : MonoBehaviour
 
     Animator animator;
 
+    
+
     // Start is called before the first frame update
 
     private void Awake()
@@ -79,7 +81,7 @@ public class Enemy : MonoBehaviour
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, unitType.turnSpeed * Time.deltaTime);
 
                 Debug.DrawLine(transform.position, currentWaypoint.Position, Color.blue);
-                if (currentWaypoint != null && Mathf.Round(currentWaypoint.Position.x) == Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) == Mathf.Round(transform.position.z))
+                if (Mathf.Round(currentWaypoint.Position.x) == Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) == Mathf.Round(transform.position.z))
                 {
                     if (!waypoints.TryPop(out currentWaypoint))
                     {
@@ -95,7 +97,7 @@ public class Enemy : MonoBehaviour
                         }
 
                         // If a target object has been set, start attacking the object.
-                        if (targetObject != null && !isAttacking)
+                        if (targetObject != null && targetObject.GetGameObject().CompareTag("Hive") && !isAttacking)
                         {
                             isAttacking = true;
                             attackRoutine = StartCoroutine(Attack());
@@ -147,7 +149,7 @@ public class Enemy : MonoBehaviour
     {
         ISelectable closestTarget = null;
         float distanceToClosestTarget = 999;
-        foreach (var collider in Physics.OverlapSphere(transform.position, attackScanRadius))
+        foreach (var collider in Physics.OverlapSphere(transform.position, attackScanRadius, Constants.UnitScanLayerMask))
         {
             // Ignore collisions on the following:
             // 1. This unit.
@@ -196,10 +198,10 @@ public class Enemy : MonoBehaviour
         this.targetObject = targetObject;
 
         Pathfind(emptyStartCell);
-        if (waypoints.TryPop(out currentWaypoint))
-        {
+        currentWaypoint = waypoints.Pop();
+        //{
             isMoving = true;
-        }
+        //}
     }
 
     public void Move(Vector3 targetPosition, Quaternion targetRotation, ISelectable targetObject = null, bool emptyStartCell = true)
@@ -210,10 +212,10 @@ public class Enemy : MonoBehaviour
         this.targetObject = targetObject;
 
         Pathfind(emptyStartCell);
-        if (waypoints.TryPop(out currentWaypoint))
-        {
+        currentWaypoint = waypoints.Pop();
+        //{
             isMoving = true;
-        }
+        //}
     }
 
     public void AssignToWave(EnemyWave wave)
@@ -262,7 +264,7 @@ public class Enemy : MonoBehaviour
         lookDirection.y = 0;
         Vector3 target = hivePosition + new Vector3(1, 0, 1);
         
-        Move(target, Quaternion.FromToRotation(transform.forward, lookDirection), hiveObject);
+        Move(target, Quaternion.FromToRotation(transform.forward, lookDirection));
     }
 
     private void OnDrawGizmos()
@@ -305,6 +307,14 @@ public class Enemy : MonoBehaviour
         if (currentWaypoint != null && currentWaypoint.IsOccupied)
         {
             currentWaypoint.EmptyCell();
+        }
+        while (waypoints.TryPop(out var cell))
+        {
+            // Unoccupy all remaining cells in the path.
+            if (cell.IsOccupied)
+            {
+                cell.EmptyCell();
+            }
         }
         StartCoroutine(DelayDestroy(5));
     }

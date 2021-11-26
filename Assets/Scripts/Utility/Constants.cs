@@ -6,6 +6,7 @@ public static class Constants
 {
     public const float HiveUnitOffset = -3.7f;
     public const float OverworldUnitOffset = 3f;
+    public const int UnitScanLayerMask = Physics.DefaultRaycastLayers | (1 << Layers.Selectables);
     public struct Scenes
     {
         public const int MainMenu = 0;
@@ -29,5 +30,10 @@ public static class Constants
         public const string Building = "Building";
         public const string Unit = "Unit";
         public const string ResourceNode = "ResourceNode";
+    }
+
+    public struct Layers
+    {
+        public const int Selectables = 6;
     }
 }

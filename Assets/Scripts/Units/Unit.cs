@@ -147,7 +147,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                         if (!waypoints.TryPop(out currentWaypoint))
                         {
                             moving = false;
-                            animator.SetBool("Moving", false);
+                            animator.SetBool(Constants.Animations.BeeMoving, false);
                             DidReachDestination();
                         }
                     }
@@ -159,7 +159,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                     {
                         target = Vector3.zero;
                         moving = false;
-                        animator.SetBool("Moving", false);
+                        animator.SetBool(Constants.Animations.BeeMoving, false);
                         DidReachDestination();
                     }
                 }
@@ -202,7 +202,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                         if (!waypoints.TryPop(out currentWaypoint))
                         {
                             Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
-                            animator.SetBool("Flying", false);
+                            animator.SetBool(Constants.Animations.BeeFlying, false);
                             exitPosition.z = Constants.HiveUnitOffset;
                             transform.position = exitPosition;
                             transform.forward = hiveGrid.transform.forward;
@@ -274,8 +274,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         if (IsHiveMode)
         {
             // Maintain same position on the XY plane.
-            animator.SetBool("Flying", false);
-            animator.SetBool("Moving", true);
+            animator.SetBool(Constants.Animations.BeeFlying, false);
+            animator.SetBool(Constants.Animations.BeeMoving, true);
             if (info.transform.gameObject.GetComponent<HexCell>().IsOccupied)
             {
                 return;
@@ -288,8 +288,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             {
                 currentWaypoint.EmptyCell();
             }
-            animator.SetBool("Flying", true);
-            animator.SetBool("Moving", true);
+            animator.SetBool(Constants.Animations.BeeFlying, true);
+            animator.SetBool(Constants.Animations.BeeMoving, true);
             Pathfind(null, emptyStartCell);
             currentWaypoint = waypoints.Pop();
         }
@@ -439,7 +439,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 }
                 
 
-                if (targetObject.GetComponent<Building>().type.label == "Hive")
+                if (targetObject.CompareTag(Constants.Tags.Hive))
                 {
                     // Move the bee to the exit cell of the hive grid.
                     Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
@@ -459,10 +459,10 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                     transform.position = new Vector3(hivePosition.x + 10, Constants.OverworldUnitOffset, hivePosition.z + 10);
                     transform.forward = Vector3.forward;
                     InHiveMode = false;
-                    MoveToPosition(GameObject.FindGameObjectWithTag("Hive").transform.GetChild(0).transform.position, false, false);
+                    MoveToPosition(GameObject.FindGameObjectWithTag(Constants.Tags.Hive).transform.GetChild(0).transform.position, false, false);
                 }
             }
-            else if (targetObject.GetComponent<ResourceNode>() && type.isBuilder)
+            else if (targetObject.CompareTag(Constants.Tags.ResourceNode) && type.isBuilder)
             {
                 // Start harvesting the resource node.
                 harvestMode = true;
@@ -473,7 +473,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 transform.forward = forward;
                 harvestRoutine = StartCoroutine(WaitToReturn(5));
             }
-            else if (targetObject.GetComponent<EnemySpawner>() || targetObject.GetComponent<Enemy>())
+            else if (targetObject.GetComponent<EnemySpawner>() || targetObject.GetComponent<Enemy>() && !IsAttacking)
             {
                 IsAttacking = true;
                 StartCoroutine(Attack());
@@ -646,7 +646,15 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         {
             currentWaypoint.EmptyCell();
         }
-        
+        while (waypoints.TryPop(out var cell))
+        {
+            // Unoccupy all remaining cells in the path.
+            if (cell.IsOccupied)
+            {
+                cell.EmptyCell();
+            }
+        }
+
         StartCoroutine(DelayDestroy(5));
     }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitType: {fileID: 11400000, guid: 7ed3f986ff04ded46ab71f448e58a92a, type: 2}
-  attackScanRadius: 5
+  attackScanRadius: 20
   healthBar: {fileID: 3481020354023844865}
   explosionVFX: {fileID: 7819091846384431214}
 --- !u!1001 &3977498941173936260

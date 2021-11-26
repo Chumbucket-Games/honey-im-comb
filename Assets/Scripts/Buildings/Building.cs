@@ -159,7 +159,7 @@ public class Building : MonoBehaviour, ISelectable
         // if the building can attack, fire projectiles at the closest enemy.
         Enemy closestEnemy = null;
         float closestEnemyDistance = 999;
-        foreach (var collider in Physics.OverlapSphere(transform.position, type.attackRadius))
+        foreach (var collider in Physics.OverlapSphere(transform.position, type.attackRadius, Constants.UnitScanLayerMask))
         {
             if (collider.gameObject.GetComponent<Enemy>() && !collider.gameObject.GetComponent<Enemy>().IsDead)
             {
