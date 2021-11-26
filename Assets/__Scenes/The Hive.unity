@@ -1366,6 +1366,41 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[5]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[6]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5489859523178904315, guid: aaa52aca64737084b96744cc272c0eb2,
         type: 3}
       propertyPath: gameGrid
@@ -1806,7 +1841,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3333334, y: 1}
+    m_SensorSize: {x: 1.95053, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2619,6 +2654,41 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[5]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[6]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5489859523178904315, guid: aaa52aca64737084b96744cc272c0eb2,
         type: 3}
       propertyPath: gameGrid
@@ -3091,6 +3161,41 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[5]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281593678508015130, guid: aaa52aca64737084b96744cc272c0eb2,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[6]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5489859523178904315, guid: aaa52aca64737084b96744cc272c0eb2,
         type: 3}
       propertyPath: gameGrid
@@ -3123,6 +3228,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1928117257}
     m_Modifications:
+    - target: {fileID: 50266015219679595, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 50266015219679595, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 50266015219679595, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 50266015219679595, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 50266015219679595, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 50266015219679595, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[5]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 50266015219679595, guid: e89673125f10bbf4796435c318e38821,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[6]
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 858969156884372790, guid: e89673125f10bbf4796435c318e38821,
         type: 3}
       propertyPath: m_PresetInfoIsWorld

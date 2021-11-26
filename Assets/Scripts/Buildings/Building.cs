@@ -13,6 +13,7 @@ public class Building : MonoBehaviour, ISelectable
     [SerializeField] Camera selectionView;
     [SerializeField] Image healthBar;
     [SerializeField] Notification underAttackNotification;
+    [SerializeField] ParticleSystem fireVFX;
 
     private MeshRenderer meshRenderer;
 
@@ -213,6 +214,7 @@ public class Building : MonoBehaviour, ISelectable
     public void OnDestroyed()
     {
         IsDead = true;
+        fireVFX.Stop();
         gameObject.SetActive(false);
         type.OnDestroyed(/*this*/);
     }
@@ -238,6 +240,15 @@ public class Building : MonoBehaviour, ISelectable
                 OnDeselect();
             }
             OnDestroyed();
+        }
+        else if (health < type.maxHealth / 3f)
+        {
+            var emission = fireVFX.emission;
+            emission.rateOverTime = 300f;
+        }
+        else if (health < type.maxHealth - MaxHealth / 3f)
+        {
+            fireVFX.Play();
         }
     }
 

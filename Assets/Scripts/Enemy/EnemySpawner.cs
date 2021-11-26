@@ -13,6 +13,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] GameObject rallyPoint;
     [SerializeField] SquareGrid gameGrid;
     [SerializeField] Image healthBar;
+    [SerializeField] ParticleSystem fireVFX;
 
     private bool spawningEnabled = false;
     private float nextSpawnTime = 0.0f;
@@ -93,6 +94,17 @@ public class EnemySpawner : MonoBehaviour
         {
             OnDestroyed();
         }
+        else if (health < buildingType.maxHealth / 3f)
+        {
+            // Intensify fire VFX.
+            var emission = fireVFX.emission;
+            emission.rateOverTime = 50f;
+        }
+        else if (health < buildingType.maxHealth - buildingType.maxHealth / 3f)
+        {
+            // Activate fire VFX.
+            fireVFX.Play();
+        }
         // Destroying the game object is handled by the map controller to prevent any broken references.
     }
 
@@ -100,6 +112,7 @@ public class EnemySpawner : MonoBehaviour
     {
         // Update the game state manager to indicate that a spawner has been destroyed. Win the game when all spawners are destroyed.
         IsDead = true;
+        fireVFX.Stop();
         DisableSpawning();
     }
 }
