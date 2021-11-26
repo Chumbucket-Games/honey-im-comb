@@ -165,40 +165,33 @@ public class SquareGrid : MonoBehaviour
     }
 
     // NOTE: Could be further optimized by storing the current row and col offset on the wave
+    /// <summary>
+    /// Searches for the nearest unoccupied cell by percolating outwards from the start cell.
+    /// </summary>
+    /// <param name="startCell">The start cell.</param>
+    /// <returns>The first unoccupied cell found.</returns>
     private Cell SearchSurroundingCellsForAvailable(Cell startCell)
     {
-        for (int rowOffset = 0; rowOffset < rows; rowOffset++)
+        uint maxOffset = (rows > columns) ? rows : columns;
+        Vector2Int startCoords = new Vector2Int(startCell.ColIndex, startCell.RowIndex);
+        for (int offset = 1; offset <= maxOffset; offset++)
         {
-            // search columns first
-            for (int colOffset = 1; colOffset < columns; colOffset++)
+            for (int y = offset; y >= -offset; y--)
             {
-                // left first
-                if (startCell.ColIndex - colOffset >= 0)
+                for (int x = -offset; x <= offset; x++)
                 {
-                    var cell = grid[startCell.RowIndex, startCell.ColIndex - colOffset];
-                    if (!cell.IsOccupied && !cell.IsWall) return cell;
+                    var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
+                    if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                        && index != startCoords)
+                    {
+                        var cell = grid[index.y, index.x];
+                        if (!cell.IsOccupied && !cell.IsWall)
+                        {
+                            Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                            return cell;
+                        }
+                    }
                 }
-
-                // then right
-                if (startCell.ColIndex + colOffset < columns)
-                {
-                    var cell = grid[startCell.RowIndex, startCell.ColIndex + colOffset];
-                    if (!cell.IsOccupied && !cell.IsWall) return cell;
-                }
-            }
-
-            // then down
-            if (startCell.RowIndex - rowOffset >= 0)
-            {
-                var cell = grid[startCell.RowIndex - rowOffset, startCell.ColIndex];
-                if (!cell.IsOccupied && !cell.IsWall) return cell;
-            }
-
-            // then up
-            if (startCell.RowIndex + rowOffset < rows)
-            {
-                var cell = grid[startCell.RowIndex + rowOffset, startCell.ColIndex];
-                if (!cell.IsOccupied && !cell.IsWall) return cell;
             }
         }
 
@@ -227,6 +220,7 @@ public class SquareGrid : MonoBehaviour
     {
         var toSearch = new List<Node> { startNode };
         var processed = new List<Node>();
+        var direction = Vector3.zero;
 
         while (toSearch.Any())
         {
@@ -244,8 +238,20 @@ public class SquareGrid : MonoBehaviour
                 
                 while (currentPathTile.cell != startNode.cell)
                 {
+                    var currentDirection = Vector3.zero;
+                    // If the cell on the top of the stack is a straight line on a single axis
+                    if (path.TryPeek(out var result))
+                    {
+                        currentDirection = (currentPathTile.cell.Position - result.Position).normalized;
+                        if (currentDirection == direction)
+                        {
+                            path.Pop();
+                        }
+                        direction = currentDirection;
+                    }
                     path.Push(currentPathTile.cell);
                     currentPathTile = currentPathTile.Connection;
+                    
                     Debug.Log($"Current cell: ({currentPathTile.cell.ColIndex}, {currentPathTile.cell.RowIndex})");
                 }
 

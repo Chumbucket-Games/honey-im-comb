@@ -52,7 +52,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (!gameGrid.IsGridFull)
         {
-            var rallyGridCell = gameGrid.GetClosestAvailableCellToPosition(rallyPoint.transform.position);
+            var rallyGridCell = gameGrid.GetCell(gameGrid.WorldToCell(rallyPoint.transform.position));
 
             if (rallyGridCell != null)
             {

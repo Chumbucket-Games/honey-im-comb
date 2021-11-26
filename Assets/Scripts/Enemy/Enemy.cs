@@ -259,7 +259,7 @@ public class Enemy : MonoBehaviour
         hivePosition.y = 3;
         Vector3 lookDirection = -(transform.position - hivePosition).normalized;
         lookDirection.y = 0;
-        Vector3 target = hivePosition;
+        Vector3 target = hivePosition + new Vector3(1, 0, 1);
         
         Move(target, Quaternion.FromToRotation(transform.forward, lookDirection), hiveObject);
     }
