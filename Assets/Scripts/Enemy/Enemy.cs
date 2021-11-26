@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private UnitType unitType;
     [SerializeField] float attackScanRadius; // This is used to determine if there are any units or buildings within range to start attacking (if not already targeting a unit or building).
     [SerializeField] Image healthBar;
+    [SerializeField] ParticleSystem explosionVFX;
 
     public bool IsDead { get; private set; } = false;
 
@@ -270,9 +271,14 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, attackScanRadius);
     }
 
-    public void TakeDamage(float dmg)
+    public void TakeDamage(float dmg, GameObject source)
     {
         health = Mathf.Max(0, health - dmg);
+
+        if (source.CompareTag(Constants.Tags.Hive))
+        {
+            explosionVFX.Play();
+        }
 
         if (health <= 0)
         {

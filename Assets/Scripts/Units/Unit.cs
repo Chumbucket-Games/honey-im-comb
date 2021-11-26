@@ -559,7 +559,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             {
                 animator.SetTrigger(Constants.Animations.BeeAttacking);
 
-                targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage);
+                targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage, gameObject);
                 if (!targetObject.GetComponent<Enemy>().IsDead)
                 {
                     attackRoutine = StartCoroutine(Attack());

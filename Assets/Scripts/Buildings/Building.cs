@@ -157,7 +157,7 @@ public class Building : MonoBehaviour, ISelectable
         float closestEnemyDistance = 999;
         foreach (var collider in Physics.OverlapSphere(transform.position, type.attackRadius))
         {
-            if (collider.gameObject.GetComponent<Enemy>())
+            if (collider.gameObject.GetComponent<Enemy>() && !collider.gameObject.GetComponent<Enemy>().IsDead)
             {
                 if (closestEnemy == null)
                 {
@@ -176,7 +176,7 @@ public class Building : MonoBehaviour, ISelectable
         if (closestEnemy != null)
         {
             // Damage the enemy and delay to the next attack check.
-            closestEnemy.TakeDamage(baseAttackDamage * damageMultiplier);
+            closestEnemy.TakeDamage(baseAttackDamage * damageMultiplier, gameObject);
             StartCoroutine(Attack(baseAttackDelay * (1f / attackRateMultiplier)));
         }
     }
