@@ -7,15 +7,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1631650440683759947, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8d29f2fcef81fef49ac4c44e5019ae98, type: 2}
+    - target: {fileID: 2768227247840752774, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5456160172275203864, guid: 569b7a83aa9da5c41a15ed15836aa85a,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8d29f2fcef81fef49ac4c44e5019ae98, type: 2}
+    - target: {fileID: 7412018660628753457, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7801776106606707883, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 8ae76c9be0812634ebc4972d23055114,
+        type: 2}
     - target: {fileID: 8048237650387774133, guid: 569b7a83aa9da5c41a15ed15836aa85a,
         type: 3}
       propertyPath: m_Name
-      value: Drone 1
+      value: Drone
       objectReference: {fileID: 0}
     - target: {fileID: 8048237650387774136, guid: 569b7a83aa9da5c41a15ed15836aa85a,
         type: 3}
