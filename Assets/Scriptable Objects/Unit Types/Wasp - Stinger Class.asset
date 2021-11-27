@@ -15,5 +15,10 @@ MonoBehaviour:
   label: Wasp - Stinger Class
   image: {fileID: 0}
   maxHealth: 50
+  actionSprites: []
   moveSpeed: 10
-  turnSpeed: 180
+  turnSpeed: 3
+  attackRate: 1
+  baseDamage: 5
+  isBuilder: 0
+  buildingType: {fileID: 0}

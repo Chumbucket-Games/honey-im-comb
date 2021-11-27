@@ -82,7 +82,12 @@ public class Enemy : MonoBehaviour
             {
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
                 CorrectYPosition();
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, unitType.turnSpeed * Time.deltaTime);
+                Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
+                forward.y = 0;
+                if (forward != Vector3.zero)
+                {
+                    transform.forward = Vector3.Slerp(transform.forward, forward, Time.deltaTime * unitType.turnSpeed);
+                }
 
                 Debug.DrawLine(transform.position, currentWaypoint.Position, Color.blue);
                 if (Mathf.Round(currentWaypoint.Position.x) == Mathf.Round(transform.position.x) && Mathf.Round(currentWaypoint.Position.z) == Mathf.Round(transform.position.z))
@@ -103,6 +108,9 @@ public class Enemy : MonoBehaviour
                         // If a target object has been set, start attacking the object.
                         if (targetObject != null && !isAttacking)
                         {
+                            forward = (currentWaypoint.Position - transform.position).normalized;
+                            forward.y = 0;
+                            transform.forward = forward;
                             isAttacking = true;
                             attackRoutine = StartCoroutine(Attack());
                         }
