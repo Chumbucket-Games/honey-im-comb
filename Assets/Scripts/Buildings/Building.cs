@@ -51,11 +51,6 @@ public class Building : MonoBehaviour, ISelectable
         }
     }
 
-    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode)
-    {
-        throw new System.InvalidOperationException();
-    }
-
     public void OnSelect()
     {
         if (selectionRing != null)

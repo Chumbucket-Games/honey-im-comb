@@ -17,11 +17,6 @@ public class ResourceNode : MonoBehaviour, ISelectable
         return false;
     }
 
-    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode)
-    {
-        throw new System.InvalidOperationException();
-    }
-
     public void OnSelect()
     {
         Debug.Log($"{remainingAmount} {resource.displayName} remaining.");

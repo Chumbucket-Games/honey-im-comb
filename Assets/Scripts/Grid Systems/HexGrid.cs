@@ -150,6 +150,7 @@ public class HexGrid : MonoBehaviour
 		cell.Index = i;
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
+		cell.transform.rotation = newCell.transform.rotation;
 		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, y);
 	}
 
@@ -217,6 +218,7 @@ public class HexGrid : MonoBehaviour
 			cell.Index = index;
 			cell.transform.SetParent(transform, false);
 			cell.transform.localPosition = position;
+			cell.transform.rotation = newCell.transform.rotation;
 			cell.coordinates = coord;
 			MaxUnits--;
 			return cell;

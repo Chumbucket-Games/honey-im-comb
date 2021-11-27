@@ -198,15 +198,14 @@ public class Enemy : MonoBehaviour
             Debug.Log("New target identified!");
             Vector3 faceDirection = (closestTarget.GetGameObject().transform.position - transform.position).normalized;
 
-            Move(closestTarget.GetGameObject().transform.position, Quaternion.FromToRotation(transform.forward, faceDirection), closestTarget);
+            Move(closestTarget.GetGameObject().transform.position, closestTarget);
         }
     }
 
-    public void Move(Cell target, Quaternion targetRotation, ISelectable targetObject = null, bool emptyStartCell = true)
+    public void Move(Cell target, ISelectable targetObject = null, bool emptyStartCell = true)
     {
         animator.SetBool(Constants.Animations.EnemyMoving, true);
         targetPosition = target.Position;
-        this.targetRotation = targetRotation;
         this.targetObject = targetObject;
 
         Pathfind(emptyStartCell);
@@ -216,11 +215,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Move(Vector3 targetPosition, Quaternion targetRotation, ISelectable targetObject = null, bool emptyStartCell = true)
+    public void Move(Vector3 targetPosition, ISelectable targetObject = null, bool emptyStartCell = true)
     {
         animator.SetBool(Constants.Animations.EnemyMoving, true);
         this.targetPosition = targetPosition;
-        this.targetRotation = targetRotation;
         this.targetObject = targetObject;
 
         Pathfind(emptyStartCell);
@@ -278,7 +276,7 @@ public class Enemy : MonoBehaviour
         lookDirection.y = 0;
         Vector3 target = hivePosition + new Vector3(1, 0, 1);
         
-        Move(target, Quaternion.FromToRotation(transform.forward, lookDirection));
+        Move(target);
     }
 
     private void OnDrawGizmos()
