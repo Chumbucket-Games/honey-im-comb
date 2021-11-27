@@ -18,6 +18,11 @@ PrefabInstance:
       propertyPath: defaultMaterial
       value: 
       objectReference: {fileID: 2100000, guid: afdad1aec15251e4da04c30909ed3f51, type: 2}
+    - target: {fileID: 3837566867273912197, guid: 6f730c686a4ea7f4da3dbc2cb619c465,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3caf8cc325aad5d41a3dd04b6537858c, type: 3}
     - target: {fileID: 5058614919483371937, guid: 6f730c686a4ea7f4da3dbc2cb619c465,
         type: 3}
       propertyPath: m_RootOrder

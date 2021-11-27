@@ -213,6 +213,7 @@ MonoBehaviour:
   totalAmount: 5000
   selectionRing: {fileID: 7488973304974176700}
   selectionView: {fileID: 1737437247996740533}
+  harvestSound: {fileID: 8300000, guid: df2105a86f34af94bb02a769cc838382, type: 3}
 --- !u!64 &6214553973699747837
 MeshCollider:
   m_ObjectHideFlags: 0

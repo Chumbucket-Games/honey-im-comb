@@ -9,6 +9,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] float attackScanRadius; // This is used to determine if there are any units or buildings within range to start attacking (if not already targeting a unit or building).
     [SerializeField] Image healthBar;
     [SerializeField] ParticleSystem explosionVFX;
+    [SerializeField] AudioSource persistentAudioSource;
+    [SerializeField] AudioSource dynamicAudioSource;
+    [SerializeField] AudioClip attackSound;
 
     public bool IsDead { get; private set; } = false;
 
@@ -42,6 +45,7 @@ public class Enemy : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
         animator.SetBool(Constants.Animations.EnemyFlying, true);
+        persistentAudioSource.Play();
         if (hiveObject == null)
         {
             hiveObject = GameObject.FindGameObjectWithTag(Constants.Tags.Hive).GetComponent<Building>();
@@ -198,10 +202,10 @@ public class Enemy : MonoBehaviour
         this.targetObject = targetObject;
 
         Pathfind(emptyStartCell);
-        currentWaypoint = waypoints.Pop();
-        //{
+        if (waypoints.TryPop(out currentWaypoint))
+        {
             isMoving = true;
-        //}
+        }
     }
 
     public void Move(Vector3 targetPosition, Quaternion targetRotation, ISelectable targetObject = null, bool emptyStartCell = true)
@@ -212,10 +216,10 @@ public class Enemy : MonoBehaviour
         this.targetObject = targetObject;
 
         Pathfind(emptyStartCell);
-        currentWaypoint = waypoints.Pop();
-        //{
+        if (waypoints.TryPop(out currentWaypoint))
+        {
             isMoving = true;
-        //}
+        }
     }
 
     public void AssignToWave(EnemyWave wave)
@@ -233,6 +237,7 @@ public class Enemy : MonoBehaviour
                 if (!targetObject.GetGameObject().GetComponent<Unit>().IsDead)
                 {
                     animator.SetTrigger(Constants.Animations.EnemyAttacking);
+                    dynamicAudioSource.PlayOneShot(attackSound);
                     targetObject.GetGameObject().GetComponent<Unit>().TakeDamage(gameObject, unitType.baseDamage);
                     attackRoutine = StartCoroutine(Attack());
                 }
@@ -250,6 +255,7 @@ public class Enemy : MonoBehaviour
                 if (!targetObject.GetGameObject().GetComponent<Building>().IsDead)
                 {
                     animator.SetTrigger(Constants.Animations.EnemyAttacking);
+                    dynamicAudioSource.PlayOneShot(attackSound);
                     targetObject.GetGameObject().GetComponent<Building>().TakeDamage(unitType.baseDamage);
                     attackRoutine = StartCoroutine(Attack());
                 }
@@ -292,6 +298,8 @@ public class Enemy : MonoBehaviour
     {
         animator.SetBool(Constants.Animations.EnemyFlying, false);
         animator.SetBool(Constants.Animations.EnemyMoving, false);
+        persistentAudioSource.Stop();
+        dynamicAudioSource.Stop();
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);

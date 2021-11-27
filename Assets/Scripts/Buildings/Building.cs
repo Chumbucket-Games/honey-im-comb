@@ -14,6 +14,9 @@ public class Building : MonoBehaviour, ISelectable
     [SerializeField] Image healthBar;
     [SerializeField] Notification underAttackNotification;
     [SerializeField] ParticleSystem fireVFX;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip selectionSound;
+    [SerializeField] AudioClip attackSound;
 
     private MeshRenderer meshRenderer;
 
@@ -32,6 +35,7 @@ public class Building : MonoBehaviour, ISelectable
     [SerializeField] float baseAttackDamage = 5;
     float attackRateMultiplier = 1;
     float damageMultiplier = 1;
+    bool IsAttacking = false;
     
     public bool IsMovable()
     {
@@ -64,6 +68,7 @@ public class Building : MonoBehaviour, ISelectable
         }
 
         Debug.Log($"{type.label} selected.");
+        audioSource.PlayOneShot(selectionSound);
         isSelected = true;
         HUDManager.GetInstance().SetSelectedObjectDetails(type.label, (int)health, 0, 0);
         HUDManager.GetInstance().SetActionImages(type.actionSprites);
@@ -180,8 +185,13 @@ public class Building : MonoBehaviour, ISelectable
         if (closestEnemy != null)
         {
             // Damage the enemy and delay to the next attack check.
+            audioSource.PlayOneShot(attackSound);
             closestEnemy.TakeDamage(baseAttackDamage * damageMultiplier, gameObject);
             StartCoroutine(Attack(baseAttackDelay * (1f / attackRateMultiplier)));
+        }
+        else
+        {
+            IsAttacking = false;
         }
     }
 
@@ -209,8 +219,9 @@ public class Building : MonoBehaviour, ISelectable
             healthBar.fillAmount = Mathf.Clamp01(health / MaxHealth);
         }
 
-        if (type.canAttack)
+        if (type.canAttack && !IsAttacking)
         {
+            IsAttacking = true;
             StartCoroutine(Attack(0));
         }
     }

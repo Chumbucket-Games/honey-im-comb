@@ -10,6 +10,7 @@ public class ResourceNode : MonoBehaviour, ISelectable
     int remainingAmount; // This will be reduced based on the length of time a bee is harvesting the node.
     [SerializeField] GameObject selectionRing;
     [SerializeField] Camera selectionView;
+    public AudioClip harvestSound;
 
     public bool IsMovable()
     {

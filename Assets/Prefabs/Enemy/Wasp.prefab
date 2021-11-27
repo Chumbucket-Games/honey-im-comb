@@ -16,6 +16,9 @@ MonoBehaviour:
   attackScanRadius: 20
   healthBar: {fileID: 3481020354023844865}
   explosionVFX: {fileID: 7819091846384431214}
+  persistentAudioSource: {fileID: 8038896588871833883}
+  dynamicAudioSource: {fileID: 5611046119038712536}
+  attackSound: {fileID: 0}
 --- !u!1001 &3977498941173936260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,6 +151,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 704677841985570031, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473457864491150347, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5456160172275203864, guid: 569b7a83aa9da5c41a15ed15836aa85a,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -266,3 +279,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &8038896588871833883 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3716892779863375656, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6636876010467255859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &5611046119038712536 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1280318782288731371, guid: 569b7a83aa9da5c41a15ed15836aa85a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6636876010467255859}
+  m_PrefabAsset: {fileID: 0}

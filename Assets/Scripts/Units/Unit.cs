@@ -38,6 +38,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     [SerializeField] Notification reassignmentNotification;
     [SerializeField] Notification underAttackNotification;
     [SerializeField] Notification buildingCompleteNotification;
+    //[SerializeField] AudioClip buzzSound;
+    [SerializeField] AudioClip attackSound;
     static MapController mapController;
     BuildingType selectedBuilding;
     bool unitSelected = false;
@@ -53,6 +55,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     Cell currentWaypoint;
 
     Animator animator;
+    [SerializeField] AudioSource persistentAudioSource; // This plays persistent audio that should not change often eg. buzzing for wings
+    [SerializeField] AudioSource dynamicAudioSource; // This plays audio that often changes.
 
     private void OnEnable()
     {
@@ -169,7 +173,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 if (returningToHive)
                 {
                     OverworldMove();
-                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
+                    if (Mathf.Round(transform.position.x) == Mathf.Round(currentWaypoint.Position.x) && Mathf.Round(transform.position.z) == Mathf.Round(currentWaypoint.Position.z))
                     {
                         if (!waypoints.TryPop(out currentWaypoint))
                         {
@@ -181,11 +185,16 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 else if (returningToNode)
                 {
                     OverworldMove();
-                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
+                    
+                    if (Mathf.Round(transform.position.x) == Mathf.Round(currentWaypoint.Position.x) && Mathf.Round(transform.position.z) == Mathf.Round(currentWaypoint.Position.z))
                     {
                         if (!waypoints.TryPop(out currentWaypoint))
                         {
+                            dynamicAudioSource.clip = targetObject.GetComponent<ResourceNode>().harvestSound;
+                            dynamicAudioSource.loop = true;
+                            dynamicAudioSource.Play();
                             returningToNode = false;
+                            
                             harvestRoutine = StartCoroutine(WaitToReturn(5));
                         }
                     }
@@ -197,12 +206,13 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 {
                     OverworldMove();
 
-                    if (Mathf.Floor(transform.position.x) == Mathf.Floor(currentWaypoint.Position.x) && Mathf.Floor(transform.position.z) == Mathf.Floor(currentWaypoint.Position.z))
+                    if (Mathf.Round(transform.position.x) == Mathf.Round(currentWaypoint.Position.x) && Mathf.Round(transform.position.z) == Mathf.Round(currentWaypoint.Position.z))
                     {
                         if (!waypoints.TryPop(out currentWaypoint))
                         {
                             Vector3 exitPosition = hiveGrid.HexCellToWorld(hiveGrid.width / 2, 0);
                             animator.SetBool(Constants.Animations.BeeFlying, false);
+                            persistentAudioSource.Stop();
                             exitPosition.z = Constants.HiveUnitOffset;
                             transform.position = exitPosition;
                             transform.forward = hiveGrid.transform.forward;
@@ -276,6 +286,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             // Maintain same position on the XY plane.
             animator.SetBool(Constants.Animations.BeeFlying, false);
             animator.SetBool(Constants.Animations.BeeMoving, true);
+            persistentAudioSource.Stop();
             if (info.transform.gameObject.GetComponent<HexCell>().IsOccupied)
             {
                 return;
@@ -290,6 +301,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             }
             animator.SetBool(Constants.Animations.BeeFlying, true);
             animator.SetBool(Constants.Animations.BeeMoving, true);
+            persistentAudioSource.Play();
             Pathfind(null, emptyStartCell);
             currentWaypoint = waypoints.Pop();
         }
@@ -370,6 +382,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             // Maintain same position on the XY plane.
             animator.SetBool(Constants.Animations.BeeFlying, false);
             animator.SetBool(Constants.Animations.BeeMoving, true);
+            persistentAudioSource.Stop();
             target.z = Constants.HiveUnitOffset;
             moving = true;
         }
@@ -382,6 +395,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             // Maintain same position on the XZ plane.
             animator.SetBool(Constants.Animations.BeeFlying, true);
             animator.SetBool(Constants.Animations.BeeMoving, true);
+            persistentAudioSource.Play();
             var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position);
             target = targetCell.Position;
             target.y = position.y;
@@ -447,6 +461,9 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                     transform.position = exitPosition;
                     transform.forward = hiveGrid.transform.up;
                     InHiveMode = true;
+                    animator.SetBool(Constants.Animations.BeeFlying, false);
+                    persistentAudioSource.Stop();
+                    dynamicAudioSource.Stop();
                     if (SwitchingRole)
                     {
                         returningToHive = false;
@@ -471,6 +488,9 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 Vector3 forward = (targetObject.transform.position - transform.position).normalized;
                 forward.y = 0;
                 transform.forward = forward;
+                dynamicAudioSource.clip = targetObject.GetComponent<ResourceNode>().harvestSound;
+                dynamicAudioSource.loop = true;
+                dynamicAudioSource.Play();
                 harvestRoutine = StartCoroutine(WaitToReturn(5));
             }
             else if (targetObject.GetComponent<EnemySpawner>() || targetObject.GetComponent<Enemy>() && !IsAttacking)
@@ -486,7 +506,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         yield return new WaitForSeconds(seconds);
         
         // Extract the collected resource based on the collection rate, then return to the hive with it.
-        if (targetObject.activeSelf)
+        if (targetObject.activeInHierarchy)
         {
             stack.resource = targetObject.GetComponent<ResourceNode>().resource;
             stack.quantity = targetObject.GetComponent<ResourceNode>().HarvestResources(seconds);
@@ -494,17 +514,21 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             {
                 HUDManager.GetInstance().SetSelectedObjectResources(stack.resource == pebbleResource ? stack.quantity : 0, stack.resource == honeyResource ? stack.quantity : 0);
             }
+            dynamicAudioSource.loop = false;
+            dynamicAudioSource.Stop();
             Pathfind(hivePosition);
-            if (waypoints.TryPop(out currentWaypoint))
-            {
-                returningToHive = true;
-            }
+            currentWaypoint = waypoints.Pop();
+            //if (waypoints.TryPop(out currentWaypoint))
+            //{
+            returningToHive = true;
+            //}
         }
         else
         {
             harvestMode = false;
             stack.resource = null;
             stack.quantity = 0;
+            currentWaypoint = null;
             if (unitSelected)
             {
                 HUDManager.GetInstance().SetSelectedObjectResources(0, 0);
@@ -517,6 +541,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         yield return new WaitForSeconds(seconds);
 
         Debug.Log("Materials deposited. Returning to resource node.");
+
         // Deposit the collected resource, leave the hive and return to the resource node.
         if (stack.resource == honeyResource)
         {
@@ -535,17 +560,16 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         stack.resource = null;
         stack.quantity = 0;
 
-        if (targetObject.activeSelf)
+        if (targetObject.activeInHierarchy)
         {
             Pathfind(target);
-            if (waypoints.TryPop(out currentWaypoint))
-            {
-                returningToNode = true;
-            }
+            currentWaypoint = waypoints.Pop();
+            returningToNode = true;
         }
         else
         {
             harvestMode = false;
+            currentWaypoint = null;
         }
     }
 
@@ -558,6 +582,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             if (targetObject.GetComponent<Unit>())
             {
                 animator.SetTrigger(Constants.Animations.BeeAttacking);
+                dynamicAudioSource.PlayOneShot(attackSound);
 
                 targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage, gameObject);
                 if (!targetObject.GetComponent<Enemy>().IsDead)
@@ -568,6 +593,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             else if (targetObject.GetComponent<EnemySpawner>())
             {
                 animator.SetTrigger(Constants.Animations.BeeAttacking);
+                dynamicAudioSource.PlayOneShot(attackSound);
+
                 targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
                 if (!targetObject.GetComponent<EnemySpawner>().IsDead)
                 {
@@ -638,6 +665,8 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
         animator.SetBool(Constants.Animations.BeeFlying, false);
         animator.SetBool(Constants.Animations.BeeMoving, false);
+        persistentAudioSource.Stop();
+        dynamicAudioSource.Stop();
 
         IsDead = true;
         HexGrid.DecreaseTotalUnits(1);
