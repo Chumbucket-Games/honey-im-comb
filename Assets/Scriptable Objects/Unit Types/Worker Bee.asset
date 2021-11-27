@@ -23,7 +23,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9a588b8939eb68f49896e122b721d372, type: 3}
   - {fileID: 21300000, guid: 4e775e0b09e72ff4a8ca85ac6b078db2, type: 3}
   - {fileID: 21300000, guid: 78e04c44e3aadfd4491add825019209f, type: 3}
-  moveSpeed: 5
+  overworldMoveSpeed: 25
+  hiveMoveSpeed: 5
   turnSpeed: 3
   attackRate: 1
   baseDamage: 5

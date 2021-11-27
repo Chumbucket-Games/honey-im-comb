@@ -80,7 +80,7 @@ public class Enemy : MonoBehaviour
             CheckNearbyTargets();
             if (isMoving)
             {
-                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.Position, unitType.overworldMoveSpeed * Time.deltaTime);
                 CorrectYPosition();
                 Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
                 forward.y = 0;

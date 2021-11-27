@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveManagementActions
 {
-    public float moveSpeed;
     Vector3 target = Vector3.zero;
     static Vector3 hivePosition = Vector3.zero;
     bool moving = false;
@@ -107,7 +106,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
     void OverworldMove()
     {
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, moveSpeed * Time.deltaTime);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, currentWaypoint.Position, type.overworldMoveSpeed * Time.deltaTime);
         Vector3 forward = (currentWaypoint.Position - transform.position).normalized;
         forward.y = 0;
         if (forward != Vector3.zero)
@@ -122,7 +121,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     void HiveMove()
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((target - transform.position).normalized, Vector3.back), Time.deltaTime * type.turnSpeed);
-        transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target, type.hiveMoveSpeed * Time.deltaTime);
     }
 
     // Update is called once per frame
@@ -225,9 +224,9 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 {
                     Vector3 buildingPosition = AssociatedBuilding.transform.position;
                     buildingPosition.z = Constants.HiveUnitOffset;
-                    Vector3 newPosition = Vector3.MoveTowards(transform.position, buildingPosition, moveSpeed * Time.deltaTime);
+                    Vector3 newPosition = Vector3.MoveTowards(transform.position, buildingPosition, type.hiveMoveSpeed * Time.deltaTime);
 
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((buildingPosition - transform.position).normalized, Vector3.back), Time.deltaTime * type.moveSpeed);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((buildingPosition - transform.position).normalized, Vector3.back), Time.deltaTime * type.hiveMoveSpeed);
 
                     transform.position = newPosition;
 

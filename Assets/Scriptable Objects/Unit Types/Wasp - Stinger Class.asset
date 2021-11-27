@@ -16,7 +16,8 @@ MonoBehaviour:
   image: {fileID: 0}
   maxHealth: 50
   actionSprites: []
-  moveSpeed: 10
+  overworldMoveSpeed: 20
+  hiveMoveSpeed: 0
   turnSpeed: 3
   attackRate: 1
   baseDamage: 5

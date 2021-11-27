@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3359574947941848935}
   - component: {fileID: 8283919280772643623}
   - component: {fileID: 3679379338487441092}
+  - component: {fileID: 3584069320629743477}
   m_Layer: 0
   m_Name: Hive Cell
   m_TagString: Building
@@ -108,7 +109,7 @@ MeshCollider:
   m_GameObject: {fileID: 5582246764288437019}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
@@ -142,6 +143,19 @@ MonoBehaviour:
     type: 3}
   baseAttackDelay: 0
   baseAttackDamage: 5
+--- !u!65 &3584069320629743477
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5582246764288437019}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.030000009, y: 0.02, z: 0.017320514}
+  m_Center: {x: -0.015000002, y: 0, z: 0.0000000013969842}
 --- !u!1 &8968816469134822851
 GameObject:
   m_ObjectHideFlags: 0

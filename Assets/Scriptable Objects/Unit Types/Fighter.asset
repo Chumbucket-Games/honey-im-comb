@@ -17,7 +17,8 @@ MonoBehaviour:
   maxHealth: 80
   actionSprites:
   - {fileID: 21300000, guid: c620dc6db43d82f4ea47c7686db63b3c, type: 3}
-  moveSpeed: 10
+  overworldMoveSpeed: 25
+  hiveMoveSpeed: 5
   turnSpeed: 10
   attackRate: 2
   baseDamage: 5
