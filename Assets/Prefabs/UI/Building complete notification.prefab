@@ -152,6 +152,11 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.16666675
       objectReference: {fileID: 0}
+    - target: {fileID: 2532114652943727838, guid: 624b7b0dd66833b4182b5bafe6e065e6,
+        type: 3}
+      propertyPath: soundAlarm
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7964926746354837077, guid: 624b7b0dd66833b4182b5bafe6e065e6,
         type: 3}
       propertyPath: m_Name

@@ -4,6 +4,7 @@ using System.Collections;
 public class Notification : MonoBehaviour
 {
     [SerializeField] int duration = 5;
+    public bool soundAlarm = false;
     // Use this for initialization
     void Start()
     {

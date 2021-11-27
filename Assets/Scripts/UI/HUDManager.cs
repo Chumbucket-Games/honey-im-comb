@@ -23,6 +23,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] VerticalLayoutGroup pauseMenu;
     [SerializeField] Image winDialogue;
     [SerializeField] Image lossDialogue;
+    [SerializeField] AudioSource audioSource;
     static HUDManager instance;
     float elapsedTime = 0;
     private ISelectable selectedObject;
@@ -78,11 +79,6 @@ public class HUDManager : MonoBehaviour
             totalActions++;
         }
     }
-
-    /*public void SetSelectedObjectImage(Sprite image)
-    {
-        selectedObjectImage.sprite = image;
-    }*/
 
     public void SetSelectedObjectDetails(string name, int health, int pebbles, int nectar)
     {
@@ -144,7 +140,11 @@ public class HUDManager : MonoBehaviour
 
     public void CreateNotification(Notification n)
     {
-        Instantiate(n, notificationPane.transform);
+        Notification instance = Instantiate(n, notificationPane.transform);
+        if (instance.soundAlarm && !audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
     }
 
     public void ShowSelectedObjectDetails(Camera selectedObjectCamera)
@@ -198,7 +198,7 @@ public class HUDManager : MonoBehaviour
 
     public void WinGame()
     {
-        lossDialogue.gameObject.SetActive(true);
+        winDialogue.gameObject.SetActive(true);
         StartCoroutine(DelayedSceneTransition(Constants.Scenes.Credits));
     }
 

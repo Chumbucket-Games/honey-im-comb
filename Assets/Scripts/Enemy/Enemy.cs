@@ -101,7 +101,7 @@ public class Enemy : MonoBehaviour
                         }
 
                         // If a target object has been set, start attacking the object.
-                        if (targetObject != null && targetObject.GetGameObject().CompareTag("Hive") && !isAttacking)
+                        if (targetObject != null && !isAttacking)
                         {
                             isAttacking = true;
                             attackRoutine = StartCoroutine(Attack());
