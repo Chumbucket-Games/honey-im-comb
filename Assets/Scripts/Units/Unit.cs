@@ -38,7 +38,6 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     [SerializeField] Notification reassignmentNotification;
     [SerializeField] Notification underAttackNotification;
     [SerializeField] Notification buildingCompleteNotification;
-    //[SerializeField] AudioClip buzzSound;
     [SerializeField] AudioClip attackSound;
     static MapController mapController;
     BuildingType selectedBuilding;
