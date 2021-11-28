@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IMoveable
 {
-    void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode, bool emptyStartCell = true);
+    void MoveToPosition(Vector3 position, GameObject targetObject, bool IsHiveMode, bool emptyStartCell = true);
 }

@@ -22,6 +22,7 @@ public static class Constants
         public const string EnemyFlying = "Flying";
         public const string EnemyMoving = "Moving";
         public const string EnemyAttacking = "Attack";
+        public const string BeeAttackSpeed = "Attack Speed";
     }
 
     public struct Tags

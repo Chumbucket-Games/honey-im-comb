@@ -2551,7 +2551,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6438ceed2638c40adbef921c68c703, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   type: {fileID: 11400000, guid: 014db35d75c20ed44b20a7b000ba96eb, type: 2}
   warningCooldown: 0
   buildings:
@@ -2573,6 +2572,7 @@ MonoBehaviour:
   buildingCompleteNotification: {fileID: 1342026907157938843, guid: 5ddbf7c48fba89e4aa01fcd7d688fa89,
     type: 3}
   attackSound: {fileID: 0}
+  attackScanRadius: 20
   persistentAudioSource: {fileID: 3716892779863375656}
   dynamicAudioSource: {fileID: 1280318782288731371}
 --- !u!65 &8048237650387774134

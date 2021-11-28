@@ -38,6 +38,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     [SerializeField] Notification underAttackNotification;
     [SerializeField] Notification buildingCompleteNotification;
     [SerializeField] AudioClip attackSound;
+    [SerializeField] float attackScanRadius; // This is used to determine if there are any enemies or enemy spawners in range.
     static MapController mapController;
     BuildingType selectedBuilding;
     bool unitSelected = false;
@@ -80,6 +81,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
+        animator.SetFloat(Constants.Animations.BeeAttackSpeed, type.attackRate);
         if (mapController == null)
         {
             mapController = GameObject.Find("Kingdom Manager").GetComponent<MapController>();
@@ -130,16 +132,15 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         if (!IsDead)
         {
             healthBar.fillAmount = Mathf.Clamp01(health / type.maxHealth);
+
+            if (targetObject == null && !InHiveMode)
+            {
+                Debug.Log("Scanning for nearby targets...");
+                CheckNearbyTargets();
+            }
+            
             if (moving)
             {
-                if (targetObject != null && targetObject.GetComponent<Unit>())
-                {
-                    // If targeting a unit, the unit is likely moving so keep the target vector aligned with the unit's position and recalc pathfinding.
-                    target = targetObject.transform.position;
-                    Pathfind();
-                }
-                
-                
                 if (!InHiveMode)
                 {
                     OverworldMove();
@@ -272,7 +273,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         return true;
     }
 
-    public void MoveToPosition(Vector3 position, RaycastHit info, bool IsHiveMode, bool emptyStartCell = true)
+    public void MoveToPosition(Vector3 position, GameObject targetObject, bool IsHiveMode, bool emptyStartCell = true)
     {
         harvestMode = false;
         returningToHive = false;
@@ -285,11 +286,12 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             animator.SetBool(Constants.Animations.BeeFlying, false);
             animator.SetBool(Constants.Animations.BeeMoving, true);
             persistentAudioSource.Stop();
-            if (info.transform.gameObject.GetComponent<HexCell>().IsOccupied)
+            if (targetObject.GetComponent<HexCell>().IsOccupied)
             {
                 return;
             }
             target.z = Constants.HiveUnitOffset;
+            moving = true;
         }
         else
         {
@@ -301,7 +303,10 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             animator.SetBool(Constants.Animations.BeeMoving, true);
             persistentAudioSource.Play();
             Pathfind(null, emptyStartCell);
-            currentWaypoint = waypoints.Pop();
+            if (waypoints.TryPop(out currentWaypoint))
+            {
+                moving = true;
+            }
         }
         if (targetObject != null && targetObject.GetComponent<HexCell>())
         {
@@ -309,13 +314,12 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             targetObject.GetComponent<HexCell>().IsOccupied = false;
         }
 
-        targetObject = info.transform.gameObject;
+        this.targetObject = targetObject;
         if (targetObject.GetComponent<HexCell>() && targetObject.GetComponent<Building>().type.canOccupy)
         {
             // Mark the destination as occupied.
             targetObject.GetComponent<HexCell>().IsOccupied = true;
         }
-        moving = true;
     }
 
     void Pathfind(Cell cell = null, bool emptyStartCell = true)
@@ -495,10 +499,10 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 dynamicAudioSource.Play();
                 harvestRoutine = StartCoroutine(WaitToReturn(5));
             }
-            else if (targetObject.GetComponent<EnemySpawner>() || targetObject.GetComponent<Enemy>() && !IsAttacking)
+            else if ((targetObject.GetComponent<EnemySpawner>() || targetObject.GetComponent<Enemy>()) && !IsAttacking)
             {
                 IsAttacking = true;
-                StartCoroutine(Attack());
+                attackRoutine = StartCoroutine(Attack(0));
             }
         }
     }
@@ -580,13 +584,16 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         }
     }
 
-    IEnumerator Attack()
+    IEnumerator Attack(float delay)
     {
-        yield return new WaitForSeconds(type.attackRate);
+        yield return new WaitForSeconds(delay);
         
         if (targetObject != null)
         {
-            if (targetObject.GetComponent<Unit>())
+            Vector3 forward = (targetObject.transform.position - transform.position).normalized;
+            forward.y = 0;
+            transform.forward = forward;
+            if (targetObject.GetComponent<Enemy>())
             {
                 animator.SetTrigger(Constants.Animations.BeeAttacking);
                 dynamicAudioSource.PlayOneShot(attackSound);
@@ -594,7 +601,13 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 targetObject.GetComponent<Enemy>().TakeDamage(type.baseDamage, gameObject);
                 if (!targetObject.GetComponent<Enemy>().IsDead)
                 {
-                    attackRoutine = StartCoroutine(Attack());
+                    attackRoutine = StartCoroutine(Attack(1f / type.attackRate));
+                }
+                else
+                {
+                    Debug.Log("Target dead.");
+                    targetObject = null;
+                    IsAttacking = false;
                 }
             }
             else if (targetObject.GetComponent<EnemySpawner>())
@@ -605,7 +618,13 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
                 targetObject.GetComponent<EnemySpawner>().TakeDamage(type.baseDamage);
                 if (!targetObject.GetComponent<EnemySpawner>().IsDead)
                 {
-                    attackRoutine = StartCoroutine(Attack());
+                    attackRoutine = StartCoroutine(Attack(1f / type.attackRate));
+                }
+                else
+                {
+                    Debug.Log("Target dead.");
+                    targetObject = null;
+                    IsAttacking = false;
                 }
             }
         }
@@ -654,6 +673,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
     void OnDie()
     {
+        healthBar.fillAmount = 0;
         if (harvestRoutine != null)
         {
             StopCoroutine(harvestRoutine);
@@ -914,5 +934,48 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         if (gameObject != null)
             return gameObject;
         return null;
+    }
+
+    void CheckNearbyTargets()
+    {
+        GameObject closestTarget = null;
+        float distanceToClosestTarget = 999;
+        foreach (var collider in Physics.OverlapSphere(transform.position, attackScanRadius))
+        {
+            // Ignore collisions on the following:
+            // 1. This unit.
+            // 2. The unit's spawner.
+            // 3. The unit's current target (if they have one).
+            // 4. Any dead units or buildings.
+            if (collider.gameObject != gameObject &&
+                (
+                    (collider.gameObject.GetComponent<Enemy>() && !collider.gameObject.GetComponent<Enemy>().IsDead) ||
+                    (collider.gameObject.GetComponent<EnemySpawner>() && !collider.gameObject.GetComponent<EnemySpawner>().IsDead)
+                ) &&
+                (targetObject == null || collider.gameObject != targetObject)
+            )
+            {
+                float distance = (transform.position - collider.transform.position).magnitude;
+
+                if (distance < distanceToClosestTarget)
+                {
+                    distanceToClosestTarget = distance;
+                    closestTarget = collider.gameObject;
+                }
+            }
+        }
+
+        if (closestTarget != null && closestTarget != targetObject)
+        {
+            Debug.Log("New target identified!");
+            IsAttacking = false;
+            MoveToPosition(closestTarget.transform.position, closestTarget, false);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, attackScanRadius);
     }
 }

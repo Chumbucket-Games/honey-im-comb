@@ -117,6 +117,8 @@ MonoBehaviour:
   audioSource: {fileID: 2997066936206375316}
   selectionSound: {fileID: 0}
   attackSound: {fileID: 8300000, guid: e2244e7cf3154ab44bdd765390e55dca, type: 3}
+  explosionVFX: {fileID: -788267176225445485, guid: e8ca2e0e390c7a04ba554863215bd147,
+    type: 3}
   type: {fileID: 11400000, guid: 09e7783559b0e0844b09a6acf74cd6af, type: 2}
   hiveBuilding: {fileID: 0}
   baseAttackDelay: 3

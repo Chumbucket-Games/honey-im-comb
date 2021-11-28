@@ -33,7 +33,10 @@ public class EnemyWave
     {
         foreach (var e in enemies)
         {
-            e.TargetHive();
+            if (e != null && e.gameObject != null)
+            {
+                e.TargetHive();
+            }
         }
 
         isAttacking = true;

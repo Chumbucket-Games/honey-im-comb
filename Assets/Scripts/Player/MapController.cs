@@ -144,11 +144,12 @@ public class MapController : MonoBehaviour, PlayerControls.IUnitManagementAction
                     {
                         if (IsHiveMode)
                         {
-                            moveableObject.MoveToPosition(hit.transform.position, hit, true);
+                            moveableObject.MoveToPosition(hit.transform.position, hit.transform.gameObject, true);
                         }
                         else
                         {
-                            moveableObject.MoveToPosition(hit.point + Vector3.up * 3, hit, false);
+                            Debug.Log(hit.transform.gameObject.name);
+                            moveableObject.MoveToPosition(hit.point + Vector3.up * 3, hit.transform.gameObject, false);
                         }
                     }
                 }

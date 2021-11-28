@@ -130,6 +130,8 @@ MonoBehaviour:
   gameGrid: {fileID: 0}
   healthBar: {fileID: 8066587326201091099}
   fireVFX: {fileID: 6914356800905897258}
+  explosionVFX: {fileID: -788267176225445485, guid: e8ca2e0e390c7a04ba554863215bd147,
+    type: 3}
 --- !u!114 &7763961073835492370
 MonoBehaviour:
   m_ObjectHideFlags: 0

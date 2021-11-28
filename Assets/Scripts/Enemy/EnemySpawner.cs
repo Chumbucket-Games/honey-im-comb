@@ -14,6 +14,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] SquareGrid gameGrid;
     [SerializeField] Image healthBar;
     [SerializeField] ParticleSystem fireVFX;
+    [SerializeField] Explosion explosionVFX;
 
     private bool spawningEnabled = false;
     private float nextSpawnTime = 0.0f;
@@ -111,6 +112,8 @@ public class EnemySpawner : MonoBehaviour
     public void OnDestroyed()
     {
         // Update the game state manager to indicate that a spawner has been destroyed. Win the game when all spawners are destroyed.
+        Instantiate(explosionVFX, transform.position, Quaternion.identity);
+        healthBar.fillAmount = 0;
         IsDead = true;
         fireVFX.Stop();
         DisableSpawning();

@@ -17,6 +17,7 @@ public class Building : MonoBehaviour, ISelectable
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip selectionSound;
     [SerializeField] AudioClip attackSound;
+    [SerializeField] Explosion explosionVFX;
 
     private MeshRenderer meshRenderer;
 
@@ -223,6 +224,9 @@ public class Building : MonoBehaviour, ISelectable
 
     public void OnDestroyed()
     {
+        Instantiate(explosionVFX, transform.position, Quaternion.identity);
+
+        healthBar.fillAmount = 0;
         IsDead = true;
         fireVFX.Stop();
         gameObject.SetActive(false);

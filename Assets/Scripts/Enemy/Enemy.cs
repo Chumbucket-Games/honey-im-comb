@@ -16,7 +16,6 @@ public class Enemy : MonoBehaviour
     public bool IsDead { get; private set; } = false;
 
     private Vector3 targetPosition = Vector3.zero;
-    private Quaternion targetRotation = Quaternion.identity;
 
     private ISelectable targetObject;
     private Rigidbody rb;
@@ -44,6 +43,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
+        animator.SetFloat(Constants.Animations.BeeAttackSpeed, unitType.attackRate);
         animator.SetBool(Constants.Animations.EnemyFlying, true);
         persistentAudioSource.Play();
         if (hiveObject == null)
@@ -108,11 +108,8 @@ public class Enemy : MonoBehaviour
                         // If a target object has been set, start attacking the object.
                         if (targetObject != null && !isAttacking)
                         {
-                            forward = (currentWaypoint.Position - transform.position).normalized;
-                            forward.y = 0;
-                            transform.forward = forward;
                             isAttacking = true;
-                            attackRoutine = StartCoroutine(Attack());
+                            attackRoutine = StartCoroutine(Attack(0));
                         }
                     }
                 }
@@ -196,8 +193,7 @@ public class Enemy : MonoBehaviour
         if (closestTarget != null && closestTarget != targetObject)
         {
             Debug.Log("New target identified!");
-            Vector3 faceDirection = (closestTarget.GetGameObject().transform.position - transform.position).normalized;
-
+            isAttacking = false;
             Move(closestTarget.GetGameObject().transform.position, closestTarget);
         }
     }
@@ -233,11 +229,14 @@ public class Enemy : MonoBehaviour
         this.wave = wave;
     }
 
-    IEnumerator Attack()
+    IEnumerator Attack(float delay)
     {
-        yield return new WaitForSeconds(unitType.attackRate);
+        yield return new WaitForSeconds(delay);
         if (targetObject != null && targetObject.GetGameObject() != null && isAttacking)
         {
+            Vector3 forward = (targetObject.GetGameObject().transform.position - transform.position).normalized;
+            forward.y = 0;
+            transform.forward = forward;
             if (targetObject.GetGameObject().GetComponent<Unit>())
             {
                 if (!targetObject.GetGameObject().GetComponent<Unit>().IsDead)
@@ -245,7 +244,7 @@ public class Enemy : MonoBehaviour
                     animator.SetTrigger(Constants.Animations.EnemyAttacking);
                     dynamicAudioSource.PlayOneShot(attackSound);
                     targetObject.GetGameObject().GetComponent<Unit>().TakeDamage(gameObject, unitType.baseDamage);
-                    attackRoutine = StartCoroutine(Attack());
+                    attackRoutine = StartCoroutine(Attack(1f / unitType.attackRate));
                 }
                 else
                 {
@@ -263,7 +262,7 @@ public class Enemy : MonoBehaviour
                     animator.SetTrigger(Constants.Animations.EnemyAttacking);
                     dynamicAudioSource.PlayOneShot(attackSound);
                     targetObject.GetGameObject().GetComponent<Building>().TakeDamage(unitType.baseDamage);
-                    attackRoutine = StartCoroutine(Attack());
+                    attackRoutine = StartCoroutine(Attack(1f / unitType.attackRate));
                 }
             }
         }
@@ -306,6 +305,7 @@ public class Enemy : MonoBehaviour
 
     void OnDie()
     {
+        healthBar.fillAmount = 0;
         animator.SetBool(Constants.Animations.EnemyFlying, false);
         animator.SetBool(Constants.Animations.EnemyMoving, false);
         persistentAudioSource.Stop();
