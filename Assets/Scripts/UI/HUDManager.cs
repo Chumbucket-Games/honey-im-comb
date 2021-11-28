@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
 {
     [SerializeField] Button[] actionButtons;
-    [SerializeField] Image selectedObjectView;
+    [SerializeField] GameObject selectionDetailsPanel;
     [SerializeField] Text selectedObjectName;
     [SerializeField] Text selectedObjectHealth;
     [SerializeField] Text selectedObjectPebbles;
@@ -19,7 +19,6 @@ public class HUDManager : MonoBehaviour
     [SerializeField] Text errorDisplay;
     [SerializeField] float errorDisplaySeconds = 5;
     [SerializeField] VerticalLayoutGroup notificationPane;
-    [SerializeField] VerticalLayoutGroup objectDetails;
     [SerializeField] VerticalLayoutGroup pauseMenu;
     [SerializeField] Image winDialogue;
     [SerializeField] Image lossDialogue;
@@ -152,18 +151,17 @@ public class HUDManager : MonoBehaviour
         if (selectedObjectCamera != null)
         {
             selectedObjectCamera.gameObject.SetActive(true);
-            selectedObjectView.gameObject.SetActive(true);
         }
-        objectDetails.gameObject.SetActive(true);
+
+        selectionDetailsPanel.SetActive(true);
     }
 
     public void HideSelectedObjectDetails(Camera selectedObjectCamera)
     {
-        objectDetails.gameObject.SetActive(false);
+        selectionDetailsPanel.SetActive(false);
         if (selectedObjectCamera != null)
         {
             selectedObjectCamera.gameObject.SetActive(false);
-            selectedObjectView.gameObject.SetActive(false);
         }
     }
 

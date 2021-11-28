@@ -21,6 +21,6 @@ MonoBehaviour:
   hiveMoveSpeed: 5
   turnSpeed: 10
   attackRate: 2
-  baseDamage: 5
+  baseDamage: 20
   isBuilder: 0
   buildingType: {fileID: 11400000, guid: b90e2caa2f8a7b54aaae09bfa422d46a, type: 2}
