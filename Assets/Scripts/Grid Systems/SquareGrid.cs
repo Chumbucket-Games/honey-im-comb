@@ -142,7 +142,7 @@ public class SquareGrid : MonoBehaviour
         return grid[cellPosition.y, cellPosition.x];
     }
 
-    public Cell GetClosestAvailableCellToPosition(Vector3 position)
+    public Cell GetClosestAvailableCellToPosition(Vector3 position, Vector3 direction)
     {
         Debug.DrawLine(new Vector3(position.x - 5f, 5f, position.z), new Vector3(position.x + 5f, 5f, position.z), Color.magenta);
         Debug.DrawLine(new Vector3(position.x, 5f, position.z - 5f), new Vector3(position.x, 5f, position.z + 5f), Color.magenta);
@@ -158,7 +158,7 @@ public class SquareGrid : MonoBehaviour
         }
 
         // continue the search
-        var unoccupiedCell = SearchSurroundingCellsForAvailable(startCell);
+        var unoccupiedCell = SearchSurroundingCellsForAvailable(startCell, direction);
         selectedCell = unoccupiedCell;
 
         return unoccupiedCell;
@@ -170,25 +170,88 @@ public class SquareGrid : MonoBehaviour
     /// </summary>
     /// <param name="startCell">The start cell.</param>
     /// <returns>The first unoccupied cell found.</returns>
-    private Cell SearchSurroundingCellsForAvailable(Cell startCell)
+    private Cell SearchSurroundingCellsForAvailable(Cell startCell, Vector3 direction)
     {
         uint maxOffset = (rows > columns) ? rows : columns;
         Vector2Int startCoords = new Vector2Int(startCell.ColIndex, startCell.RowIndex);
         for (int offset = 1; offset <= maxOffset; offset++)
         {
-            for (int y = offset; y >= -offset; y--)
+            if (direction.y < 0)
             {
-                for (int x = -offset; x <= offset; x++)
+                for (int y = -offset; y <= offset; y++)
                 {
-                    var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
-                    if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
-                        && index != startCoords)
+                    if (direction.x < 0)
                     {
-                        var cell = grid[index.y, index.x];
-                        if (!cell.IsOccupied && !cell.IsWall)
+                        for (int x = -offset; x <= offset; x++)
                         {
-                            Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
-                            return cell;
+                            var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
+                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                                && index != startCoords)
+                            {
+                                var cell = grid[index.y, index.x];
+                                if (!cell.IsOccupied && !cell.IsWall)
+                                {
+                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    return cell;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int x = offset; x >= -offset; x--)
+                        {
+                            var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
+                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                                && index != startCoords)
+                            {
+                                var cell = grid[index.y, index.x];
+                                if (!cell.IsOccupied && !cell.IsWall)
+                                {
+                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    return cell;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (int y = offset; y >= -offset; y--)
+                {
+                    if (direction.x < 0)
+                    {
+                        for (int x = -offset; x <= offset; x++)
+                        {
+                            var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
+                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                                && index != startCoords)
+                            {
+                                var cell = grid[index.y, index.x];
+                                if (!cell.IsOccupied && !cell.IsWall)
+                                {
+                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    return cell;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int x = offset; x >= -offset; x--)
+                        {
+                            var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
+                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                                && index != startCoords)
+                            {
+                                var cell = grid[index.y, index.x];
+                                if (!cell.IsOccupied && !cell.IsWall)
+                                {
+                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    return cell;
+                                }
+                            }
                         }
                     }
                 }
@@ -222,11 +285,15 @@ public class SquareGrid : MonoBehaviour
         var processed = new List<Node>();
         var direction = Vector3.zero;
 
-        while (toSearch.Any())
+        while (toSearch.Any() && toSearch.Count <= (startNode.cell.grid.rows * startNode.cell.grid.columns))
         {
             // The first entry in the list has the current 'best' F value (or H value if they're equal).
             // This is achieved by sorting the list of nodes once the list has been populated.
             var current = toSearch[0]; 
+            if (!current.processedOnce)
+            {
+                current.processedOnce = true;
+            }
             processed.Add(current);
             toSearch.Remove(current);
 
@@ -278,6 +345,7 @@ public class SquareGrid : MonoBehaviour
             // After filling the list, sort it
             toSearch.Sort(CompareNodes);
         }
+        Debug.Log(startNode.cell.grid.rows * startNode.cell.grid.columns);
         return null;
     }
 
@@ -314,7 +382,19 @@ public class SquareGrid : MonoBehaviour
             }
             else
             {
-                return 0;
+                // If the F and H costs match, preference nodes that haven't been processed at least once.
+                if (!a.processedOnce && b.processedOnce)
+                {
+                    return -1;
+                }
+                else if (a.processedOnce && !b.processedOnce)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
             }
         }
         else

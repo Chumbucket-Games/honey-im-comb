@@ -430,7 +430,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 8559246691782859044, guid: be89110bb1d5b7b4c83b42a7e103acb6, type: 3}
+  m_Mesh: {fileID: -12092766174751924, guid: be89110bb1d5b7b4c83b42a7e103acb6, type: 3}
 --- !u!114 &1424617613618608878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,6 +447,7 @@ MonoBehaviour:
   totalAmount: 5000
   selectionRing: {fileID: 6232484305416287543}
   selectionView: {fileID: 8103998081499409344}
+  harvestSound: {fileID: 0}
 --- !u!1 &3695496250527935255
 GameObject:
   m_ObjectHideFlags: 0

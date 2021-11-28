@@ -6,6 +6,7 @@ public class Node
 {
     public Node Connection { get; private set; }
     private List<Node> _neighbors;
+    public bool processedOnce = false;
     public List<Node> Neighbors
     {
         get

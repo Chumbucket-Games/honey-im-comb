@@ -323,7 +323,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         Cell targetCell;
         if (cell == null)
         {
-            targetCell = overworldGrid.GetClosestAvailableCellToPosition(target);
+            targetCell = overworldGrid.GetClosestAvailableCellToPosition(target, (transform.position - target).normalized);
         }
         else
         {
@@ -349,7 +349,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
     void Pathfind(Vector3 target, bool emptyStartCell = true)
     {
-        Cell targetCell = overworldGrid.GetClosestAvailableCellToPosition(target);
+        Cell targetCell = overworldGrid.GetClosestAvailableCellToPosition(target, (transform.position - target).normalized);
         Cell startCell = overworldGrid.GetCell(overworldGrid.WorldToCell(transform.position));
 
         Node startNode = new Node(startCell);
@@ -357,6 +357,10 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
 
         // Find the shortest path to the target.
         waypoints = SquareGrid.FindPath(startNode, endNode);
+        if (waypoints == null)
+        {
+            Debug.Log($"Unable to move {type.label}");
+        }
         if (waypoints.Count > 0)
         {
             targetCell.OccupyCell();
@@ -394,7 +398,7 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             animator.SetBool(Constants.Animations.BeeFlying, true);
             animator.SetBool(Constants.Animations.BeeMoving, true);
             persistentAudioSource.Play();
-            var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position);
+            var targetCell = overworldGrid.GetClosestAvailableCellToPosition(position, (transform.position - position).normalized);
             target = targetCell.Position;
             target.y = position.y;
             Pathfind(targetCell, emptyStartCell);
@@ -514,12 +518,17 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
             }
             dynamicAudioSource.loop = false;
             dynamicAudioSource.Stop();
-            Pathfind(hivePosition);
-            currentWaypoint = waypoints.Pop();
-            //if (waypoints.TryPop(out currentWaypoint))
-            //{
-            returningToHive = true;
-            //}
+            var hits = Physics.RaycastAll(transform.position, (hivePosition - transform.position).normalized, 2500, 1 << Constants.Layers.Selectables);
+            foreach (var hit in hits)
+            {
+                if (hit.collider.CompareTag(Constants.Tags.Hive))
+                {
+                    Pathfind(hit.point);
+                    currentWaypoint = waypoints.Pop();
+                    returningToHive = true;
+                    break;
+                }
+            }
         }
         else
         {
@@ -854,16 +863,24 @@ public class Unit : MonoBehaviour, ISelectable, IMoveable, PlayerControls.IHiveM
         }
         else
         {
-            Cell targetCell = overworldGrid.GetClosestAvailableCellToPosition(hivePosition);
-            Pathfind(targetCell);
-            if (waypoints.TryPop(out currentWaypoint))
+            var hits = Physics.RaycastAll(transform.position, (hivePosition - transform.position).normalized, 2500, 1 << Constants.Layers.Selectables);
+            foreach (var hit in hits)
             {
-                returningToHive = true;
-            }
-            else
-            {
-                Debug.Log("Unable to enter hive. Unit not reassigned.");
-                AssociatedBuilding = currentBuilding;
+                if (hit.collider.CompareTag(Constants.Tags.Hive))
+                {
+                    Cell targetCell = overworldGrid.GetClosestAvailableCellToPosition(hit.point, (transform.position - hivePosition).normalized);
+                    Pathfind(targetCell);
+                    if (waypoints.TryPop(out currentWaypoint))
+                    {
+                        returningToHive = true;
+                    }
+                    else
+                    {
+                        Debug.Log("Unable to enter hive. Unit not reassigned.");
+                        AssociatedBuilding = currentBuilding;
+                    }
+                    break;
+                }
             }
         }
     }

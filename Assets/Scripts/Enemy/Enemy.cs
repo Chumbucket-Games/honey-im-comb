@@ -136,7 +136,7 @@ public class Enemy : MonoBehaviour
 
     void Pathfind(bool emptyStartCell = true)
     {
-        Cell targetCell = grid.GetClosestAvailableCellToPosition(targetPosition);
+        Cell targetCell = grid.GetClosestAvailableCellToPosition(targetPosition, (transform.position - targetPosition).normalized);
         Cell startCell = grid.GetCell(grid.WorldToCell(transform.position));
 
         targetPosition = targetCell.Position;
@@ -272,11 +272,15 @@ public class Enemy : MonoBehaviour
     public void TargetHive()
     {
         hivePosition.y = 3;
-        Vector3 lookDirection = -(transform.position - hivePosition).normalized;
-        lookDirection.y = 0;
-        Vector3 target = hivePosition + new Vector3(1, 0, 1);
-        
-        Move(target);
+
+        var hits = Physics.RaycastAll(transform.position, (hivePosition - transform.position).normalized, 2500, 1 << Constants.Layers.Selectables);
+        foreach (var hit in hits)
+        {
+            if (hit.collider.CompareTag(Constants.Tags.Hive))
+            {
+                Move(hit.point);
+            }
+        }
     }
 
     private void OnDrawGizmos()
