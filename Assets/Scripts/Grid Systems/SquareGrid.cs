@@ -345,8 +345,7 @@ public class SquareGrid : MonoBehaviour
             // After filling the list, sort it
             toSearch.Sort(CompareNodes);
         }
-        Debug.Log(startNode.cell.grid.rows * startNode.cell.grid.columns);
-        return null;
+        return new Stack<Cell>();
     }
 
     public uint GetRows()
