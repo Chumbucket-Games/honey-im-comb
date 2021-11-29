@@ -279,11 +279,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 790121a5a04aa214ba339f3e13f53795,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: ced16c4781c24eb408ff6f849988b86a, type: 3}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 9f48304aaee1df64e900027280de9d71, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2404,6 +2404,7 @@ MonoBehaviour:
   winDialogue: {fileID: 7709759270506033587}
   lossDialogue: {fileID: 2045449653703807152}
   audioSource: {fileID: 2571028929474952049}
+  alarmClip: {fileID: 8300000, guid: ced16c4781c24eb408ff6f849988b86a, type: 3}
 --- !u!114 &8329916342437719596
 MonoBehaviour:
   m_ObjectHideFlags: 0

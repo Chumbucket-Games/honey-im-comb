@@ -23,6 +23,7 @@ public class HUDManager : MonoBehaviour
     [SerializeField] Image winDialogue;
     [SerializeField] Image lossDialogue;
     [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip alarmClip;
     static HUDManager instance;
     float elapsedTime = 0;
     private ISelectable selectedObject;
@@ -142,7 +143,7 @@ public class HUDManager : MonoBehaviour
         Notification instance = Instantiate(n, notificationPane.transform);
         if (instance.soundAlarm && !audioSource.isPlaying)
         {
-            audioSource.Play();
+            audioSource.PlayOneShot(alarmClip);
         }
     }
 

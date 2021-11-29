@@ -421,6 +421,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Menu UI
       objectReference: {fileID: 0}
+    - target: {fileID: 8902788870474724820, guid: 2cee325b6da8c6b418a971051f06b4cd,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 8902788870474724823, guid: 2cee325b6da8c6b418a971051f06b4cd,
         type: 3}
       propertyPath: m_Pivot.x
