@@ -141,7 +141,7 @@ public class HUDManager : MonoBehaviour
     public void CreateNotification(Notification n)
     {
         Notification instance = Instantiate(n, notificationPane.transform);
-        if (instance.soundAlarm && !audioSource.isPlaying)
+        if (instance.soundAlarm)
         {
             audioSource.PlayOneShot(alarmClip);
         }
