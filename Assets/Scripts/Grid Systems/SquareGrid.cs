@@ -173,7 +173,7 @@ public class SquareGrid : MonoBehaviour
     private Cell SearchSurroundingCellsForAvailable(Cell startCell, Vector3 direction)
     {
         uint maxOffset = (rows > columns) ? rows : columns;
-        Vector2Int startCoords = new Vector2Int(startCell.ColIndex, startCell.RowIndex);
+        Vector2Int startCoords = startCell.cellInfo.coords;
         for (int offset = 1; offset <= maxOffset; offset++)
         {
             if (direction.y < 0)
@@ -191,7 +191,7 @@ public class SquareGrid : MonoBehaviour
                                 var cell = grid[index.y, index.x];
                                 if (!cell.IsOccupied && !cell.IsWall)
                                 {
-                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
                                 }
                             }
@@ -208,7 +208,7 @@ public class SquareGrid : MonoBehaviour
                                 var cell = grid[index.y, index.x];
                                 if (!cell.IsOccupied && !cell.IsWall)
                                 {
-                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
                                 }
                             }
@@ -231,7 +231,7 @@ public class SquareGrid : MonoBehaviour
                                 var cell = grid[index.y, index.x];
                                 if (!cell.IsOccupied && !cell.IsWall)
                                 {
-                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
                                 }
                             }
@@ -248,7 +248,7 @@ public class SquareGrid : MonoBehaviour
                                 var cell = grid[index.y, index.x];
                                 if (!cell.IsOccupied && !cell.IsWall)
                                 {
-                                    Debug.Log($"Found unoccupied cell: ({cell.ColIndex}, {cell.RowIndex})");
+                                    Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
                                 }
                             }
@@ -267,7 +267,7 @@ public class SquareGrid : MonoBehaviour
         {
             for (int col = 0; col < columns; col++)
             {
-                if (selectedCell != null && selectedCell.RowIndex == row && selectedCell.ColIndex == col)
+                if (selectedCell != null && selectedCell.cellInfo.coords.y == row && selectedCell.cellInfo.coords.x == col)
                 {
                     grid[row, col].DrawCellGizmos(rowPadding - .5f, columnPadding - .5f, Color.magenta, heightOffset);
                 }
@@ -285,7 +285,7 @@ public class SquareGrid : MonoBehaviour
         var processed = new List<Node>();
         var direction = Vector3.zero;
 
-        while (toSearch.Any() && toSearch.Count <= (startNode.cell.grid.rows * startNode.cell.grid.columns))
+        while (toSearch.Any() && toSearch.Count <= (startNode.cell.Grid.rows * startNode.cell.Grid.columns))
         {
             // The first entry in the list has the current 'best' F value (or H value if they're equal).
             // This is achieved by sorting the list of nodes once the list has been populated.
@@ -301,7 +301,7 @@ public class SquareGrid : MonoBehaviour
             {
                 var currentPathTile = current;
                 var path = new Stack<Cell>(); // Using a stack ensures we have the list of moves in the right order.
-                Debug.Log($"Start cell: ({startNode.cell.ColIndex}, {startNode.cell.RowIndex})");
+                Debug.Log($"Start cell: ({startNode.cell.cellInfo.coords.x}, {startNode.cell.cellInfo.coords.y})");
                 
                 while (currentPathTile.cell != startNode.cell)
                 {
@@ -319,7 +319,7 @@ public class SquareGrid : MonoBehaviour
                     path.Push(currentPathTile.cell);
                     currentPathTile = currentPathTile.Connection;
                     
-                    Debug.Log($"Current cell: ({currentPathTile.cell.ColIndex}, {currentPathTile.cell.RowIndex})");
+                    Debug.Log($"Current cell: ({currentPathTile.cell.cellInfo.coords.x}, {currentPathTile.cell.cellInfo.coords.y})");
                 }
 
                 return path;

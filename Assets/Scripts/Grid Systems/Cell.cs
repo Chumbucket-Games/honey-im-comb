@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class Cell
 {
-    public SquareGrid grid { get; private set; }
-    public int RowIndex { get; private set; }
-    public int ColIndex { get; private set; }
+    public CellInfo cellInfo;
+    public SquareGrid Grid { get; private set; }
     public Vector3 Position { get; private set; }
     public bool IsOccupied { get; private set; } = false;
     public bool IsWall { get; private set; }
 
     public Cell(int rowIndex, int colIndex, Vector3 position, SquareGrid grid)
     {
-        RowIndex = rowIndex;
-        ColIndex = colIndex;
+        cellInfo.coords = new Vector2Int(colIndex, rowIndex);
+        cellInfo.state = CellInfo.CellState.Empty;
         Position = position;
-        this.grid = grid;
+        Grid = grid;
     }
 
     public void DrawCellGizmos(float rowPadding, float colPadding, Color color, float heightOffset)
     {
-        if (IsWall)
+        if (cellInfo.state == CellInfo.CellState.Wall)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawCube(Position + Vector3.up * heightOffset, new Vector3(colPadding, 0f, rowPadding));
@@ -50,6 +49,7 @@ public class Cell
 
     public void SetWall()
     {
+        cellInfo.state = CellInfo.CellState.Wall;
         IsWall = true;
     }
 }

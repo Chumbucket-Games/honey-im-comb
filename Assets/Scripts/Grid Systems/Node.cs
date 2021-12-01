@@ -15,72 +15,72 @@ public class Node
             {
                 _neighbors = new List<Node>();
 
-                SquareGrid grid = cell.grid;
+                SquareGrid grid = cell.Grid;
                 Cell neighborCell;
                 Node node;
 
-                if (cell.ColIndex > 0)
+                if (cell.cellInfo.coords.x > 0)
                 {
-                    if (cell.RowIndex > 0)
+                    if (cell.cellInfo.coords.y > 0)
                     {
                         // Bottom left
-                        neighborCell = grid.GetCell(cell.ColIndex - 1, cell.RowIndex - 1);
+                        neighborCell = grid.GetCell(cell.cellInfo.coords.x - 1, cell.cellInfo.coords.y - 1);
                         node = CreateNode(neighborCell);
                         //node.G = G + GetDistance(neighborCell);
                         _neighbors.Add(node);
                     }
-                    if (cell.RowIndex < grid.GetRows() - 1)
+                    if (cell.cellInfo.coords.y < grid.GetRows() - 1)
                     {
                         // Top left
-                        neighborCell = grid.GetCell(cell.ColIndex - 1, cell.RowIndex + 1);
+                        neighborCell = grid.GetCell(cell.cellInfo.coords.x - 1, cell.cellInfo.coords.y + 1);
                         node = CreateNode(neighborCell);
                         //node.G = G + GetDistance(neighborCell);
                         _neighbors.Add(node);
 
                     }
                     // Middle left.
-                    neighborCell = grid.GetCell(cell.ColIndex - 1, cell.RowIndex);
+                    neighborCell = grid.GetCell(cell.cellInfo.coords.x - 1, cell.cellInfo.coords.y);
                     node = CreateNode(neighborCell);
                     //node.G = G + GetDistance(neighborCell);
                     _neighbors.Add(node);
                 }
-                if (cell.ColIndex < grid.GetColumns() - 1)
+                if (cell.cellInfo.coords.x < grid.GetColumns() - 1)
                 {
-                    if (cell.RowIndex > 0)
+                    if (cell.cellInfo.coords.y > 0)
                     {
                         // Bottom right
-                        neighborCell = grid.GetCell(cell.ColIndex + 1, cell.RowIndex - 1);
+                        neighborCell = grid.GetCell(cell.cellInfo.coords.x + 1, cell.cellInfo.coords.y - 1);
                         node = CreateNode(neighborCell);
                         //node.G = G + GetDistance(neighborCell);
                         _neighbors.Add(node);
                     }
-                    if (cell.RowIndex < grid.GetRows() - 1)
+                    if (cell.cellInfo.coords.y < grid.GetRows() - 1)
                     {
                         // Top right
-                        neighborCell = grid.GetCell(cell.ColIndex + 1, cell.RowIndex + 1);
+                        neighborCell = grid.GetCell(cell.cellInfo.coords.x + 1, cell.cellInfo.coords.y + 1);
                         node = CreateNode(neighborCell);
                         //node.G = G + GetDistance(neighborCell);
                         _neighbors.Add(node);
 
                     }
                     // Middle right.
-                    neighborCell = grid.GetCell(cell.ColIndex + 1, cell.RowIndex);
+                    neighborCell = grid.GetCell(cell.cellInfo.coords.x + 1, cell.cellInfo.coords.y);
                     node = CreateNode(neighborCell);
                     //node.G = G + GetDistance(neighborCell);
                     _neighbors.Add(node);
                 }
-                if (cell.RowIndex > 0)
+                if (cell.cellInfo.coords.y > 0)
                 {
                     // Bottom middle
-                    neighborCell = grid.GetCell(cell.ColIndex, cell.RowIndex - 1);
+                    neighborCell = grid.GetCell(cell.cellInfo.coords.x, cell.cellInfo.coords.y - 1);
                     node = CreateNode(neighborCell);
                     //node.G = G + GetDistance(neighborCell);
                     _neighbors.Add(node);
                 }
-                if (cell.RowIndex < grid.GetRows() - 1)
+                if (cell.cellInfo.coords.y < grid.GetRows() - 1)
                 {
                     // Top middle
-                    neighborCell = grid.GetCell(cell.ColIndex, cell.RowIndex + 1);
+                    neighborCell = grid.GetCell(cell.cellInfo.coords.x, cell.cellInfo.coords.y + 1);
                     node = CreateNode(neighborCell);
                     //node.G = G + GetDistance(neighborCell);
                     _neighbors.Add(node);
@@ -107,7 +107,7 @@ public class Node
 
     public float GetDistance(Node neighbor)
     {
-        var dist = new Vector2Int(Mathf.Abs(cell.ColIndex - neighbor.cell.ColIndex), Mathf.Abs(cell.RowIndex - neighbor.cell.RowIndex));
+        var dist = new Vector2Int(Mathf.Abs(cell.cellInfo.coords.x - neighbor.cell.cellInfo.coords.x), Mathf.Abs(cell.cellInfo.coords.y - neighbor.cell.cellInfo.coords.y));
 
         var lowest = Mathf.Min(dist.x, dist.y);
         var highest = Mathf.Max(dist.x, dist.y);
