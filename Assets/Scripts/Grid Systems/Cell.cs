@@ -8,12 +8,11 @@ public class Cell
     public SquareGrid Grid { get; private set; }
     public Vector3 Position { get; private set; }
     public bool IsOccupied { get; private set; } = false;
-    public bool IsWall { get; private set; }
 
-    public Cell(int rowIndex, int colIndex, Vector3 position, SquareGrid grid)
+    public Cell(int rowIndex, int colIndex, Vector3 position, SquareGrid grid, CellInfo.CellState state)
     {
         cellInfo.coords = new Vector2Int(colIndex, rowIndex);
-        cellInfo.state = CellInfo.CellState.Empty;
+        cellInfo.state = state;
         Position = position;
         Grid = grid;
     }
@@ -23,6 +22,11 @@ public class Cell
         if (cellInfo.state == CellInfo.CellState.Wall)
         {
             Gizmos.color = Color.red;
+            Gizmos.DrawCube(Position + Vector3.up * heightOffset, new Vector3(colPadding, 0f, rowPadding));
+        }
+        else if (cellInfo.state == CellInfo.CellState.GroundWall)
+        {
+            Gizmos.color = Color.blue;
             Gizmos.DrawCube(Position + Vector3.up * heightOffset, new Vector3(colPadding, 0f, rowPadding));
         }
         else if (IsOccupied)
@@ -50,6 +54,5 @@ public class Cell
     public void SetWall()
     {
         cellInfo.state = CellInfo.CellState.Wall;
-        IsWall = true;
     }
 }

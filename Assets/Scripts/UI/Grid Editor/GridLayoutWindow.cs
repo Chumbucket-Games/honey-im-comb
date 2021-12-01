@@ -17,21 +17,13 @@ public class GridLayoutWindow : EditorWindow
 
     public void OnGUI()
     {
-        if (layout.cells == null)
+        if (layout.Cells == null)
         {
-            layout.cells = new CellInfo[layout.rows, layout.columns];
+            layout.InitCells();
         }
-        else if (layout.cells.GetLength(0) != layout.rows || layout.cells.GetLength(1) != layout.columns)
+        else if (layout.Cells.Length != layout.rows * layout.columns)
         {
-            CellInfo[,] cellsCopy = (CellInfo[,])layout.cells.Clone();
-            layout.cells = new CellInfo[layout.rows, layout.columns];
-            for (int y = 0; y < cellsCopy.GetLength(0); y++)
-            {
-                for (int x = 0; x < cellsCopy.GetLength(1); x++)
-                {
-                    layout.cells[y, x] = cellsCopy[y, x];
-                }
-            }
+            layout.InitCells();
         }
 
         GUIStyle currentStyle;
@@ -45,7 +37,7 @@ public class GridLayoutWindow : EditorWindow
             GUILayout.BeginHorizontal();
             for (int x = 0; x < layout.columns; x++)
             {
-                switch (layout.cells[y, x].state)
+                switch (layout.GetCell(x, y).state)
                 {
                     case CellInfo.CellState.Wall:
                         currentStyle = new GUIStyle(GUI.skin.box);
@@ -70,6 +62,8 @@ public class GridLayoutWindow : EditorWindow
                 if (GUILayout.Button($"({x}, {y})", currentStyle))
                 {
                     layout.SetCellState(new Vector2Int(x, y));
+                    EditorUtility.SetDirty(layout);
+                    AssetDatabase.SaveAssets();
                 }
             }
 

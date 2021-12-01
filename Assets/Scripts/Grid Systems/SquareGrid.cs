@@ -5,11 +5,9 @@ using System.Linq;
 
 public class SquareGrid : MonoBehaviour
 {
-    [SerializeField] private uint rows = 5;
+    [SerializeField] GridLayout layout;
     [Range(0f, 10f)]
     [SerializeField] private float rowPadding = 1f;
-
-    [SerializeField] private uint columns = 5;
     [Range(0f, 10f)]
     [SerializeField] private float columnPadding = 1f;
 
@@ -23,31 +21,21 @@ public class SquareGrid : MonoBehaviour
     private Cell[,] grid;
     private Cell selectedCell = null;
     [Header("Occupied Cells")]
-    [SerializeField] Vector2Int[] walls;
     [SerializeField] GridObject[] overworldObjects;
 
     public bool IsGridFull { get; private set; }
-    public uint TotalCells { get; private set; }
+    public int TotalCells { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        grid = new Cell[rows, columns];
+        grid = new Cell[layout.rows, layout.columns];
         InitGridCells();
 
         IsGridFull = false;
-        TotalCells = rows * columns;
-        SetWalls();
+        TotalCells = layout.rows * layout.columns;
 
         WallAllObjectCells();
-    }
-
-    public void SetWalls()
-    {
-        foreach (var wall in walls)
-        {
-            grid[wall.y, wall.x].SetWall();
-        }
     }
 
     public void WallAllObjectCells()
@@ -97,9 +85,8 @@ public class SquareGrid : MonoBehaviour
 
         if (!Application.isPlaying)
         {
-            grid = new Cell[rows, columns];
+            grid = new Cell[layout.rows, layout.columns];
             InitGridCells();
-            SetWalls();
             WallAllObjectCells();
         }
 
@@ -108,32 +95,29 @@ public class SquareGrid : MonoBehaviour
 
     private void InitGridCells()
     {
-        for (int row = 0; row < rows; row++)
+        foreach (var cellPreset in layout.Cells)
         {
-            float posZ = transform.position.z - (rows * rowPadding / 2f) + rowPadding / 2f;
-            float rowPos = posZ + (row * rowPadding);
+            float posZ = transform.position.z - (layout.rows * rowPadding / 2f) + rowPadding / 2f;
+            float rowPos = posZ + (cellPreset.coords.y * rowPadding);
 
-            for (int col = 0; col < columns; col++)
-            {
-                float posX = transform.position.x - (columns * columnPadding / 2f) + columnPadding / 2f;
-                float colPos = posX + (col * columnPadding);
+            float posX = transform.position.x - (layout.columns * columnPadding / 2f) + columnPadding / 2f;
+            float colPos = posX + (cellPreset.coords.x * columnPadding);
 
-                var position = new Vector3(colPos, transform.position.y, rowPos);
-                grid[row, col] = new Cell(row, col, position, this);
-            }
+            var position = new Vector3(colPos, transform.position.y, rowPos);
+            grid[cellPreset.coords.y, cellPreset.coords.x] = new Cell(cellPreset.coords.y, cellPreset.coords.x, position, this, layout != null && layout.Cells != null ? layout.GetCell(cellPreset.coords.x,  + cellPreset.coords.y).state : CellInfo.CellState.Empty);
         }
     }
 
     public Vector2Int WorldToCell(Vector3 position)
     {
-        var rowValue = (position.z - (gameObject.transform.position.z - rowPadding * rows / 2f)) / rowPadding;
-        var colValue = (position.x - (gameObject.transform.position.x - columnPadding * columns / 2f)) / columnPadding;
+        var rowValue = (position.z - (gameObject.transform.position.z - rowPadding * layout.rows / 2f)) / rowPadding;
+        var colValue = (position.x - (gameObject.transform.position.x - columnPadding * layout.columns / 2f)) / columnPadding;
 
         var row = Mathf.FloorToInt(rowValue);
         var col = Mathf.FloorToInt(colValue);
 
-        row = Mathf.Clamp(row, 0, (int)rows - 1);
-        col = Mathf.Clamp(col, 0, (int)columns - 1);
+        row = Mathf.Clamp(row, 0, layout.rows - 1);
+        col = Mathf.Clamp(col, 0, layout.columns - 1);
         return new Vector2Int(col, row);
     }
 
@@ -151,7 +135,7 @@ public class SquareGrid : MonoBehaviour
 
         var startCell = grid[cell.y, cell.x];
 
-        if (!startCell.IsOccupied && !startCell.IsWall)
+        if (!startCell.IsOccupied && startCell.cellInfo.state != CellInfo.CellState.Wall)
         {
             selectedCell = grid[cell.y, cell.x];
             return grid[cell.y, cell.x];
@@ -172,7 +156,7 @@ public class SquareGrid : MonoBehaviour
     /// <returns>The first unoccupied cell found.</returns>
     private Cell SearchSurroundingCellsForAvailable(Cell startCell, Vector3 direction)
     {
-        uint maxOffset = (rows > columns) ? rows : columns;
+        int maxOffset = (layout.rows > layout.columns) ? layout.rows : layout.columns;
         Vector2Int startCoords = startCell.cellInfo.coords;
         for (int offset = 1; offset <= maxOffset; offset++)
         {
@@ -185,11 +169,11 @@ public class SquareGrid : MonoBehaviour
                         for (int x = -offset; x <= offset; x++)
                         {
                             var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
-                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                            if (index.x >= 0 && index.x < layout.columns && index.y >= 0 && index.y < layout.rows
                                 && index != startCoords)
                             {
                                 var cell = grid[index.y, index.x];
-                                if (!cell.IsOccupied && !cell.IsWall)
+                                if (!cell.IsOccupied && cell.cellInfo.state != CellInfo.CellState.Wall)
                                 {
                                     Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
@@ -202,11 +186,11 @@ public class SquareGrid : MonoBehaviour
                         for (int x = offset; x >= -offset; x--)
                         {
                             var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
-                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                            if (index.x >= 0 && index.x < layout.columns && index.y >= 0 && index.y < layout.rows
                                 && index != startCoords)
                             {
                                 var cell = grid[index.y, index.x];
-                                if (!cell.IsOccupied && !cell.IsWall)
+                                if (!cell.IsOccupied && cell.cellInfo.state != CellInfo.CellState.Wall)
                                 {
                                     Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
@@ -225,11 +209,11 @@ public class SquareGrid : MonoBehaviour
                         for (int x = -offset; x <= offset; x++)
                         {
                             var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
-                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                            if (index.x >= 0 && index.x < layout.columns && index.y >= 0 && index.y < layout.rows
                                 && index != startCoords)
                             {
                                 var cell = grid[index.y, index.x];
-                                if (!cell.IsOccupied && !cell.IsWall)
+                                if (!cell.IsOccupied && cell.cellInfo.state != CellInfo.CellState.Wall)
                                 {
                                     Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
@@ -242,11 +226,11 @@ public class SquareGrid : MonoBehaviour
                         for (int x = offset; x >= -offset; x--)
                         {
                             var index = new Vector2Int(startCoords.x + x, startCoords.y + y);
-                            if (index.x >= 0 && index.x < columns && index.y >= 0 && index.y < rows
+                            if (index.x >= 0 && index.x < layout.columns && index.y >= 0 && index.y < layout.rows
                                 && index != startCoords)
                             {
                                 var cell = grid[index.y, index.x];
-                                if (!cell.IsOccupied && !cell.IsWall)
+                                if (!cell.IsOccupied && cell.cellInfo.state != CellInfo.CellState.Wall)
                                 {
                                     Debug.Log($"Found unoccupied cell: ({cell.cellInfo.coords.x}, {cell.cellInfo.coords.y})");
                                     return cell;
@@ -263,9 +247,9 @@ public class SquareGrid : MonoBehaviour
 
     private void DrawCellsGizmos()
     {
-        for (int row = 0; row < rows; row++)
+        for (int row = 0; row < layout.rows; row++)
         {
-            for (int col = 0; col < columns; col++)
+            for (int col = 0; col < layout.columns; col++)
             {
                 if (selectedCell != null && selectedCell.cellInfo.coords.y == row && selectedCell.cellInfo.coords.x == col)
                 {
@@ -285,7 +269,7 @@ public class SquareGrid : MonoBehaviour
         var processed = new List<Node>();
         var direction = Vector3.zero;
 
-        while (toSearch.Any() && toSearch.Count <= (startNode.cell.Grid.rows * startNode.cell.Grid.columns))
+        while (toSearch.Any() && toSearch.Count <= (startNode.cell.Grid.layout.rows * startNode.cell.Grid.layout.columns))
         {
             // The first entry in the list has the current 'best' F value (or H value if they're equal).
             // This is achieved by sorting the list of nodes once the list has been populated.
@@ -325,7 +309,7 @@ public class SquareGrid : MonoBehaviour
                 return path;
             }
 
-            foreach (var neighbor in current.Neighbors.Where(t => !t.cell.IsWall && !processed.Contains(t)))
+            foreach (var neighbor in current.Neighbors.Where(t => t.cell.cellInfo.state != CellInfo.CellState.Wall && !processed.Contains(t)))
             {
                 var inSearch = toSearch.Contains(neighbor);
                 var costToNeighbor = current.G + current.GetDistance(neighbor);
@@ -348,14 +332,14 @@ public class SquareGrid : MonoBehaviour
         return new Stack<Cell>();
     }
 
-    public uint GetRows()
+    public int GetRows()
     {
-        return rows;
+        return layout.rows;
     }
 
-    public uint GetColumns()
+    public int GetColumns()
     {
-        return columns;
+        return layout.columns;
     }
 
     public Cell GetCell(int x, int y)

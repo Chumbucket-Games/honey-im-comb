@@ -8,7 +8,7 @@ public class GridLayoutEditor : Editor
     {
         GridLayout layout = (GridLayout)target;
         layout.rows = EditorGUILayout.IntField("Rows", layout.rows);
-        layout.rows = EditorGUILayout.IntField("Columns", layout.columns);
+        layout.columns = EditorGUILayout.IntField("Columns", layout.columns);
         if (GUILayout.Button("Layout"))
         {
             GridLayoutWindow.Init(layout);
