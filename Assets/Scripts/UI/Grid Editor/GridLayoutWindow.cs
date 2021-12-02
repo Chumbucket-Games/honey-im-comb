@@ -1,22 +1,31 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-using System.Collections;
 
 public class GridLayoutWindow : EditorWindow
 {
     GridLayout layout;
-    Vector2 scrollPosition = Vector2.zero;
-    public static void Init(GridLayout layout)
+    Button[,] buttons;
+    public void Init(GridLayout layout)
     {
         GridLayoutWindow window = (GridLayoutWindow)GetWindow(typeof(GridLayoutWindow));
         window.layout = layout;
-        window.Show();
+        DrawGUI();
     }
 
-    public void OnGUI()
+    public void DrawGUI()
     {
+        // Each editor window contains a root VisualElement object
+        VisualElement root = rootVisualElement;
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/UI/Grid Editor/GridLayoutWindow.uxml");
+        visualTree.CloneTree(root);
+        var scrollView = root.Q<ScrollView>();
+
+        if (layout == null)
+        {
+            layout = Selection.activeObject as GridLayout;
+        }
+
         if (layout.Cells == null)
         {
             layout.InitCells();
@@ -26,63 +35,67 @@ public class GridLayoutWindow : EditorWindow
             layout.InitCells();
         }
 
-        GUIStyle currentStyle;
-
-        scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-
-        GUILayout.BeginVertical();
-
+        if (buttons == null)
+        {
+            buttons = new Button[layout.rows, layout.columns];
+        }
+        
         for (int y = layout.rows - 1; y >= 0; y--)
         {
-            GUILayout.BeginHorizontal();
+            VisualElement row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.width = scrollView.style.width;
+            int yOffset = 50 * Mathf.Abs(y - (layout.rows - 1));
+            int yIndex = y;
             for (int x = 0; x < layout.columns; x++)
             {
+                int xOffset = 30 * x + 5;
+                int xIndex = x;
+                buttons[y, x] = new Button(() => { SetCellState(xIndex, yIndex); })
+                {
+                    text = $"({x}, {y})"
+                };
+                buttons[y, x].style.top = yOffset;
+                buttons[y, x].style.left = xOffset;
+                buttons[y, x].style.color = Color.black;
+                buttons[y, x].style.height = 50;
+                buttons[y, x].style.width = 50;
+                buttons[y, x].style.display = DisplayStyle.Flex;
+
                 switch (layout.GetCell(x, y).state)
                 {
                     case CellInfo.CellState.Wall:
-                        currentStyle = new GUIStyle(GUI.skin.box);
-                        currentStyle.fixedHeight = 50;
-                        currentStyle.fixedWidth = 50;
-                        currentStyle.normal.background = MakeTex(2, 2, Color.red);
+                        buttons[y, x].style.backgroundColor = Color.red;
                         break;
                     case CellInfo.CellState.GroundWall:
-                        currentStyle = new GUIStyle(GUI.skin.box);
-                        currentStyle.fixedHeight = 50;
-                        currentStyle.fixedWidth = 50;
-                        currentStyle.normal.background = MakeTex(2, 2, Color.blue);
+                        buttons[y, x].style.backgroundColor = Color.magenta;
                         break;
                     default:
-                        currentStyle = new GUIStyle(GUI.skin.box);
-                        currentStyle.fixedHeight = 50;
-                        currentStyle.fixedWidth = 50;
-                        currentStyle.normal.background = MakeTex(2, 2, Color.white);
+                        buttons[y, x].style.backgroundColor = Color.white;
                         break;
                 }
-
-                if (GUILayout.Button($"({x}, {y})", currentStyle))
-                {
-                    layout.SetCellState(new Vector2Int(x, y));
-                    EditorUtility.SetDirty(layout);
-                    AssetDatabase.SaveAssets();
-                }
+                row.Add(buttons[y, x]);
             }
-
-            GUILayout.EndHorizontal();
+            scrollView.Add(row);
         }
-        GUILayout.EndVertical();
-        GUILayout.EndScrollView();
+        root.Add(scrollView);
     }
 
-    private Texture2D MakeTex(int width, int height, Color col)
+    public void SetCellState(int x, int y)
     {
-        Color[] pix = new Color[width * height];
-        for (int i = 0; i < pix.Length; ++i)
+        CellInfo.CellState state = layout.SetCellState(new Vector2Int(x, y));
+        switch (state)
         {
-            pix[i] = col;
+            case CellInfo.CellState.Wall:
+                buttons[y, x].style.backgroundColor = Color.red;
+                break;
+            case CellInfo.CellState.GroundWall:
+                buttons[y, x].style.backgroundColor = Color.magenta;
+                break;
+            default:
+                buttons[y, x].style.backgroundColor = Color.white;
+                break;
         }
-        Texture2D result = new Texture2D(width, height);
-        result.SetPixels(pix);
-        result.Apply();
-        return result;
+        AssetDatabase.SaveAssets();
     }
 }

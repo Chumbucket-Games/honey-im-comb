@@ -247,17 +247,23 @@ public class SquareGrid : MonoBehaviour
 
     private void DrawCellsGizmos()
     {
-        for (int row = 0; row < layout.rows; row++)
+        if (grid != null)
         {
-            for (int col = 0; col < layout.columns; col++)
+            for (int row = 0; row < layout.rows; row++)
             {
-                if (selectedCell != null && selectedCell.cellInfo.coords.y == row && selectedCell.cellInfo.coords.x == col)
+                for (int col = 0; col < layout.columns; col++)
                 {
-                    grid[row, col].DrawCellGizmos(rowPadding - .5f, columnPadding - .5f, Color.magenta, heightOffset);
-                }
-                else
-                {
-                    grid[row, col].DrawCellGizmos(rowPadding, columnPadding, gridColor, heightOffset);
+                    if (selectedCell != null && selectedCell.cellInfo.coords.y == row && selectedCell.cellInfo.coords.x == col)
+                    {
+                        grid[row, col].DrawCellGizmos(rowPadding - .5f, columnPadding - .5f, Color.magenta, heightOffset);
+                    }
+                    else
+                    {
+                        if (grid[row, col] != null)
+                        {
+                            grid[row, col].DrawCellGizmos(rowPadding, columnPadding, gridColor, heightOffset);
+                        }
+                    }
                 }
             }
         }

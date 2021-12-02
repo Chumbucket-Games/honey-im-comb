@@ -5,7 +5,7 @@ public class GridLayout : ScriptableObject
 {
     public int rows = 50;
     public int columns = 50;
-    [SerializeField] CellInfo[] cells;
+    public CellInfo[] cells;
     public CellInfo[] Cells
     {
         get
@@ -26,7 +26,7 @@ public class GridLayout : ScriptableObject
         }
     }
 
-    public void SetCellState(Vector2Int cellCoords)
+    public CellInfo.CellState SetCellState(Vector2Int cellCoords)
     {
         int newState = (int)cells[columns * cellCoords.y + cellCoords.x].state + 1;
         if (newState > 2)
@@ -34,6 +34,7 @@ public class GridLayout : ScriptableObject
             newState = 0;
         }
         cells[columns * cellCoords.y + cellCoords.x].state = (CellInfo.CellState)newState;
+        return (CellInfo.CellState)newState;
     }
 
     public CellInfo GetCell(int x, int y)

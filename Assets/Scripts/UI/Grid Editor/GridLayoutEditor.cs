@@ -11,7 +11,9 @@ public class GridLayoutEditor : Editor
         layout.columns = EditorGUILayout.IntField("Columns", layout.columns);
         if (GUILayout.Button("Layout"))
         {
-            GridLayoutWindow.Init(layout);
+            GridLayoutWindow window = EditorWindow.GetWindow<GridLayoutWindow>();
+            window.Init(layout);
+            window.Show();
         }
     }
 }
