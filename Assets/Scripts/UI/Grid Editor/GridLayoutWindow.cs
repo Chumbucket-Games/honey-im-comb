@@ -45,18 +45,14 @@ public class GridLayoutWindow : EditorWindow
             VisualElement row = new VisualElement();
             row.style.flexDirection = FlexDirection.Row;
             row.style.width = scrollView.style.width;
-            int yOffset = 50 * Mathf.Abs(y - (layout.rows - 1));
             int yIndex = y;
             for (int x = 0; x < layout.columns; x++)
             {
-                int xOffset = 30 * x + 5;
                 int xIndex = x;
                 buttons[y, x] = new Button(() => { SetCellState(xIndex, yIndex); })
                 {
                     text = $"({x}, {y})"
                 };
-                buttons[y, x].style.top = yOffset;
-                buttons[y, x].style.left = xOffset;
                 buttons[y, x].style.color = Color.black;
                 buttons[y, x].style.height = 50;
                 buttons[y, x].style.width = 50;
