@@ -262,11 +262,6 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 7882369192666929953, guid: 72f43ccbf67f31c4eb8334ef675e89e6,
         type: 3}
-      propertyPath: heightOffset
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7882369192666929953, guid: 72f43ccbf67f31c4eb8334ef675e89e6,
-        type: 3}
       propertyPath: overworldObjects.Array.size
       value: 0
       objectReference: {fileID: 0}

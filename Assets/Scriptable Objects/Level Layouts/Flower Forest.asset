@@ -556,7 +556,7 @@ MonoBehaviour:
   - coords: {x: 19, y: 5}
     state: 0
   - coords: {x: 20, y: 5}
-    state: 0
+    state: 1
   - coords: {x: 21, y: 5}
     state: 0
   - coords: {x: 22, y: 5}
@@ -568,9 +568,9 @@ MonoBehaviour:
   - coords: {x: 25, y: 5}
     state: 0
   - coords: {x: 26, y: 5}
-    state: 0
+    state: 1
   - coords: {x: 27, y: 5}
-    state: 0
+    state: 1
   - coords: {x: 28, y: 5}
     state: 0
   - coords: {x: 29, y: 5}
@@ -656,7 +656,7 @@ MonoBehaviour:
   - coords: {x: 19, y: 6}
     state: 0
   - coords: {x: 20, y: 6}
-    state: 0
+    state: 1
   - coords: {x: 21, y: 6}
     state: 0
   - coords: {x: 22, y: 6}
@@ -778,7 +778,7 @@ MonoBehaviour:
   - coords: {x: 30, y: 7}
     state: 0
   - coords: {x: 31, y: 7}
-    state: 0
+    state: 1
   - coords: {x: 32, y: 7}
     state: 0
   - coords: {x: 33, y: 7}
@@ -806,7 +806,7 @@ MonoBehaviour:
   - coords: {x: 44, y: 7}
     state: 0
   - coords: {x: 45, y: 7}
-    state: 0
+    state: 1
   - coords: {x: 46, y: 7}
     state: 0
   - coords: {x: 47, y: 7}
@@ -838,9 +838,9 @@ MonoBehaviour:
   - coords: {x: 10, y: 8}
     state: 0
   - coords: {x: 11, y: 8}
-    state: 0
+    state: 1
   - coords: {x: 12, y: 8}
-    state: 0
+    state: 1
   - coords: {x: 13, y: 8}
     state: 0
   - coords: {x: 14, y: 8}
@@ -906,7 +906,7 @@ MonoBehaviour:
   - coords: {x: 44, y: 8}
     state: 0
   - coords: {x: 45, y: 8}
-    state: 0
+    state: 1
   - coords: {x: 46, y: 8}
     state: 0
   - coords: {x: 47, y: 8}
@@ -1020,7 +1020,7 @@ MonoBehaviour:
   - coords: {x: 1, y: 10}
     state: 0
   - coords: {x: 2, y: 10}
-    state: 0
+    state: 1
   - coords: {x: 3, y: 10}
     state: 0
   - coords: {x: 4, y: 10}
@@ -1048,9 +1048,9 @@ MonoBehaviour:
   - coords: {x: 15, y: 10}
     state: 0
   - coords: {x: 16, y: 10}
-    state: 0
+    state: 1
   - coords: {x: 17, y: 10}
-    state: 0
+    state: 1
   - coords: {x: 18, y: 10}
     state: 0
   - coords: {x: 19, y: 10}
@@ -1064,7 +1064,7 @@ MonoBehaviour:
   - coords: {x: 23, y: 10}
     state: 0
   - coords: {x: 24, y: 10}
-    state: 0
+    state: 1
   - coords: {x: 25, y: 10}
     state: 0
   - coords: {x: 26, y: 10}
@@ -1148,9 +1148,9 @@ MonoBehaviour:
   - coords: {x: 15, y: 11}
     state: 0
   - coords: {x: 16, y: 11}
-    state: 0
+    state: 1
   - coords: {x: 17, y: 11}
-    state: 0
+    state: 1
   - coords: {x: 18, y: 11}
     state: 0
   - coords: {x: 19, y: 11}
@@ -1188,7 +1188,7 @@ MonoBehaviour:
   - coords: {x: 35, y: 11}
     state: 0
   - coords: {x: 36, y: 11}
-    state: 0
+    state: 1
   - coords: {x: 37, y: 11}
     state: 0
   - coords: {x: 38, y: 11}
@@ -1300,7 +1300,7 @@ MonoBehaviour:
   - coords: {x: 41, y: 12}
     state: 0
   - coords: {x: 42, y: 12}
-    state: 0
+    state: 1
   - coords: {x: 43, y: 12}
     state: 0
   - coords: {x: 44, y: 12}
@@ -1314,7 +1314,7 @@ MonoBehaviour:
   - coords: {x: 48, y: 12}
     state: 0
   - coords: {x: 49, y: 12}
-    state: 0
+    state: 1
   - coords: {x: 0, y: 13}
     state: 0
   - coords: {x: 1, y: 13}
@@ -1340,9 +1340,9 @@ MonoBehaviour:
   - coords: {x: 11, y: 13}
     state: 0
   - coords: {x: 12, y: 13}
-    state: 0
+    state: 1
   - coords: {x: 13, y: 13}
-    state: 0
+    state: 1
   - coords: {x: 14, y: 13}
     state: 0
   - coords: {x: 15, y: 13}
@@ -1368,9 +1368,9 @@ MonoBehaviour:
   - coords: {x: 25, y: 13}
     state: 0
   - coords: {x: 26, y: 13}
-    state: 0
+    state: 1
   - coords: {x: 27, y: 13}
-    state: 0
+    state: 1
   - coords: {x: 28, y: 13}
     state: 0
   - coords: {x: 29, y: 13}
@@ -1468,9 +1468,9 @@ MonoBehaviour:
   - coords: {x: 25, y: 14}
     state: 0
   - coords: {x: 26, y: 14}
-    state: 0
+    state: 1
   - coords: {x: 27, y: 14}
-    state: 0
+    state: 1
   - coords: {x: 28, y: 14}
     state: 0
   - coords: {x: 29, y: 14}
@@ -1522,7 +1522,7 @@ MonoBehaviour:
   - coords: {x: 2, y: 15}
     state: 0
   - coords: {x: 3, y: 15}
-    state: 0
+    state: 1
   - coords: {x: 4, y: 15}
     state: 0
   - coords: {x: 5, y: 15}
@@ -1532,7 +1532,7 @@ MonoBehaviour:
   - coords: {x: 7, y: 15}
     state: 0
   - coords: {x: 8, y: 15}
-    state: 0
+    state: 1
   - coords: {x: 9, y: 15}
     state: 0
   - coords: {x: 10, y: 15}
@@ -1584,7 +1584,7 @@ MonoBehaviour:
   - coords: {x: 33, y: 15}
     state: 0
   - coords: {x: 34, y: 15}
-    state: 0
+    state: 1
   - coords: {x: 35, y: 15}
     state: 0
   - coords: {x: 36, y: 15}
@@ -1692,7 +1692,7 @@ MonoBehaviour:
   - coords: {x: 37, y: 16}
     state: 0
   - coords: {x: 38, y: 16}
-    state: 0
+    state: 1
   - coords: {x: 39, y: 16}
     state: 0
   - coords: {x: 40, y: 16}
@@ -1814,7 +1814,7 @@ MonoBehaviour:
   - coords: {x: 48, y: 17}
     state: 0
   - coords: {x: 49, y: 17}
-    state: 0
+    state: 1
   - coords: {x: 0, y: 18}
     state: 0
   - coords: {x: 1, y: 18}
@@ -1844,7 +1844,7 @@ MonoBehaviour:
   - coords: {x: 13, y: 18}
     state: 0
   - coords: {x: 14, y: 18}
-    state: 0
+    state: 1
   - coords: {x: 15, y: 18}
     state: 0
   - coords: {x: 16, y: 18}
@@ -1900,7 +1900,7 @@ MonoBehaviour:
   - coords: {x: 41, y: 18}
     state: 0
   - coords: {x: 42, y: 18}
-    state: 0
+    state: 1
   - coords: {x: 43, y: 18}
     state: 0
   - coords: {x: 44, y: 18}
@@ -1976,7 +1976,7 @@ MonoBehaviour:
   - coords: {x: 29, y: 19}
     state: 0
   - coords: {x: 30, y: 19}
-    state: 0
+    state: 1
   - coords: {x: 31, y: 19}
     state: 0
   - coords: {x: 32, y: 19}
@@ -2056,7 +2056,7 @@ MonoBehaviour:
   - coords: {x: 19, y: 20}
     state: 0
   - coords: {x: 20, y: 20}
-    state: 0
+    state: 1
   - coords: {x: 21, y: 20}
     state: 0
   - coords: {x: 22, y: 20}
@@ -2066,7 +2066,7 @@ MonoBehaviour:
   - coords: {x: 24, y: 20}
     state: 0
   - coords: {x: 25, y: 20}
-    state: 0
+    state: 1
   - coords: {x: 26, y: 20}
     state: 0
   - coords: {x: 27, y: 20}
@@ -2188,7 +2188,7 @@ MonoBehaviour:
   - coords: {x: 35, y: 21}
     state: 0
   - coords: {x: 36, y: 21}
-    state: 0
+    state: 1
   - coords: {x: 37, y: 21}
     state: 0
   - coords: {x: 38, y: 21}
@@ -2306,7 +2306,7 @@ MonoBehaviour:
   - coords: {x: 44, y: 22}
     state: 0
   - coords: {x: 45, y: 22}
-    state: 0
+    state: 1
   - coords: {x: 46, y: 22}
     state: 0
   - coords: {x: 47, y: 22}
@@ -2322,7 +2322,7 @@ MonoBehaviour:
   - coords: {x: 2, y: 23}
     state: 0
   - coords: {x: 3, y: 23}
-    state: 0
+    state: 1
   - coords: {x: 4, y: 23}
     state: 0
   - coords: {x: 5, y: 23}
@@ -2334,7 +2334,7 @@ MonoBehaviour:
   - coords: {x: 8, y: 23}
     state: 0
   - coords: {x: 9, y: 23}
-    state: 0
+    state: 1
   - coords: {x: 10, y: 23}
     state: 0
   - coords: {x: 11, y: 23}
@@ -2346,7 +2346,7 @@ MonoBehaviour:
   - coords: {x: 14, y: 23}
     state: 0
   - coords: {x: 15, y: 23}
-    state: 0
+    state: 1
   - coords: {x: 16, y: 23}
     state: 0
   - coords: {x: 17, y: 23}
@@ -2446,7 +2446,7 @@ MonoBehaviour:
   - coords: {x: 14, y: 24}
     state: 0
   - coords: {x: 15, y: 24}
-    state: 0
+    state: 1
   - coords: {x: 16, y: 24}
     state: 0
   - coords: {x: 17, y: 24}
@@ -2472,7 +2472,7 @@ MonoBehaviour:
   - coords: {x: 27, y: 24}
     state: 0
   - coords: {x: 28, y: 24}
-    state: 0
+    state: 1
   - coords: {x: 29, y: 24}
     state: 0
   - coords: {x: 30, y: 24}
@@ -2556,9 +2556,9 @@ MonoBehaviour:
   - coords: {x: 19, y: 25}
     state: 0
   - coords: {x: 20, y: 25}
-    state: 0
+    state: 1
   - coords: {x: 21, y: 25}
-    state: 0
+    state: 1
   - coords: {x: 22, y: 25}
     state: 0
   - coords: {x: 23, y: 25}
@@ -2596,7 +2596,7 @@ MonoBehaviour:
   - coords: {x: 39, y: 25}
     state: 0
   - coords: {x: 40, y: 25}
-    state: 0
+    state: 1
   - coords: {x: 41, y: 25}
     state: 0
   - coords: {x: 42, y: 25}
@@ -2656,9 +2656,9 @@ MonoBehaviour:
   - coords: {x: 19, y: 26}
     state: 0
   - coords: {x: 20, y: 26}
-    state: 0
+    state: 1
   - coords: {x: 21, y: 26}
-    state: 0
+    state: 1
   - coords: {x: 22, y: 26}
     state: 0
   - coords: {x: 23, y: 26}
@@ -2784,7 +2784,7 @@ MonoBehaviour:
   - coords: {x: 33, y: 27}
     state: 0
   - coords: {x: 34, y: 27}
-    state: 0
+    state: 1
   - coords: {x: 35, y: 27}
     state: 0
   - coords: {x: 36, y: 27}
@@ -2904,7 +2904,7 @@ MonoBehaviour:
   - coords: {x: 43, y: 28}
     state: 0
   - coords: {x: 44, y: 28}
-    state: 0
+    state: 1
   - coords: {x: 45, y: 28}
     state: 0
   - coords: {x: 46, y: 28}
@@ -2914,7 +2914,7 @@ MonoBehaviour:
   - coords: {x: 48, y: 28}
     state: 0
   - coords: {x: 49, y: 28}
-    state: 0
+    state: 1
   - coords: {x: 0, y: 29}
     state: 0
   - coords: {x: 1, y: 29}
@@ -2936,7 +2936,7 @@ MonoBehaviour:
   - coords: {x: 9, y: 29}
     state: 0
   - coords: {x: 10, y: 29}
-    state: 0
+    state: 1
   - coords: {x: 11, y: 29}
     state: 0
   - coords: {x: 12, y: 29}
@@ -2952,9 +2952,9 @@ MonoBehaviour:
   - coords: {x: 17, y: 29}
     state: 0
   - coords: {x: 18, y: 29}
-    state: 0
+    state: 1
   - coords: {x: 19, y: 29}
-    state: 0
+    state: 1
   - coords: {x: 20, y: 29}
     state: 0
   - coords: {x: 21, y: 29}
@@ -2972,7 +2972,7 @@ MonoBehaviour:
   - coords: {x: 27, y: 29}
     state: 0
   - coords: {x: 28, y: 29}
-    state: 0
+    state: 1
   - coords: {x: 29, y: 29}
     state: 0
   - coords: {x: 30, y: 29}
@@ -3004,7 +3004,7 @@ MonoBehaviour:
   - coords: {x: 43, y: 29}
     state: 0
   - coords: {x: 44, y: 29}
-    state: 0
+    state: 1
   - coords: {x: 45, y: 29}
     state: 0
   - coords: {x: 46, y: 29}
@@ -3052,9 +3052,9 @@ MonoBehaviour:
   - coords: {x: 17, y: 30}
     state: 0
   - coords: {x: 18, y: 30}
-    state: 0
+    state: 1
   - coords: {x: 19, y: 30}
-    state: 0
+    state: 1
   - coords: {x: 20, y: 30}
     state: 0
   - coords: {x: 21, y: 30}
@@ -3116,9 +3116,9 @@ MonoBehaviour:
   - coords: {x: 49, y: 30}
     state: 0
   - coords: {x: 0, y: 31}
-    state: 0
+    state: 1
   - coords: {x: 1, y: 31}
-    state: 0
+    state: 1
   - coords: {x: 2, y: 31}
     state: 0
   - coords: {x: 3, y: 31}
@@ -3188,7 +3188,7 @@ MonoBehaviour:
   - coords: {x: 35, y: 31}
     state: 0
   - coords: {x: 36, y: 31}
-    state: 0
+    state: 1
   - coords: {x: 37, y: 31}
     state: 0
   - coords: {x: 38, y: 31}
@@ -3226,7 +3226,7 @@ MonoBehaviour:
   - coords: {x: 4, y: 32}
     state: 0
   - coords: {x: 5, y: 32}
-    state: 0
+    state: 1
   - coords: {x: 6, y: 32}
     state: 0
   - coords: {x: 7, y: 32}
@@ -3262,7 +3262,7 @@ MonoBehaviour:
   - coords: {x: 22, y: 32}
     state: 0
   - coords: {x: 23, y: 32}
-    state: 0
+    state: 1
   - coords: {x: 24, y: 32}
     state: 0
   - coords: {x: 25, y: 32}
@@ -3344,7 +3344,7 @@ MonoBehaviour:
   - coords: {x: 13, y: 33}
     state: 0
   - coords: {x: 14, y: 33}
-    state: 0
+    state: 1
   - coords: {x: 15, y: 33}
     state: 0
   - coords: {x: 16, y: 33}
@@ -3518,7 +3518,7 @@ MonoBehaviour:
   - coords: {x: 0, y: 35}
     state: 0
   - coords: {x: 1, y: 35}
-    state: 0
+    state: 1
   - coords: {x: 2, y: 35}
     state: 0
   - coords: {x: 3, y: 35}
@@ -3618,7 +3618,7 @@ MonoBehaviour:
   - coords: {x: 0, y: 36}
     state: 0
   - coords: {x: 1, y: 36}
-    state: 0
+    state: 1
   - coords: {x: 2, y: 36}
     state: 0
   - coords: {x: 3, y: 36}
@@ -3682,9 +3682,9 @@ MonoBehaviour:
   - coords: {x: 32, y: 36}
     state: 0
   - coords: {x: 33, y: 36}
-    state: 0
+    state: 1
   - coords: {x: 34, y: 36}
-    state: 0
+    state: 1
   - coords: {x: 35, y: 36}
     state: 0
   - coords: {x: 36, y: 36}
@@ -3706,7 +3706,7 @@ MonoBehaviour:
   - coords: {x: 44, y: 36}
     state: 0
   - coords: {x: 45, y: 36}
-    state: 0
+    state: 1
   - coords: {x: 46, y: 36}
     state: 0
   - coords: {x: 47, y: 36}
@@ -3738,7 +3738,7 @@ MonoBehaviour:
   - coords: {x: 10, y: 37}
     state: 0
   - coords: {x: 11, y: 37}
-    state: 0
+    state: 1
   - coords: {x: 12, y: 37}
     state: 0
   - coords: {x: 13, y: 37}
@@ -3782,9 +3782,9 @@ MonoBehaviour:
   - coords: {x: 32, y: 37}
     state: 0
   - coords: {x: 33, y: 37}
-    state: 0
+    state: 1
   - coords: {x: 34, y: 37}
-    state: 0
+    state: 1
   - coords: {x: 35, y: 37}
     state: 0
   - coords: {x: 36, y: 37}
@@ -3826,9 +3826,9 @@ MonoBehaviour:
   - coords: {x: 4, y: 38}
     state: 0
   - coords: {x: 5, y: 38}
-    state: 0
+    state: 1
   - coords: {x: 6, y: 38}
-    state: 0
+    state: 1
   - coords: {x: 7, y: 38}
     state: 0
   - coords: {x: 8, y: 38}
@@ -3926,9 +3926,9 @@ MonoBehaviour:
   - coords: {x: 4, y: 39}
     state: 0
   - coords: {x: 5, y: 39}
-    state: 0
+    state: 1
   - coords: {x: 6, y: 39}
-    state: 0
+    state: 1
   - coords: {x: 7, y: 39}
     state: 0
   - coords: {x: 8, y: 39}
@@ -3952,7 +3952,7 @@ MonoBehaviour:
   - coords: {x: 17, y: 39}
     state: 0
   - coords: {x: 18, y: 39}
-    state: 0
+    state: 1
   - coords: {x: 19, y: 39}
     state: 0
   - coords: {x: 20, y: 39}
@@ -3972,7 +3972,7 @@ MonoBehaviour:
   - coords: {x: 27, y: 39}
     state: 0
   - coords: {x: 28, y: 39}
-    state: 0
+    state: 1
   - coords: {x: 29, y: 39}
     state: 0
   - coords: {x: 30, y: 39}
@@ -4092,7 +4092,7 @@ MonoBehaviour:
   - coords: {x: 37, y: 40}
     state: 0
   - coords: {x: 38, y: 40}
-    state: 0
+    state: 1
   - coords: {x: 39, y: 40}
     state: 0
   - coords: {x: 40, y: 40}
@@ -4120,7 +4120,7 @@ MonoBehaviour:
   - coords: {x: 1, y: 41}
     state: 0
   - coords: {x: 2, y: 41}
-    state: 0
+    state: 1
   - coords: {x: 3, y: 41}
     state: 0
   - coords: {x: 4, y: 41}
@@ -4182,7 +4182,7 @@ MonoBehaviour:
   - coords: {x: 32, y: 41}
     state: 0
   - coords: {x: 33, y: 41}
-    state: 0
+    state: 1
   - coords: {x: 34, y: 41}
     state: 0
   - coords: {x: 35, y: 41}
@@ -4248,7 +4248,7 @@ MonoBehaviour:
   - coords: {x: 15, y: 42}
     state: 0
   - coords: {x: 16, y: 42}
-    state: 0
+    state: 1
   - coords: {x: 17, y: 42}
     state: 0
   - coords: {x: 18, y: 42}
@@ -4308,7 +4308,7 @@ MonoBehaviour:
   - coords: {x: 45, y: 42}
     state: 0
   - coords: {x: 46, y: 42}
-    state: 0
+    state: 1
   - coords: {x: 47, y: 42}
     state: 0
   - coords: {x: 48, y: 42}
@@ -4332,7 +4332,7 @@ MonoBehaviour:
   - coords: {x: 7, y: 43}
     state: 0
   - coords: {x: 8, y: 43}
-    state: 0
+    state: 1
   - coords: {x: 9, y: 43}
     state: 0
   - coords: {x: 10, y: 43}
@@ -4496,7 +4496,7 @@ MonoBehaviour:
   - coords: {x: 39, y: 44}
     state: 0
   - coords: {x: 40, y: 44}
-    state: 0
+    state: 1
   - coords: {x: 41, y: 44}
     state: 0
   - coords: {x: 42, y: 44}
@@ -4540,7 +4540,7 @@ MonoBehaviour:
   - coords: {x: 11, y: 45}
     state: 0
   - coords: {x: 12, y: 45}
-    state: 0
+    state: 1
   - coords: {x: 13, y: 45}
     state: 0
   - coords: {x: 14, y: 45}
@@ -4572,9 +4572,9 @@ MonoBehaviour:
   - coords: {x: 27, y: 45}
     state: 0
   - coords: {x: 28, y: 45}
-    state: 0
+    state: 1
   - coords: {x: 29, y: 45}
-    state: 0
+    state: 1
   - coords: {x: 30, y: 45}
     state: 0
   - coords: {x: 31, y: 45}
@@ -4596,7 +4596,7 @@ MonoBehaviour:
   - coords: {x: 39, y: 45}
     state: 0
   - coords: {x: 40, y: 45}
-    state: 0
+    state: 1
   - coords: {x: 41, y: 45}
     state: 0
   - coords: {x: 42, y: 45}
@@ -4650,9 +4650,9 @@ MonoBehaviour:
   - coords: {x: 16, y: 46}
     state: 0
   - coords: {x: 17, y: 46}
-    state: 0
+    state: 1
   - coords: {x: 18, y: 46}
-    state: 0
+    state: 1
   - coords: {x: 19, y: 46}
     state: 0
   - coords: {x: 20, y: 46}
@@ -4664,7 +4664,7 @@ MonoBehaviour:
   - coords: {x: 23, y: 46}
     state: 0
   - coords: {x: 24, y: 46}
-    state: 0
+    state: 1
   - coords: {x: 25, y: 46}
     state: 0
   - coords: {x: 26, y: 46}
@@ -4682,7 +4682,7 @@ MonoBehaviour:
   - coords: {x: 32, y: 46}
     state: 0
   - coords: {x: 33, y: 46}
-    state: 0
+    state: 1
   - coords: {x: 34, y: 46}
     state: 0
   - coords: {x: 35, y: 46}
@@ -4730,7 +4730,7 @@ MonoBehaviour:
   - coords: {x: 6, y: 47}
     state: 0
   - coords: {x: 7, y: 47}
-    state: 0
+    state: 1
   - coords: {x: 8, y: 47}
     state: 0
   - coords: {x: 9, y: 47}
@@ -4750,9 +4750,9 @@ MonoBehaviour:
   - coords: {x: 16, y: 47}
     state: 0
   - coords: {x: 17, y: 47}
-    state: 0
+    state: 1
   - coords: {x: 18, y: 47}
-    state: 0
+    state: 1
   - coords: {x: 19, y: 47}
     state: 0
   - coords: {x: 20, y: 47}
@@ -4764,7 +4764,7 @@ MonoBehaviour:
   - coords: {x: 23, y: 47}
     state: 0
   - coords: {x: 24, y: 47}
-    state: 0
+    state: 1
   - coords: {x: 25, y: 47}
     state: 0
   - coords: {x: 26, y: 47}
@@ -4808,9 +4808,9 @@ MonoBehaviour:
   - coords: {x: 45, y: 47}
     state: 0
   - coords: {x: 46, y: 47}
-    state: 0
+    state: 1
   - coords: {x: 47, y: 47}
-    state: 0
+    state: 1
   - coords: {x: 48, y: 47}
     state: 0
   - coords: {x: 49, y: 47}
