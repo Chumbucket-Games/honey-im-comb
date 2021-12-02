@@ -5,7 +5,7 @@ public class GridLayout : ScriptableObject
 {
     public int rows = 50;
     public int columns = 50;
-    public CellInfo[] cells;
+    [SerializeField] CellInfo[] cells;
     public CellInfo[] Cells
     {
         get

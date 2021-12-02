@@ -21,18 +21,17 @@ public class GridLayoutWindow : EditorWindow
         visualTree.CloneTree(root);
         var scrollView = root.Q<ScrollView>();
 
-        if (layout == null)
-        {
-            layout = Selection.activeObject as GridLayout;
-        }
-
         if (layout.Cells == null)
         {
             layout.InitCells();
+            EditorUtility.SetDirty(layout);
+            AssetDatabase.SaveAssets();
         }
         else if (layout.Cells.Length != layout.rows * layout.columns)
         {
             layout.InitCells();
+            EditorUtility.SetDirty(layout);
+            AssetDatabase.SaveAssets();
         }
 
         if (buttons == null)
@@ -92,6 +91,7 @@ public class GridLayoutWindow : EditorWindow
                 buttons[y, x].style.backgroundColor = Color.white;
                 break;
         }
+        EditorUtility.SetDirty(layout);
         AssetDatabase.SaveAssets();
     }
 }
